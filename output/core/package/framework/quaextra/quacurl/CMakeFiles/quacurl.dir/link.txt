@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libquacurl.a CMakeFiles/quacurl.dir/src/http_utils.c.o CMakeFiles/quacurl.dir/src/qm_http_utils.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libquacurl.a

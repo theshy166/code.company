@@ -1,0 +1,4 @@
+kernel: 4.0M Mbyte
+system: 24 Mbyte
+rootfs: 4 Mbyte
+data: 1 Mbyte

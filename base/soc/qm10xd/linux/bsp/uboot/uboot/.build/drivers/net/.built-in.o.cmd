@@ -1,0 +1,1 @@
+cmd_drivers/net/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o drivers/net/built-in.o drivers/net/designware.o drivers/net/netconsole.o drivers/net/molchip_dwc_eth_qos.o drivers/net/molchip_dwc_eth_qos_dpll_cmd.o 

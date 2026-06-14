@@ -1,0 +1,147 @@
+# Makefile.param
+# Only global variable should be defined here.
+# All the variables must be used as "export" and "?=".
+# Otherwise, there will be some errors, when Makefile.param is nested.
+
+# Use this file as the following sample
+# ifeq ($(PARAM_FILE), )
+#     PARAM_FILE:=../Makefile.param
+#     include $(PARAM_FILE)
+# endif
+
+
+export CHIP?=LT00
+export SUB_CHIP?=LT00
+export MPI_DIRS?=mpi
+export ARCH=arm
+export LIBC?=uclibc
+
+
+# Get the local SDK_ROOT path or RELEASE_ROOT path by PARAM_FILE.
+# PARAM_FILE is configed at Makefile before include this file
+export PARAM_FILE
+
+
+export MEDIA_PATH?=$(shell cd $(shell pwd)/`dirname $(PARAM_FILE)`; pwd)
+export BSP_PATH?=$(MEDIA_PATH)/../bsp
+
+export MPP_PATH?=$(MEDIA_PATH)/mpp
+export DRIVER_PATH=$(MEDIA_PATH)/driver
+
+#export MPP_PATH?=$(shell cd $(shell pwd)/`dirname $(PARAM_FILE)`; pwd)
+#export SHELF_ROOT?=$(MPP_PATH)/code/shelf
+#export DRV_ROOT?=$(SDK_PATH)/drv
+
+
+# not run in the top makefile
+ifeq (,$(TARGET_CONFIG_NIMI))
+ENV_FILE := $(MEDIA_PATH)/../output/.config
+ifeq (,$(wildcard $(ENV_FILE)))
+    $(error "$(ENV_FILE) does not exist!build the kernel firstly!!")
+endif
+include $(ENV_FILE)
+endif
+
+
+export CROSS_COMPILE := $(CROSS)
+
+
+#ifeq ($(shell ls $(BSP_PATH)/kernel/linux-$(KERNEL_VER)), )
+#$(error kernel=$(BSP_PATH)/kernel/linux-$(KERNEL_VER) not exit!)
+#endif
+
+
+export LINUX_ROOT?=$(BSP_PATH)/kernel/linux-$(KERNEL_VER)
+#export LINUX_ROOT = /home/sharan/workspace/code_push/gerrit_code/LT00/bsp/kernel/linux-4.9.y
+export RTT_ROOT?=$(BSP_PATH)/rt-thread
+
+ifeq ($(LINUX_ROOT), )
+$(error ##### LINUX_ROOT=$(LINUX_ROOT) not exit, should set first! #####)
+endif
+
+
+export CC:=$(CROSS)gcc
+export AR:=$(CROSS)ar
+export STRIP :=$(CROSS)strip --strip-debug
+
+
+export MPP_CFLAGS := -Werror -Wno-date-time -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wno-overflow -fno-aggressive-loop-optimizations
+export MPP_CFLAGS += -DCONFIG_FH_SDK  -DCONFIG_CHIP_$(CHIP)
+export MPP_CFLAGS += -DOS_LINUX
+ifeq ($(FHGDB), y)
+	MPP_CFLAGS += -g
+endif
+
+ifeq ($(xbus), y)
+	MPP_CFLAGS += -DXBUS_RPC
+ifeq ($(fboot), y)
+	MPP_CFLAGS += -DBASE_ON_PEER
+endif
+endif
+
+# Define the object output directory
+
+REL_DIR:=$(MEDIA_PATH)/../output/$(TARGET_OUTPUT_DIR)
+MPP_DIR:=$(MPP_PATH)
+
+SAMPLE_DIR=$(REL_DIR)/sample
+
+export REL_INC := $(MPP_DIR)/include
+export REL_LIB := $(REL_DIR)/media/lib
+export REL_KO  := $(REL_DIR)/media/ko
+export REL_OBJ  := $(REL_DIR)/media/obj
+export REL_TEST  := $(REL_DIR)/media/sample
+export REL_TOOL  := $(REL_DIR)/media/tool
+
+REL_TARGET_SUFFIX :=
+ifeq ($(xbus), y)
+  REL_TARGET_SUFFIX := _rpc
+endif
+export REL_TARGET_SUFFIX
+###############################################################################
+# LIB GLOBAL CFLAGS
+
+ifeq ($(ARCH),arm)
+export LIBS_CFLAGS = $(CROSS_C_FLAGS) -ffunction-sections -mno-unaligned-access -fno-aggressive-loop-optimizations
+export LIBS_LD_CFLAGS = $(CROSS_LD_FLAGS) -ffunction-sections -mno-unaligned-access -fno-aggressive-loop-optimizations
+endif
+
+#LIBS_CFLAGS += -fstack-protector -fPIC
+#LIBS_LD_CFLAGS += -fstack-protector -Wl,-z,relro -Wl,-z,noexecstack -fPIC
+LIBS_CFLAGS += -fPIC
+LIBS_LD_CFLAGS += -Wl,-z,relro -Wl,-z,noexecstack -fPIC
+
+###############################################################################
+
+#********************* Macro for version management*****************************
+VER_X ?= 1
+VER_Y ?= 0
+VER_Z ?= 0
+VER_P ?= 0
+
+## generate the version from the git commit
+ifneq ( $(SDK_BASE_TAG), )
+	REV_COMMIT:=$(shell git describe --tags --long --always --dirty='-dev' --match="$(SDK_BASE_TAG)"  2>/dev/null)
+endif
+
+TMP_TAG_VER:=$(findstring g, $(REV_COMMIT))
+ifeq ($(TMP_TAG_VER),)
+    REV_COMMIT:=$(shell git describe --tags --long --always --dirty='-dev'  2>/dev/null)
+endif
+
+REV_COMMIT:=$(shell echo $(REV_COMMIT) | sed -e 's/^[^_]*_//')
+VER_B ?= $(if $(REV_COMMIT),$(REV_COMMIT),00)
+COMPILE_BY := $(shell whoami | sed 's/[^A-Za-z0-9_]/_/g')
+COMPILE_HOST :=$(shell hostname | sed 's/[^A-Za-z0-9_]/_/g')
+VER_P=$(COMPILE_BY)@$(COMPILE_HOST)
+MPP_CFLAGS += -DVER_X=$(VER_X) -DVER_Y=$(VER_Y) -DVER_Z=$(VER_Z) -DVER_P=$(VER_P) -DVER_B=$(VER_B)
+ifeq ($(ARCH),arm64)
+MPP_CFLAGS += -D__arm64__
+endif
+#*******************************************************************************
+
+# include the config file of platform
+-include $(SDK_PATH)/mpp/configs/config.mk
+
+
+# End!!

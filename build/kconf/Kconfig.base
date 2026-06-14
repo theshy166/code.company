@@ -1,0 +1,5 @@
+# Include configuration if selected
+#source "build/kconf/Kconfig.chipset"
+source "build/kconf/Kconfig.sdk"
+#source "build/kconf/Kconfig.os"
+source "build/kconf/Kconfig.storage"

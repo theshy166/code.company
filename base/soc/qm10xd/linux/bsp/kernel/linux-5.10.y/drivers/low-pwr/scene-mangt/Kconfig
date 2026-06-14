@@ -1,0 +1,3 @@
+config MC_SCENE_MANGT
+	tristate "mc scene mangagement"
+	depends on MC_LOW_POWER=y

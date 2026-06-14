@@ -1,0 +1,4 @@
+../lib/libfdt/fdt_region.c:29:12:fdt_add_region	12	static
+../lib/libfdt/fdt_region.c:90:5:fdt_add_alias_regions	40	static
+../lib/libfdt/fdt_region.c:306:5:fdt_next_region	112	static
+../lib/libfdt/fdt_region.c:209:5:fdt_first_region	12	static

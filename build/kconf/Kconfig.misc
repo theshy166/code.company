@@ -1,0 +1,65 @@
+# 
+menu "Misc Configure"
+config XOS_BUILD_SDK
+    string "Build SoC"
+    default "qm10xh_linux" if CHIPSET_QM10XH
+
+config XOS_BUILD_BOARD
+    string "Build Board"
+    default "qm10xh" if CHIPSET_QM10XH
+    default "qm10xv" if CHIPSET_QM10XV
+    default "fy00" if CHIPSET_MC331X
+    default "fy00rtt" if CHIPSET_MC331X && OS_RTT
+    default "qm10xd" if CHIPSET_QM10XD
+    default "simulator" if CHIPSET_SIMULATOR
+
+config XOS_SDK_NAME
+    string "Soc Name"
+    default "qm108h_sdk" if CHIPSET_QM10XH
+    default "fy00_rtt" if CHIPSET_MC331X && OS_RTT
+    default "fy00_linux" if CHIPSET_MC331X && OS_LINUX
+    default "simulator" if CHIPSET_SIMULATOR
+
+config XOS_SDK_PATH
+    string "SoC Code Path"
+    default "base/soc/qm10xh/linux" if CHIPSET_QM10XH
+    default "base/soc/mc331x/linux" if CHIPSET_MC331X && OS_LINUX
+    default "base/soc/mc331x/rtt" if CHIPSET_MC331X && OS_RTT
+    help
+      available SDK PATH:
+      base/soc/qm10xh/linux
+      base/soc/mc331x/linux
+      base/soc/mc331x/rtt
+
+config XOS_USE_NO_QUAUI
+    bool "No QUAUI Ctrl"
+    default n
+    help
+        Select the xos no quaui sys.
+
+config XOS_USE_DLMPI
+    bool "Use fb libmpi"
+    default n
+    help
+        Select the xos fb with libmpi api directly.
+
+config XOS_USE_DTEST
+    bool "Use fb test"
+    default n
+    help
+        Select the xos fb test with lvgl widgets.
+
+config XOS_LCM_TYPE
+    string "LCM Type"
+    default "ek79007"
+    depends on CHIPSET_QM10XH
+    help
+        Select the different lcm type for QM10XH
+
+config STORAGE_TYPE
+    string "Storage Type"
+    default ""
+
+endmenu
+
+

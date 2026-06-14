@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libxos_ability.a CMakeFiles/xos_ability.dir/xos_ability.c.o CMakeFiles/xos_ability.dir/qua_sys_plat.c.o CMakeFiles/xos_ability.dir/qua_sys_para.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libxos_ability.a

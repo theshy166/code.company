@@ -1,0 +1,2 @@
+../drivers/mtd/mtd_uboot.c:45:5:mtd_arg_off	48	static
+../drivers/mtd/mtd_uboot.c:61:5:mtd_arg_off_size	48	static

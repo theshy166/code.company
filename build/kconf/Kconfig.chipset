@@ -1,0 +1,125 @@
+#chipset select
+#
+menu "Chipset family "
+
+
+choice
+    prompt "Chipset family:"
+    default CHIPSET_QM10XH
+
+config CHIPSET_MC331X
+    bool "mc331x family"
+    help
+      Configuration for mc331x chipset.
+
+config CHIPSET_QM10XH
+    bool "qm10xh family"
+    help
+      Configuration for qm10xh chipset.
+
+config CHIPSET_QM10XV
+    bool "qm10xv family"
+    help
+      Configuration for qm10xv chipset.
+
+config CHIPSET_QM10XD
+    bool "qm10xd family"
+    help
+      Configuration for qm10xd chipset.
+
+config CHIPSET_SIMULATOR
+    bool "simulator"
+    help
+      Configuration for simulator.
+
+# add new chipset here
+#TODO
+
+endchoice
+
+if CHIPSET_MC331X
+config CHIPSET_mc3310
+    bool "mc3310"
+    default y
+    depends on CHIPSET_MC331X
+    help
+      Configuration for mc3310 chipset.
+
+config CHIPSET_mc3312
+    bool "mc3312"
+    default n
+    depends on CHIPSET_MC331X
+    help
+      Configuration for mc3312 chipset.
+
+# add new chipset here
+#TODO
+endif
+
+if CHIPSET_QM10XH
+config CHIPSET_QM108H
+    bool "qm108h"
+    default n
+    depends on CHIPSET_QM10XH
+    help
+      Configuration for qm108h chipset.
+      support 256MB DDR inside
+
+config CHIPSET_QM107H
+    bool "qm107h"
+    default n
+    depends on CHIPSET_QM10XH
+    help
+      Configuration for qm107h chipset.
+      support 256MB DDR inside
+
+# add new chipset here
+#TODO
+endif
+
+if CHIPSET_QM10XV
+config CHIPSET_QM101V
+    bool "qm101v"
+    default y
+    depends on CHIPSET_QM10XV
+    help
+      Configuration for qm101v chipset.
+      support 64MB DDR chipset inside
+
+config CHIPSET_QM102V
+    bool "qm102v"
+    default n
+    depends on CHIPSET_QM10XV
+    help
+      Configuration for qm102v chipset.
+      support 64MB DDR chipset inside
+
+# add new chipset here
+#TODO
+endif
+
+if CHIPSET_QM10XD
+config CHIPSET_QM102D
+    bool "qm102d"
+    default y
+    depends on CHIPSET_QM10XD
+    help
+      Configuration for qm102d chipset.
+      support 64M DDR inside
+
+config CHIPSET_QM101D
+    bool "qm101d"
+    default n
+    depends on CHIPSET_QM10XD
+    help
+      Configuration for qm101d chipset.
+      support DDR inside
+
+# add more chipset herer
+endif
+
+
+# Include more configuration here
+endmenu
+
+

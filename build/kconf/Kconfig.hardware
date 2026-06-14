@@ -1,0 +1,28 @@
+#
+# For a description of the syntax of this configuration file,
+# core/package/hardware configuration.
+#
+
+menu "Hardware"
+
+config XOS_HW_QUAMMAPI
+	bool "hardware quammapi"
+	default n
+	help
+		Select the xos framework hardware quammapi.
+
+config XOS_HW_QUADRV
+	bool "hardware quadrv"
+	default n
+	help
+		Select the xos framework hardware quadrv.
+
+config XOS_HW_QUADRV_EXT
+	bool "hardware quadrv"
+	default n
+	select XOS_HW_QUADRV
+	help
+		Select the xos framework hardware quadrv eanble XOS ext.
+
+endmenu
+

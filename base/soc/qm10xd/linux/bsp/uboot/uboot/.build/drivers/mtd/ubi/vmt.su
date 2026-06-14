@@ -1,0 +1,8 @@
+../drivers/mtd/ubi/vmt.c:133:13:vol_release	8	static
+../drivers/mtd/ubi/vmt.c:795:12:self_check_volumes.isra	40	static
+../drivers/mtd/ubi/vmt.c:152:5:ubi_create_volume	208	static
+../drivers/mtd/ubi/vmt.c:355:5:ubi_remove_volume	32	static
+../drivers/mtd/ubi/vmt.c:426:5:ubi_resize_volume	216	static
+../drivers/mtd/ubi/vmt.c:546:5:ubi_rename_volumes	24	static
+../drivers/mtd/ubi/vmt.c:585:5:ubi_add_volume	8	static
+../drivers/mtd/ubi/vmt.c:631:6:ubi_free_volume	0	static

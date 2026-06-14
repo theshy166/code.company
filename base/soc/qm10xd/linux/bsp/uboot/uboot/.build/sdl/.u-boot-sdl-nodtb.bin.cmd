@@ -1,0 +1,1 @@
+cmd_sdl/u-boot-sdl-nodtb.bin := arm-molv2-linux-uclibcgnueabi-objcopy -j .text -j .secure_text -j .secure_data -j .rodata -j .hash -j .data -j .got -j .got.plt -j .u_boot_list -j .rel.dyn -j .dtb.init.rodata  -O binary  sdl/u-boot-sdl sdl/u-boot-sdl-nodtb.bin

@@ -1,0 +1,14 @@
+#!/bin/sh
+max_memory=0
+while true; do
+    memory_usage=$(cat /proc/$(pidof qxosui)/stat | awk '{print $24 * 4}')
+    if [ -n "$memory_usage" ]; then
+        if [ "$memory_usage" -gt "$max_memory" ]; then
+            max_memory=$memory_usage
+        fi
+        echo "qxosui usage: ${memory_usage}K,max:${max_memory}K"
+    else
+        echo "Failed to get qxosui memory usage."
+    fi
+    sleep 0.5
+done

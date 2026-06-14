@@ -1,0 +1,394 @@
+#
+# For a description of the syntax of this configuration file,
+# core/package/framework configuration.
+#
+
+menu "Framework"
+
+config XOS_FWK_CADP
+	bool "Cloudadp"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework cloudadp.
+
+config XOS_FWK_CADP_AGORA
+	bool "Cloudadp AGORA"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp AGORA.
+
+config XOS_FWK_CADP_QUA
+	bool "Cloudadp QUA"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp QUA.
+
+config XOS_FWK_CADP_HEMENG
+	bool "Cloudadp HEMENG"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp HEMENG.
+
+config XOS_FWK_CADP_KUQI
+	bool "Cloudadp KUQI"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp KUQI.
+
+config XOS_FWK_CADP_KVS
+	bool "Cloudadp KVS"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp KVS.
+
+config ENABLE_DATA_CHANNEL
+	bool "Cloudadp KVS"
+	default n
+	depends on XOS_FWK_CADP_KVS
+	help 
+		Select the xos framework cloudapd kvs datachannel
+
+config XOS_FWK_CADP_TENCENT
+	bool "Cloudadp TENCENT"
+	default n
+	depends on XOS_FWK_CADP
+	help
+		Select the xos framework cloudadp TENCENT.
+
+config XOS_FWK_EFFECTS
+	bool "Effects"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework effects.
+
+config XOS_FWK_QUAAI
+	bool "QUAAI"
+	default n
+	help
+		Select the xos framework QUAAI.
+
+config XOS_FWK_QUAALGO_CV
+	bool "Qua CV algos"
+	default n
+	help
+		Select the xos framework qua cv algos.
+
+config XOS_FWK_QUACAMERA
+	bool "Quacamera"
+	default n
+	help
+		Select the xos framework quacamera.
+
+config XOS_FWK_QUAOCR
+	bool "Quaocr"
+	default n
+	help
+		Select the xos framework quaocr.
+
+config XOS_FWK_OTA_UART
+	bool "Ota uart"
+	default n
+	help
+		Select the xos framework ota uart.
+
+config XOS_FWK_ABILITY
+	bool "Ability"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework ability.
+
+config XOS_FWK_APPMANAGER
+	bool "Appmanager"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework appmanager.
+
+config XOS_FWK_SYSMANAGER
+	bool "Sysmanager"
+	default n
+	help
+		Select the xos framework sysmanager.
+
+config XOS_FWK_COMPONENTS
+	bool "Components"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework components.
+
+config XOS_FWK_DEBUGGER
+	bool "Debugger"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework debugger.
+
+config XOS_FWK_FINGER
+	bool "Finger"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework finger.
+
+config XOS_FWK_FLOATWINDOW
+	bool "Float window"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework float window.
+
+config XOS_FWK_FONT
+	bool "font"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework font.
+
+config XOS_FWK_MENU
+	bool "Menu"
+	default y
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework menu.
+
+config XOS_FWK_QMCORE
+	bool "Qmcore"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework qmcore.
+
+config XOS_FWK_PARAM
+	bool "Param"
+	default y
+	help
+		Select the xos framework param.
+
+config XOS_FWK_PARSER
+	bool "Parser"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework parser.
+
+config XOS_FWK_PLAYER
+	bool "Player"
+	default n
+	depends on !XOS_USE_NO_QUAUI
+	help
+		Select the xos framework player.
+
+config XOS_FWK_UTILITY
+	bool "Utility"
+	default n
+	help
+		Select the xos framework utility.
+
+config XOS_FWK_EXAMPLE
+	bool "Example"
+	default n
+	help
+		Select the xos framework cmake example.
+
+config XOS_FWK_UART_SERVICE
+	bool "Uart service"
+	default n
+	help
+		Select the xos framework uart service.
+
+config XOS_FWK_LCDSRV
+	bool "Lcd service"
+	default n
+	help
+		Select the xos framework lcd service.
+
+config XOS_FWK_TSYNC_SERVICE
+	bool "ESL Time Sync Service"
+	default n
+	depends on OS_LINUX
+	help
+		ESL multi-screen time synchronization service for device discovery
+		and time sync. Supports auto/manual modes with UDP broadcast.
+		Requires embedded Linux platform.
+
+config XOS_TEST_RESTEST
+	bool "Resource test"
+	default n
+	help
+		Select the xos framework resource test.
+
+config XOS_USE_DEBUG
+	bool "debug"
+	default y
+	help
+		Select the xos use debug.
+
+config RESOLUTION_128x128
+	bool "resolution 128x128"
+	default n
+	help
+		Select the xos use resolution 128x160.
+
+config XOS_RES_800x1280
+	bool "resolution 800x1280"
+	default n
+	help
+		Select the xos use resolution 800x1280.
+
+config XOS_RES_800x480
+	bool "resolution 800x480"
+	default n
+	help
+		Select the xos use resolution 800x480.
+
+config XOS_RES_320x480
+	bool "resolution 320x480"
+	default n
+	help
+		Select the xos use resolution 320*480.
+
+config RESOLUTION_240x320
+	bool "resolution 240x320"
+	default n
+	help
+		Select the xos use resolution 240x320.
+
+config RESOLUTION_320x240
+	bool "resolution 320x240"
+	default n
+	help
+		Select the xos use resolution 320x240.
+
+config XOS_LCM_800x1280
+	bool "lcm 800x1280"
+	default n
+	help
+		Select the xos use lcm 800x1280.
+
+config XOS_LCM_800x480
+	bool "lcm 800x480"
+	default n
+	help
+		Select the xos use lcm 800x480.
+
+config RESOLUTION_800x480
+	bool "resolution 800x480"
+	default n
+	help
+		Select the xos use resolution 800x480.
+
+config XOS_LCM_2ND_SCR
+	bool "lcm 2nd screen"
+	default n
+	help
+		Select the xos use lcm 2nd screen.
+
+config XOS_USE_FB_DIRECT
+	bool "FB direct"
+	default n
+	help
+		Select the xos use FB direct.
+
+config XOS_PLAY_BOOTANIMATION
+	bool "play bootanimation"
+	default n
+	help
+		Select the xos play bootanimation.
+
+config XOS_FWK_CADP_CURL
+	bool "FWK Curl"
+	default n
+	help
+		Select the xos framework curl.
+
+config XOS_FWK_CADP_DSN
+	bool "FWK Dsn"
+	default n
+	help
+		Select the xos framework dsn.
+
+config XOS_FWK_MQTTSER_MIDDLE
+	bool "FWK mqtt_midle"
+	default n
+	help
+		Select the xos mqtt_middle.
+
+config XOS_USE_EVDEV
+	bool "Enable evdev input device"
+	default n
+	help
+		Enable support for evdev input devices (e.g., touchscreens, mice).
+
+config XOS_FWK_LOGO
+	bool "FWK logo partition"
+	default n
+	help
+		Select the xos log partition.
+
+config XOS_FWK_QUAAITALK
+	bool "quaaitalk"
+	default n
+	help
+		Select the xos framework quaaitalk.
+
+config XOS_FWK_QUAAITALK_RTC
+	bool "quaaitalk_rtc"
+	default n
+	help
+		Select the xos framework quaaitalk_rtc.
+
+config XOS_FWK_QUAIOTMGR
+	bool "quaiotmgr"
+	default n
+	help
+		Select the xos framework quaiotmgr.
+
+config XOS_FWK_QUAAISERVICE
+	bool "quaaiservice"
+	default n
+	help
+		Select the xos framework quaaiservice.
+
+config XOS_FWK_QUACAST
+	bool "FWK quacast"
+	default n
+	help
+		Select the quacast.
+
+config XOS_FWK_DVR
+	bool "qua dvr"
+	default n
+	help
+		Select the xos framework qua dvr.
+	select XOS_HW_QUAMMAPI
+
+config XOS_FWK_QUAAVM
+	bool "qua avm"
+	default n
+	help
+		Select the xos framework qua avm.
+
+config XOS_FWK_QUAEXTRA
+	bool "qua extra"
+	default y
+	help
+		Select the xos framework quaextra.
+
+config XOS_FWK_TEST_LCMD
+	bool "test lcmd"
+	default n
+	depends on XOS_FWK_QUAEXTRA
+	depends on XOS_FWK_ABILITY
+	help
+		Select the xos framework test lcmd.
+
+endmenu

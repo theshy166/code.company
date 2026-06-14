@@ -1,0 +1,6 @@
+0x00000000	lcm_func_probe	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	
+0x00000000	lcm_func_init	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	
+0x00000000	lcm_func_resume	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	
+0x00000000	lcm_func_deinit	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	
+0x00000000	lcm_func_suspend	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	
+0x00000000	lcm_ioctrl	/home/guojinyuan/work/los/tmpnetphoto/base/soc/qm10xd/linux/media/driver/lcm/lcm	EXPORT_SYMBOL	

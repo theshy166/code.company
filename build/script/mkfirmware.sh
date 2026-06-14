@@ -1,0 +1,1 @@
+common/mkfirmware.sh

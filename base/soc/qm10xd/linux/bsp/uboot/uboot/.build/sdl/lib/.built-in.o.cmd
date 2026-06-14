@@ -1,0 +1,1 @@
+cmd_sdl/lib/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/lib/built-in.o sdl/lib/string.o sdl/lib/crc32.o sdl/lib/time.o sdl/lib/linux_compat.o sdl/lib/linux_string.o sdl/lib/panic.o sdl/lib/fdtdec_common.o sdl/lib/vsprintf.o sdl/lib/div64.o sdl/lib/fdtdec.o sdl/lib/ctype.o 

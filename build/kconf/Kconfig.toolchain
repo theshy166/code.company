@@ -1,0 +1,56 @@
+menu "Toolchain"
+
+choice
+    prompt "Toolchain:"
+    default TOOLCHAIN_ARM-LINUX-FHV512
+
+    config TOOLCHAIN_ARC-FULLHAN-ELF32
+        bool "arc-fullhan-elf32"
+        help
+          Configuration for arc-fullhan-elf32.
+
+    config TOOLCHAIN_ARM-LINUX-FHV512
+        bool "arm-linux-fhv512"
+        help
+          Configuration for arm-linux-fhv512.
+
+    config TOOLCHAIN_ARM-LINUX-MOLCHIP
+        bool "arm-linux-molchip"
+        help
+          Configuration for arm-linux-molchip.
+
+    config TOOLCHAIN_ARM-LINUX-MOLV510
+        bool "arm-linux-molv510"
+        help
+          Configuration for arm-linux-molv510.
+
+    config TOOLCHAIN_ARM-LINUX-MUSLEABI
+        bool "arm-linux-musleabi"
+        help
+          Configuration for arm-linux-musleabi.
+
+    config TOOLCHAIN_SIMULATOR
+        bool "simulator"
+        help
+          Configuration for simulator.
+
+    config TOOLCHAIN_ARM-LINUX-MOLV2
+        bool "arm-molv2-linux-uclibcgnueabi"
+        help
+          Configuration for arm-molv2-linux-uclibcgnueabi.
+
+    config TOOLCHAIN_ARM-FULLHANV2-EABI
+        bool "arm-fullhanv2-eabi"
+        help
+          Configuration for arm-fullhanv2-eabi.
+    
+     config TOOLCHAIN_ARM-LINUX-FHVA12C
+        bool "arm-fhva12c-linux-uclibcgnueabihf"
+        help
+          Configuration for arm-fhva12c-linux-uclibcgnueabihf.
+
+endchoice
+
+
+endmenu
+

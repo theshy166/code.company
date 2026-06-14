@@ -1,0 +1,57 @@
+#Configuration
+
+menu "Esl Features"
+
+config XOS_PROJECT_TYPE
+    string
+    prompt "Project"
+    default "esl2"
+    help
+      Set the xos project.
+
+config QM_VERSION
+    string "software version"
+    default "1.0.0"
+
+config QM_HW_VERSION 
+    string "hardware version"
+    default "10"
+
+config PLATFORM_ID
+    string "flatform id"
+    default "ESL10D"
+
+config DISABLE_UPDATE
+    bool "Disable Update"
+    default n
+    help
+      Disable cloud update feature.
+
+config LCD_PANEL
+    bool "Display panel"
+    default n
+
+config TOUCH_PANEL
+    bool "Touch Panel Feature"
+    default n
+
+config WIFI_SUPPORT
+    bool "WiFi feature"
+    default n
+
+config XOS_WIFI_QUADRV
+    string
+    prompt "wifi_type"
+    default "aic8800d"
+    help
+    Set wifi type.
+
+config ETHERNET_SUPPORT
+    bool "Ethernet feature"
+    default n
+
+
+# Include more configuration here
+#source "xx/xxx/Kconfig"
+endmenu
+

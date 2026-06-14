@@ -1,0 +1,32 @@
+# Kconfig - example configuration options
+
+menu "Example Configuration"
+
+config XOS_BUILD_EXAMPLE
+	bool "build example code"
+	default n
+	help
+	  Select this option if you want to print cmake debug info.
+	  
+config XOS_BUILD_EXAMPLE_AS_LIB
+	bool "build example code as lib"
+	default n
+	depends on XOS_BUILD_EXAMPLE
+	help
+	  Select this option if you want to print cmake debug info.
+
+config XOS_EXAMPLE_LIB_NAME
+	string "sample lib name"
+	default "hellosample"
+	depends on XOS_BUILD_EXAMPLE_AS_LIB
+	help
+	  Select this option if you want to print cmake debug info.
+	  
+config XOS_BUILD_EXAMPLE_IFDEF
+	bool "build example code as ifdef"
+	default n
+	depends on XOS_BUILD_EXAMPLE
+	help
+	  Select this option if you want to print cmake debug info.
+	  
+endmenu

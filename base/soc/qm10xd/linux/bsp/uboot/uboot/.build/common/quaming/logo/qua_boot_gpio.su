@@ -1,0 +1,10 @@
+../common/quaming/logo/qua_boot_gpio.c:4:10:qua_readl	0	static
+../common/quaming/logo/qua_boot_gpio.c:10:6:qua_writel	0	static
+../common/quaming/logo/qua_boot_gpio.c:15:6:qua_writels	0	static
+../common/quaming/logo/qua_boot_gpio.c:22:6:qua_writelc	0	static
+../common/quaming/logo/qua_boot_gpio.c:29:6:qua_writelr	8	static
+../common/quaming/logo/qua_boot_gpio.c:38:5:qua_gpio_request	0	static
+../common/quaming/logo/qua_boot_gpio.c:40:6:qua_gpio_free	0	static
+../common/quaming/logo/qua_boot_gpio.c:42:6:qua_gpio_direction_output	0	static
+../common/quaming/logo/qua_boot_gpio.c:58:6:qua_gpio_set_value	0	static
+../common/quaming/logo/qua_boot_gpio.c:73:5:qua_gpio_get_value	0	static

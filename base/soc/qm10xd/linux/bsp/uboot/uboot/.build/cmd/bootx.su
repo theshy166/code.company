@@ -1,0 +1,2 @@
+../cmd/bootx.c:24:5:do_bootx	16	static
+../cmd/bootx.c:15:12:bootx_setup	8	static

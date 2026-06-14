@@ -1,0 +1,1 @@
+qm10xd/build4qm102d.sh

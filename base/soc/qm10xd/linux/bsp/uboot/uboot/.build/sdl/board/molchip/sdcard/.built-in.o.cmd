@@ -1,0 +1,1 @@
+cmd_sdl/board/molchip/sdcard/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/board/molchip/sdcard/built-in.o sdl/board/molchip/sdcard/sd_boot.o sdl/board/molchip/sdcard/sd_card.o sdl/board/molchip/sdcard/sd_host.o sdl/board/molchip/sdcard/sd_reg.o 

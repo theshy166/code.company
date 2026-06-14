@@ -1,0 +1,60 @@
+#
+# For a description of the syntax of this configuration file,
+# core/package/guiengine configuration.
+#
+
+if !XOS_USE_NO_QUAUI
+
+menu "GUI Engine"
+
+config XOS_FWK_GUIENG_LVGL9
+        bool "lvgl9"
+        default n
+        help
+                Select the xos framework gui engine lvgl9.
+
+config XOS_USE_LVGL_DEMOS
+	bool "lvgl demos"
+	default n
+	help
+		Select the xos lvgl demos.
+
+config XOS_LVGL_MEM_CNT
+	bool "lvgl mem cnt"
+	default n
+	help
+		Select the xos lvgl mem cnt.
+
+config XOS_USE_TINY_TTF
+	bool "lvgl tiny ttf"
+	default n
+	help
+		Select the xos lvgl tiny ttf.
+
+config XOS_USE_GIF
+	bool "lvgl gif lib"
+	default n
+	help
+		Select the xos use gif.
+
+config XOS_USE_PNG
+	bool "lvgl png lib"
+	default n
+	help
+		Select the xos use png.
+
+config XOS_USE_TJPG
+	bool "lvgl tjpg"
+	default n
+	help
+		Select the xos lvgl lvgl tjpg.
+
+config XOS_LVGL_BTN_NO_SHADOW
+	bool "lvgl button theme no shadow"
+	default n
+	help
+		set the xos light mode theme button no shadow.
+
+endmenu
+
+endif # XOS_USE_NO_QUAUI

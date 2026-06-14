@@ -1,0 +1,27 @@
+from building import *
+
+cwd  = GetCurrentDir()
+src  = Glob('*.c')
+list = os.listdir(cwd)
+CPPPATH = [cwd]
+objs = []
+
+group = DefineGroup('qxos', src, depend = [''], CPPPATH = CPPPATH)
+
+#filter project to build.
+build_project = os.getenv('BUILD_PROJECT')
+if build_project is not None:
+    build_project = build_project.lstrip()
+print("build_project=", build_project)
+
+for d in list:
+    path = os.path.join(cwd, d, 'SConscript')
+    if build_project is not None and build_project not in path:
+        print("Excluded:",path)
+        continue
+    if os.path.isfile(path):
+        print("**Included:",path)
+        objs = objs + SConscript(path)
+objs = objs + group
+
+Return('objs')

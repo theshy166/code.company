@@ -1,0 +1,1 @@
+cmd_drivers/mmc/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o drivers/mmc/built-in.o drivers/mmc/mmc.o drivers/mmc/mmc-uclass.o drivers/mmc/mmc_write.o drivers/mmc/dw_mmc.o drivers/mmc/mc_sdmmc.o 

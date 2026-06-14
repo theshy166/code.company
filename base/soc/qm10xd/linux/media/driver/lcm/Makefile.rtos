@@ -1,0 +1,72 @@
+include $(SDKROOT)/build/config.mk
+
+LIBNAME := $(shell basename `pwd`)
+
+CUR_PATH := $(shell pwd)
+
+LIB_CFLAGS += -I$(SDKROOT)/app/include/dsp
+LIB_CFLAGS += -I$(SDKROOT)/app/include/types
+LIB_CFLAGS += -I$(SDKROOT)/app/mpi/ai/inc
+LIB_CFLAGS += -I$(SDKROOT)/app/include/vicap
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include
+LIB_CFLAGS += -I$(SDKROOT)/app/include/isp_ext
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include/camif
+LIB_CFLAGS += -I$(SDKROOT)/app/include/camif
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include/crypto
+
+LIB_CFLAGS += -I$(CUR_PATH)/ \
+                -I$(CUR_PATH)/reg/ \
+                -I$(CUR_PATH)/pin_mux/ \
+                -I$(CUR_PATH)/clk/ \
+                -I$(CUR_PATH)/ctrl/ \
+                -I$(CUR_PATH)/dsi/ \
+                -I$(CUR_PATH)/bus/ \
+                -I$(CUR_PATH)/mcu/ \
+                -I$(CUR_PATH)/rgb/ \
+                -I$(CUR_PATH)/spi/ \
+                -I$(CUR_PATH)/spi/spi_lcd/ \
+                -I$(CUR_PATH)/spi/spi_lcd/dma/ \
+                -I$(CUR_PATH)/include/ \
+                -I$(CUR_PATH)/../lcm_module/include \
+
+CSRCS := \
+    reg/reg.c \
+    reg/reg_pool.c \
+    pin_mux/pin_lcd_v01_drv.c \
+    ctrl/ctrl_lcm_v01_drv.c \
+    clk/vou_clk_v01_drv.c \
+    mcu/mol_lcm_mcu_api.c \
+    mcu/mol_lcm_mcu_drv.c \
+    rgb/rgb_mpi.c \
+    dsi/dsi_mpi.c \
+    dsi/dsi_com.c \
+    dsi/dsi_host_v01_drv.c \
+    dsi/dsi_host_v01_drv_mpi.c \
+    dsi/dsi_host_v01_reg_pool.c \
+    dsi/dsi_phy_v01_drv.c \
+    dsi/dsi_phy_v01_drv_mpi.c \
+    dsi/dsi_phy_v01_reg_pool.c \
+    dsi/dsi_pixel_info.c \
+    dsi/dsi_timing_calc.c \
+    dsi/dsi_phy_v0_pll_calc.c \
+    spi/spi_lcd/spi_cs_gpio_drv.c \
+    spi/spi_lcd/spi_v01_irq.c \
+    spi/spi_lcd/spi_v01_reg_pool.c \
+    spi/spi_lcd/spi_v01_drv.c \
+    spi/spi_lcd/spi_v01_drv_mpi.c \
+    spi/spi_lcd/spi_data_dir.c \
+    spi/spi_lcd/dma/spi_lcd_dma.c \
+    spi/mol_lcm_spi_api.c \
+    bus/mol_lcm_i2c.c \
+    bus/mol_lcm_spi_gpio.c \
+    bus/mol_lcm_sfc.c \
+    bus/mol_gpio_spi.c \
+    lcm_hal.c \
+    mol_lcm.c \
+    lcm_work_mgr.c \
+    mc_lcm.c \
+    lcm_com.c \
+    os.c \
+    debug.c \
+
+include $(SDKROOT)/build/lib.mk

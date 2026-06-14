@@ -1,0 +1,10 @@
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:47:12:show_jpeg_from_part	56	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:217:13:__qua_lcm_mipi_jd9365d_hrst	24	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:269:13:__qua_lcm_mipi_jd9365d_rst	16	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:86:6:display_logo_id	80	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:130:6:display_logo_id_addr	56	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:398:12:show_qua_boot_logo	8	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:152:6:qua_boot_logo_jd9365d	8	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:256:5:qua_lcm_mipi_jd9365d_hrst	8	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:292:5:qua_lcm_mipi_jd9365d_rst	8	static
+../common/quaming/logo/qua_logo_mipi_jd9365d.c:305:5:qua_lcm_mipi_jd9365d_bkl	8	static

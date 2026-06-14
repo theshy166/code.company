@@ -1,0 +1,150 @@
+#
+# For a description of the syntax of this configuration file,
+# core/package/external configuration.
+#
+
+menu "External"
+
+config XOS_EXT_CJSON
+	bool "cjson"
+	default y
+	help
+		Select the xos external cjson.
+
+config XOS_EXT_CURL
+	bool "curl"
+	default n
+	help
+		Select the xos external curl.
+
+config XOS_EXT_FDK_AAC
+	bool "fdk_aacd"
+	default n
+	help
+		Select the xos external fdk_aac.
+
+config XOS_EXT_FFMPEG
+	bool "ffmpeg"
+	default n
+	help
+		Select the xos external ffmpeg.
+
+config XOS_EXT_FREETYPE
+	bool "Freetype"
+	default n
+	help
+		Select the xos external freetype.
+
+config XOS_EXT_GIFLIB
+	bool "Giflib"
+	default n
+	help
+		Select the xos external giflib.
+
+config XOS_EXT_INIPARSER
+	bool "Iniparser"
+	default n
+	help
+		Select the xos external iniparser.
+
+config XOS_EXT_LIBPNG
+	bool "libpng"
+	default n
+	help
+		Select the xos external libpng.
+
+config XOS_EXT_BROWSER
+	bool "Browser"
+	default n
+	help
+		Select the xos external browser.
+
+config XOS_EXT_LIVE
+	bool "Live"
+	default n
+	help
+		Select the xos external live.
+
+config XOS_EXT_LVBINDJS
+	bool "lv binding js"
+	default n
+	help
+		Select the xos external lv_binding_js.
+
+config XOS_EXT_MXML
+	bool "mxml"
+	default n
+	help
+		Select the xos external mxml.
+
+config XOS_EXT_OPENCV
+	bool "Opencv"
+	default n
+	help
+		Select the xos external opencv.
+
+config XOS_EXT_OPENSSL
+	bool "Openssl"
+	default n
+	help
+		Select the xos external openssl.
+
+config XOS_EXT_RLOTTIE
+	bool "rlottie"
+	default n
+	help
+		Select the xos external rlottie.
+
+config XOS_EXT_SPEN
+	bool "spen"
+	default n
+	help
+		Select the xos external spen.
+
+config XOS_EXT_ZLIB
+	bool "zlib"
+	default n
+	help
+		Select the xos external zlib.
+
+config XOS_EXT_QRCODE
+	bool "Qrcode"
+	default n
+	help
+		Select the xos external qrcode.
+
+config XOS_EXT_HIREDIS
+	bool "hiredis"
+	default n
+	help
+		Select the xos external hiredis.
+
+config XOS_EXT_JPEG
+	bool "jpeg"
+	default n
+	help
+		Select the xos external jpeg.
+
+config XOS_EXT_FVAD
+	bool "fvad"
+	default n
+	help
+		Select the xos external fvad.
+
+config XOS_EXT_SPNG
+	bool "spng"
+	default n
+	help
+		Select the xos external spng.
+
+config XOS_EXT_SQLITE3
+	bool "sqlite3"
+	default n
+	help
+		Select the xos external sqlite3.
+
+#add more external features here
+#
+endmenu
+
+

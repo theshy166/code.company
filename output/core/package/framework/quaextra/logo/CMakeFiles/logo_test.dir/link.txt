@@ -1,0 +1,1 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-gcc -std=gnu99 CMakeFiles/logo_test.dir/logo_test.c.o -o logo_test.elf  libxos_logo.a -lpthread 

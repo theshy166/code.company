@@ -1,0 +1,12 @@
+#base soc system select
+#
+menu "SoC System"
+
+source "build/kconf/Kconfig.chipset"
+source "build/kconf/Kconfig.os"
+source "build/kconf/Kconfig.toolchain"
+source "build/kconf/Kconfig.misc"
+##
+#add more sub menu config here
+
+endmenu

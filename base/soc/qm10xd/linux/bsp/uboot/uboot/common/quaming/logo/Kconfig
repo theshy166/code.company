@@ -1,0 +1,47 @@
+config QUA_LOGO
+	bool "qua logo"
+	default n
+	help
+	  This enables qua logo.
+
+config QUA_LOGO_MIPI_JD9365D
+	bool "qua logo mipi jd9365d 800x1280"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo mipi jd9365d 800x1280.
+
+config QUA_LOGO_MIPI_JD9365D_FLIP_H_V
+	bool "qua logo mipi jd9365d filp horizontal & Vertical"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo mipi jd9365d  filp horizontal & Vertical.
+
+config QUA_LOGO_MIPI_JD9365D_PWR_CTRL
+	bool "qua logo mipi jd9365d power on timing ctrl"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo mipi jd9365d power on timing ctrl.
+
+config QUA_LOGO_RGB_EK79001H
+	bool "qua logo rgb ek79001h 1024x600"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo rgb ek79001h 1024x600.
+
+config QUA_LCM_2ND_SCR
+	bool "qua logo dual lcm screen"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo dual lcm screen.
+
+config QUA_LOGO_PART
+	bool "qua logo partition"
+	depends on QUA_LOGO
+	default n if QUA_LOGO
+	help
+	  This enables qua logo read from logo partition.

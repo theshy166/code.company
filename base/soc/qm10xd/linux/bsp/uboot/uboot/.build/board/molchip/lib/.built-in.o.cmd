@@ -1,0 +1,1 @@
+cmd_board/molchip/lib/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o board/molchip/lib/built-in.o board/molchip/lib/reset_mc.o board/molchip/lib/ddr_info_mc.o board/molchip/lib/vexpress_common.o 

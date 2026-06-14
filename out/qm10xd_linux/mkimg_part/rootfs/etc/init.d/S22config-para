@@ -1,0 +1,29 @@
+#!/bin/sh
+
+check_cp_config()
+{
+	# if /data/config/param.ini not exist, cp from /config/param.ini
+	qua_config_dir=/data/config
+	qua_config=${qua_config_dir}/param.ini
+
+	default_qua_config=/config/param.ini
+
+	if [ ! -f "$default_qua_config" ];then
+		echo "error: no $default_qua_config"
+		exit -1
+	fi
+
+	if [ ! -d "$qua_config_dir" ];then
+		echo "mkdir $qua_config_dir"
+		mkdir -p $qua_config_dir
+	fi
+
+	if [ ! -f "$qua_config" ]; then
+		echo "copy $qua_config"
+		cp -rf $default_qua_config $qua_config
+	fi
+
+	echo "check_cp_config done"
+}
+
+check_cp_config

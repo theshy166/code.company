@@ -1,0 +1,6 @@
+../fs/ubifs/orphan.c:55:5:ubifs_add_orphan	24	static
+../fs/ubifs/orphan.c:105:6:ubifs_delete_orphan	16	static
+../fs/ubifs/orphan.c:158:5:ubifs_orphan_start_commit	4	static
+../fs/ubifs/orphan.c:457:5:ubifs_orphan_end_commit	40	static
+../fs/ubifs/orphan.c:479:5:ubifs_clear_orphans	16	static
+../fs/ubifs/orphan.c:699:5:ubifs_mount_orphans	64	static

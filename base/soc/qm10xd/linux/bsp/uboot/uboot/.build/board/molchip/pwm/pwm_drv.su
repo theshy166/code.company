@@ -1,0 +1,3 @@
+../board/molchip/pwm/pwm_drv.c:8:6:pwm2_init	0	static
+../board/molchip/pwm/pwm_drv.c:30:6:pwm_hw_init	0	static
+../board/molchip/pwm/pwm_drv.c:46:6:close_upwm2	0	static

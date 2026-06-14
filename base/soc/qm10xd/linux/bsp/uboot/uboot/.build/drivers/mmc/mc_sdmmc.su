@@ -1,0 +1,2 @@
+../drivers/mmc/mc_sdmmc.c:45:12:mc_dwmmc_probe	24	static
+../drivers/mmc/mc_sdmmc.c:84:12:mc_dwmmc_bind	8	static

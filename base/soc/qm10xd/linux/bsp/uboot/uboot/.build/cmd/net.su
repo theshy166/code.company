@@ -1,0 +1,13 @@
+../cmd/net.c:174:12:netboot_common	56	static
+../cmd/net.c:17:12:do_bootp	0	static
+../cmd/net.c:45:12:do_tftpput	0	static
+../cmd/net.c:58:12:do_tftpsrv	0	static
+../cmd/net.c:75:5:do_rarpb	0	static
+../cmd/net.c:88:12:do_dhcp	0	static
+../cmd/net.c:101:12:do_nfs	0	static
+../cmd/net.c:28:5:do_tftpb	16	static
+../cmd/net.c:306:5:do_cdp	24	static
+../cmd/net.c:329:5:do_sntp	8	static
+../cmd/net.c:370:5:do_dns	16	static
+../cmd/net.c:416:12:do_link_local	32	static
+../cmd/net.c:258:12:do_ping	8	static

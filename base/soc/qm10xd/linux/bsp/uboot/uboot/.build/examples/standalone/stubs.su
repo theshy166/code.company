@@ -1,0 +1,2 @@
+../examples/standalone/stubs.c:252:30:dummy	0	static
+../examples/standalone/stubs.c:259:6:app_startup	0	static

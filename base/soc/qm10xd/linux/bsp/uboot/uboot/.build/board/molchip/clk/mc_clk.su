@@ -1,0 +1,2 @@
+../board/molchip/clk/mc_clk.c:5:6:molchip_spic_clk_enable	0	static
+../board/molchip/clk/mc_clk.c:37:14:mc_get_cpu_clk	0	static

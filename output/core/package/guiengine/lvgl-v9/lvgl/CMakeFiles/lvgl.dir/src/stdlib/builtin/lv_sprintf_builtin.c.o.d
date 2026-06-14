@@ -1,0 +1,21 @@
+core/package/guiengine/lvgl-v9/lvgl/CMakeFiles/lvgl.dir/src/stdlib/builtin/lv_sprintf_builtin.c.o: \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/lv_sprintf_builtin.c \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/../../lv_conf_internal.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/../../lv_conf_kconfig.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_drv_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/../lv_sprintf.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/inttypes.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stdint.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stdbool.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stdarg.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stddef.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/../../misc/lv_types.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/builtin/../../misc/../lv_conf_internal.h

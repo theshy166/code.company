@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libxos_player.a CMakeFiles/xos_player.dir/xosplayer.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libxos_player.a

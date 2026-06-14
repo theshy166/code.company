@@ -1,0 +1,6 @@
+../board/molchip/board/nor_flash.c:13:5:sfc_config	24	static
+../board/molchip/board/nor_flash.c:35:6:spi_transction_dma_read	32	static
+../board/molchip/board/nor_flash.c:74:5:spi_nor_quad_write_data	24	static
+../board/molchip/board/nor_flash.c:123:5:sfc_transfer_start	24	static
+../board/molchip/board/nor_flash.c:142:6:sfc_soft_dma_wait_ready	8	static
+../board/molchip/board/nor_flash.c:153:6:sfc_transfer_done	0	static

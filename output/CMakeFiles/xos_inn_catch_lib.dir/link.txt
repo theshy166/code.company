@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libxos_inn_catch_lib.a CMakeFiles/xos_inn_catch_lib.dir/empty_file.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libxos_inn_catch_lib.a

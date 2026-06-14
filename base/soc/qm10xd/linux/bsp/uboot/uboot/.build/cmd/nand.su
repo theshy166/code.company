@@ -1,0 +1,6 @@
+../cmd/nand.c:303:12:set_dev	16	static
+../cmd/nand.c:1047:12:nand_load_image	64	static
+../cmd/nand.c:1135:12:do_nandboot	48	static
+../cmd/nand.c:472:13:nand_print_and_set_info.constprop	8	static
+../cmd/nand.c:101:14:get_yaffs2_version	0	static
+../cmd/nand.c:563:12:do_nand	184	static

@@ -1,0 +1,1 @@
+cmd_sdl/drivers/spi/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/drivers/spi/built-in.o sdl/drivers/spi/spi.o sdl/drivers/spi/mc_spi.o sdl/drivers/spi/spi-mc.o sdl/drivers/spi/spi-mc-slave.o 

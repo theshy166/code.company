@@ -1,0 +1,6 @@
+image_name	type	load_mode	signature	lzma	crypt	header_crypt	memory_base	nvm_offset	up_limit	path
+pre-rolling.bin	image:0	image	0	0	0	0	0x41100000	0xe80000	0x40000	bsp/pre_rolling/
+rtthread_arc0.bin:rtthread_arc1.bin	image:0	image	0	0	0	0	0x47900000:0x47ec0000	0xd20000	0x260000	bsp/kernel/
+Image-dtb	image:1	image	0	0	0	0	0x40008000:0x41000000	0x120000	0xc00000	bsp/kernel/
+u-boot-spl.bin	image:0	image	0	0	0	0	0x30000800	0x0	0x10000	bsp/spl/
+u-boot-pdl.bin	image:0	image	0	0	0	0	0x30000800	0x0	0x10000	bsp/pdl/

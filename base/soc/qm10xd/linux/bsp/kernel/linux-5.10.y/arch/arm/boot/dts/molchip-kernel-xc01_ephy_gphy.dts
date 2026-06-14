@@ -1,0 +1,1019 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/clock/xc-clock.h>
+#include <dt-bindings/input/input.h>
+//#include <dt-bindings/reset/xc01-reset.h>
+//#include <dt-bindings/dma/molchip,xc01-dma.h>
+#include <dt-bindings/net/molchip-ephy.h>
+/dts-v1/;
+
+/ {
+	model = "XC01";
+	compatible = "arm,molchip,xc01", "arm,molchip";
+	interrupt-parent = <&gic>;
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	chosen {
+		bootargs="earlycon console=ttyS0,115200";
+		stdout-path = &uart0;
+	};
+
+	aliases {
+		uart0 = "/uart@0x08F00000";
+		stm0 = "/stm@0a400000";
+		stm1 = "/stm@0a800000";
+		gpio0 = "/gpio@18400000";
+		gpio1 = "/gpio@0b000000";
+		gpio2 = "/gpio@0b010000";
+		gpio3 = "/gpio@0b020000";
+		gpio4 = "/gpio@0b030000";
+		gpio5 = "/gpio@0b040000";
+		gpio6 = "/gpio@0b050000";
+		gpio7 = "/gpio@0b060000";
+		gpio8 = "/gpio@0b070000";
+		gpio9 = "/gpio@0b080000";
+		gpio10 = "/gpio@0b090000";
+		gpio11 = "/gpio@0b0a0000";
+		efuse0 = "/efuse@0A700000";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0x100>;
+		};
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0x101>;
+		};
+
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x10000000>;
+	};
+
+	scu: scu@00200000 {
+		compatible = "arm,cortex-a7-scu";
+		reg = <0x00200000 0x100>;
+	};
+
+	timer {
+		compatible = "arm,armv7-timer";
+		interrupts = <1 13 0xf08>; //Secure Physical Timer event
+			//<1 14 0xf08>,
+			//<1 11 0xf08>,
+			//<1 10 0xf08>;
+		clock-frequency = <500000000>;
+	};
+
+	gic: interrupt-controller@00200000 {
+		compatible = "arm,cortex-a7-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x00201000 0x1000>,
+			<0x00202000 0x1000>;
+	};
+
+	top_sys_gate: syscon@10000000 {
+			compatible = "syscon";
+			reg = <0x10000000 0x1000>;
+	};
+
+	top_sys_compostite: syscon@10300000 {
+			compatible = "syscon";
+			reg = <0x10300000 0x1000>;
+	};
+
+	cpu_sys_gatemux: syscon@C000000 {
+			compatible = "syscon";
+			reg = <0xC000000 0x1000>;
+	};
+
+	cpu_sys_compostite: syscon@9200000 {
+			compatible = "syscon";
+			reg = <0x9200000 0x1000>;
+	};
+
+	isp_sys_clk: syscon@2C100000 {
+			compatible = "syscon";
+			reg = <0x2C100000 0x1000>;
+	};
+
+	nnp_sys_clk: syscon@28100000 {
+			compatible = "syscon";
+			reg = <0x28100000 0x1000>;
+	};
+
+	veu_sys_clk: syscon@1C000000 {
+			compatible = "syscon";
+			reg = <0x1C000000 0x1000>;
+	};
+	io_grp2_pin: syscon@1F000000 {
+			compatible = "syscon";
+			reg = <0x1f000000 0x1000>;
+	};
+
+	vou_sys_clk: syscon@20100000 {
+			compatible = "syscon";
+			reg = <0x20100000 0x1000>;
+	};
+
+	shram_clk: syscon@10000900 {
+			compatible = "syscon";
+			reg = <0x10000900 0x100>;
+	};
+
+	rtc32k: rtc {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <32768>;
+			clock-output-names = "rtc32k";
+	};
+
+	clk24m: xtal {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <24000000>;
+			clock-output-names = "clk24m";
+	};
+
+	plldiv: plldiv {
+		compatible =  "plldiv-srcclk";
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	topsys_gate: topsys_gate {
+		compatible = "topsys-gate-clk";
+		mc,syscon = <&top_sys_gate>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	topsys_compostite: topsys_compostite {
+		compatible = "topsys-compostite-clk";
+		mc,syscon = <&top_sys_compostite>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	cpusys_gatemux: cpusys_gatemux {
+		compatible = "cpusys-clk";
+		mc,syscon = <&cpu_sys_gatemux>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	cpusys_compostite: cpusys_compostite {
+		compatible = "cpusys-composite-clk";
+		mc,syscon = <&cpu_sys_compostite>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	dmc_sys_apb: syscon@24000000 {
+		compatible = "syscon";
+		reg = <0x24000000 0x1000>;
+	};
+	
+	usb3_apb_cfg_1: syscon@2C440000 {
+			compatible = "syscon";
+			reg = <0x2c440000 0x1000>;
+	};
+
+	ispsys: ispsys {
+		compatible =  "ispsys-clk";
+		mc,syscon = <&isp_sys_clk>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	nnpsys: nnpsys {
+		compatible =  "nnpsys-clk";
+		mc,syscon = <&nnp_sys_clk>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	veusys: veusys {
+		compatible =  "veusys-clk";
+		mc,syscon = <&veu_sys_clk>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	vousys: vousys {
+		compatible =  "vousys-clk";
+		mc,syscon = <&vou_sys_clk>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	shram: shram {
+		compatible =  "shram-clk";
+		mc,syscon = <&shram_clk>;
+		#clock-cells = <1>;
+		status = "ok";
+	};
+
+	uart0: uart@0x08F00000 {
+		compatible = "mol,uart";
+		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+		clock-names = "uart_clk",
+			"uart_apb_clk";
+		clocks = <&cpusys_gatemux CKG_UART0_EN>,
+			<&cpusys_gatemux CKG_APB_UART0_EN>;
+		reg = <0x08F00000 0x1000>;
+
+	};
+
+	sysreg: sysreg {
+		compatible = "arm,molchip-sysreg";
+		molchip,syscon-cpu-reg = <&cpu_sys_gatemux>;
+		cpu_soft_reset_reg = <0x4>;
+		cpu1_start_addr_reg = <0xd0>;
+		cpu_core_ctrl_reg = <0xcc>;
+		core1_holding_pen_bit = <0>;
+		core1_release_bit = <1>;
+		molchip,syscon = <&top_sys_gate>;
+		sw-rst-offset-reg = <0x100>;
+		sw-rst-protect-offset-reg = <0x500>;/*reserved register*/
+		sw-rst-offset-bit = <0>;
+	};
+
+       ana: syscon@1c900000{
+             compatible = "syscon";
+             reg = <0x1c900000 0x1000>;
+        };
+
+	ethernet_a: ethernet@1c600000 {
+		clock-names = "gmac_clk_eb",
+			"gmac_clk_csr", "apb_pclk";
+		clocks = <&veusys CKG_AXI_GMAC0_EN>,
+			<&veusys CKG_APB_GMAC0_CSR_EN>,
+			<&topsys_compostite CKG_MUX_GLB_APB_CFG>;
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x1c600000 0x4000>;
+		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
+		mac-address = [ 02 a1 a2 a3 a4 a5 ];
+		phy-mode = "mii";
+		phy-handle = <&phy1>;
+		phy-type = <INTERNAL_PHY>;
+		snps,en-tx-lpi-clockgating;
+		snps,en-lpi;
+		snps,write-requests = <2>;
+		snps,read-requests = <16>;
+		snps,burst-map = <0x7>;
+		snps,txpbl = <8>;
+		snps,rxpbl = <2>;
+		snps,ephy-type-sel = <0x100>,<0>,<0x3>;
+		snps,rmii-pad-sel =  <0x28>,<11>,<0x3>;
+		snps,phy-intf-sel =  <0x100>,<13>,<0x7>;
+		snps,ephy-ref-en =   <0x1a0>,<2>,<0x1>;
+		snps,ephy-soft-reset = <0x100>,<4>,<0x1>;
+		ctrl_id = <0x0>;
+		platform = <CHIP_PLATFORM>;
+		molchip,haps-apclk = <36000000>;
+		molchip,syscon-ap-ahb = <&veu_sys_clk>;
+		molchip,syscon-ap-apb = <&veu_sys_clk>;
+		molchip,syscon-gl-apb = <&io_grp2_pin>;
+		/* For Internal PHY(100T) */
+		molchip,syscon-ana = <&ana>;
+		status = "okay";
+
+		mdio {
+			#address-cells = <0x1>;
+			#size-cells = <0x0>;
+
+			phy1: phy@1 {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				device_type = "ethernet-phy";
+				reg = <0x0>;
+			};
+		};
+	};
+	ethernet_b: ethernet@2c500000 {
+		clock-names = "gmac_clk_eb",
+			"gmac_clk_csr", "apb_pclk" ,"tx_en", "rx_en", "rmii_en";
+		clocks = <&ispsys CKG_AXI_GMAC1_EN>,
+			<&ispsys CKG_APB_GMAC1_CSR_EN>,
+			<&ispsys CKG_GMAC1_TX_EN>,
+			<&ispsys CKG_GMAC1_RX_EN>,
+			<&ispsys CKG_GMAC1_RMII_EN>,
+			<&topsys_compostite CKG_MUX_GLB_APB_CFG>;
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x2c500000 0x4000>;
+		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+		mac-address = [ 04 a1 a2 a3 a4 a5 ];
+		phy-mode = "rgmii";
+		phy-handle = <&phy2>;
+		phy-type = <EXTERNAL_PHY>;
+		snps,en-tx-lpi-clockgating;
+		snps,en-lpi;
+		snps,write-requests = <2>;
+		snps,read-requests = <16>;
+		snps,burst-map = <0x7>;
+		snps,txpbl = <8>;
+		snps,rxpbl = <2>;
+		snps,ephy-type-sel = <0x4>,<12>,<0x1>;
+		snps,rmii-pad-sel =  <0x4>,<23>,<0x3>;
+		snps,phy-intf-sel =  <0x100>,<17>,<0x7>;
+		snps,ephy-ref-en =   <0x4>,<27>,<0x1>;
+		snps,ephy-soft-reset = <0x100>,<16>,<0x1>;
+		ctrl_id = <0x1>;
+		platform = <CHIP_PLATFORM>;
+		molchip,haps-apclk = <36000000>;
+		molchip,syscon-ap-ahb = <&isp_sys_clk>;
+		molchip,syscon-ap-apb = <&isp_sys_clk>;
+		molchip,syscon-gl-apb = <&isp_sys_clk>;
+		/* For Internal PHY(100T) */
+		/*molchip,syscon-ana = <&ana>;*/
+		status = "disabled";
+
+		mdio {
+			#address-cells = <0x1>;
+			#size-cells = <0x0>;
+
+			phy2: phy@2 {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				device_type = "ethernet-phy";
+				reg = <0x1>;
+			};
+		};
+	};
+
+	g2d: g2d@22100000 {
+		compatible = "molchip,mc-g2d";
+		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x22100000 0x400>, <0x20100000 0x10>;
+		clock-names = "g2d_clk";
+		clocks = <&vousys CKG_G2D_EN>;
+		status = "okay";
+	};
+
+	vppu: vppu@28700000 {
+		compatible = "molchip,mc-vppu";
+		interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
+			<GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x28700000 0x1000>, <0x28100000 0x30>;
+		clock-names = "vppu_clk";
+		clocks = <&nnpsys CKG_VPPU400_EN>;
+		status = "okay";
+	};
+
+	vicap: vicap@2d300000 {
+		compatible = "molchip,mc-vicap";
+		        //0.48MX30   8MX30fps  8MX30fps + 4M30fps  8MX30fps + 2M30fps
+		clock-s0 = <12090000>, <35880000>, <78000000>, <156000000>, <234000000>, <312000000>, <390000000>, <468000000>;
+		clock-s1 = <12090000>, <35880000>, <78000000>, <156000000>, <234000000>, <312000000>, <390000000>, <468000000>;
+		clock-s2 = <12090000>, <35880000>, <78000000>, <156000000>, <234000000>, <312000000>, <390000000>, <468000000>;
+		clock-s3 = <12090000>, <35880000>, <78000000>, <156000000>, <234000000>, <312000000>, <390000000>, <468000000>;
+		status = "okay";
+	};
+
+	camif: camif@19a00000 {
+		compatible = "molchip,mc-camif";
+		interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	vgs: vgs@20700000 {
+		compatible = "molchip,mc-vgs";
+		interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x20700000 0x2200>;
+		clock-names = "vgs_clk", "vgs_ahb_en";
+		clocks = <&vousys CKG_VGS_EN>,
+			   <&vousys CKG_AHB_VGS_EN>;
+		status = "okay";
+	};
+	vpu: vpu@2d200000 {
+		compatible = "molchip,mc-vpu";
+		interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>,
+				<GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x2d200000 0x1000>;
+		clock-names = "vpu_clk_enable",
+				"vpu_ahb_clk",
+				"lut2d_clk_enable",
+				"lut2d_ahb_clk",
+				"vpu_clk";
+		clocks = <&ispsys CKG_VPU_EN>,
+				<&ispsys CKG_AHB_VPU_EN>,
+				<&ispsys CKG_2DLUT_EN>,
+				<&ispsys CKG_AHB_2DLUT_EN>,
+				<&ispsys CKG_MUX_VPU>;
+		status = "okay";
+	};
+	isp: isp@2d000000 {
+		compatible = "molchip,mc-isp";
+		interrupts = <GIC_SPI 79 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x2d000000 0x1000>;
+		status = "okay";
+	};
+
+	ioe: ioe@1C300000 {
+		compatible = "molchip,mc-ioe";
+		interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "ioe_int", "c2c_int";
+		reg = <0x1C300000 0x100>, <0x1C000000 0x20>;
+		clock-names = "ioe_clk", "ioe_pub_en";
+		clocks = <&veusys CKG_IOE_CH0_EN>,
+			   <&veusys CKG_IOE_PUB_EN>;
+		status = "okay";
+	};
+
+	nnp_cr: nn_cr@30400000 {
+		compatible = "intellif,nncr";
+		status = "okay";
+		reg = <0x30400000 0x200000>;
+		interrupts =      <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>,
+						  <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>,
+						  <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,
+						  <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,
+						  <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,
+						  <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
+	};
+
+	stm0: stm@0a400000 {
+		compatible = "molchip,stm";
+		interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0a400000 0x200>;
+		clock-names = "stm0_clk";
+		clocks = <&cpusys_gatemux CKG_MOTORCTL0_STM_EN>;
+		status = "disabled";
+	};
+
+	stm1: stm@0a800000 {
+		compatible = "molchip,stm";
+		interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0a800000 0x200>;
+		clock-names = "stm1_clk";
+		clocks = <&cpusys_gatemux CKG_MOTORCTL1_STM_EN>;
+		status = "disabled";
+	};
+
+	trng: trng@0C400000 {
+		compatible = "fh,fh-rng";
+		reg = <0x0C400000 0x2000>;
+		clock-names = "trng_clk";
+		clocks = <&cpusys_gatemux CKG_AHB_RNG_EN>;
+		status = "disabled";
+	};
+
+	xbus: xbus@19000000 {
+		compatible = "molchip,xbus";
+		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x19000000 0x1000>;
+		status = "okay";
+	};
+
+	gpio0: gpio@18400000 {
+		clock-names = "gpio_apb_clk";
+		//clocks = <&cen_glb_apb CKG_APB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x18400000 0x100>;
+		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio1: gpio@0b000000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B000000 0x100>;
+		interrupts = <GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio2: gpio@0b010000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B010000 0x100>;
+		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio3: gpio@0b020000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B020000 0x100>;
+		interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio4: gpio@0b030000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B030000 0x100>;
+		interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio5: gpio@0b040000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B040000 0x100>;
+		interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio6: gpio@0b050000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B050000 0x100>;
+		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio7: gpio@0b060000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B060000 0x100>;
+		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio8: gpio@0b070000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B070000 0x100>;
+		interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio9: gpio@0b080000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B080000 0x100>;
+		interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio10: gpio@0b090000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B090000 0x100>;
+		interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio11: gpio@0b0a0000 {
+		clock-names = "gpio_ahb_clk";
+		//clocks = <&cpu_sys_ahb CKG_AHB_GPIO>;
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0B0A0000 0x100>;
+		interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+	dma64@0c700000{
+		compatible = "molchip,mc-dma64";
+		reg = <0x0c700000 0x3000>;
+		//clocks = <&apahb_gate CKG_DMA>;
+		//clock-names = "dma_eb";
+		interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>;
+		dma-channels = <32>;
+		chan_allocation_order = <1>;
+		status = "disabled";
+	};
+
+	pwm_ab: pwm@09500000 {
+                compatible = "molchip,haps-pwm";
+                #pwm-cells = <2>;
+                reg = <0x09500000 0x1000>;
+                //clocks = <&apapb_gate CKG_PWM>,
+                        //<&apapb_gate CKG_APB_PWM>,
+                        //<&apclk CLK_MUX_PWM>;
+                //clock-names = "ckg_pwm",
+                        //"ckg_apb_pwm",
+                        //"ckg_mux_pwm";
+                molchip,haps-apclk = <36000000>;
+                status = "disabled";
+        };
+
+	saradc: saradc@1c800000 {
+		compatible = "molchip,saradc";
+		reg = <0x1c800000 0x400>;
+		interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>;
+		saradc_channel = <1>;
+		status = "disabled";
+	};
+	aes@0c600000 {
+		compatible = "mc,aes";
+		reg = <0x0c600000 0x1000>;
+		interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
+		status = "disabled";
+	};
+        sdhc: sdhci@23300000 {
+                compatible = "mc,sdhci";
+                reg = <0x1d200000 0x1000>, <0x1ca00000 0x800>;
+                interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
+                <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
+                interrupt-names = "emmc", "emmc_phy", "emmc_wakeup";
+                bus-width = <8>;
+                non-removable;
+                mmc-hs400-enhanced-strobe;
+                mmc-hs400-1_8v;
+                //cap-mmc-highspeed;
+                //mmc-hs200-1_8v;
+                drv_ability = <6>; //0-7
+                                   /*id   ds_dll    non_ds_dll hs200_dll*/
+                eye_diagram = <0x00 0x00293620 0x00295c10 0x00295c10/*MID_NO_FOUND_DEVICE*/
+                               0x15 0x00000000 0x00100470 0x00101070/*MID_SAMSUNG*/
+                               0xD6 0x00293620 0x00295c10 0x00295c10/*MID_LONGSYS*/
+                               0x11 0x002e2006 0x002ee810 0x00343408/*MTD_TOSHIBA*/
+                               0x2C 0x002d3822 0x002d6610 0x002d6610/*MTD_HIK*/
+                               >;
+                no-sd;
+                no-sdio;
+                mc,hsif = <&veu_sys_clk>;
+ /**
+                clocks = <&hsif_clk CLK_EMMC_EN>, <&hsif_clk CLK_EMMC_BASE_EN>,
+                                <&hsif_clk CLK_EMMC_CQETM_EN>, <&hsif_clk CLK_EMMC_TM_EN>,
+                                <&hsif_clk CLK_AXI_EMMC_EN>, <&hsif_clk CLK_EMMC_PHYCFG_EN>,
+                                <&hsif_clk CLK_EMMC_2X_EN>, <&hsif_clk CKG_EMMC_SEL>,
+                                <&hsif_clk CKG_EMMC_BASE_SEL>, <&hsif_clk CKG_EMMC_CQETM_SEL>,
+                                <&hsif_clk CKG_EMMC_TM_SEL>;
+                clock-names = "emmc_en", "base_en", "cqetm_en",
+                                "tm_en", "axi_en", "phy_en", "emmc_2x_en",
+                                "emmc_clk", "base_clk", "cqetm_clk", "tm_clk";
+**/
+		status = "disabled";
+        };
+
+	efuse: efuse@0A700000 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "mc,efuse";
+		reg = <0x0A700000 0x1000>;
+		mc,efuse-size = <256>;
+		bypass-init-clock;
+		/**
+		clocks = <&apapb_gate CKG_EFUSE>,
+				<&apapb_gate CKG_APB_EFUSE0>;
+		clock-names = "clk_efuse",
+				"clk_apb_efuse";
+				**/
+		status = "disabled";
+		tsens_calib: calib@e8 {
+				reg = <0xe8 0x2>;
+		};
+	};
+
+	watchdog@18800000 {
+		compatible = "mc,wdt";
+		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x18800000 0x400>;
+		bypass-init-clock;
+		/**
+		clocks = <&cen_glb_apb CKG_APB_WDG0>,
+				<&cen_glb_apb CKG_WDG>;
+		clock-names = "ckg_apb_wdt_en",
+				"ckg_wdt_en";
+				**/
+		timeout-sec = <10>;
+		status = "disabled";
+	};
+
+	vdu: vdu@22000000 {
+		compatible = "molchip,mc-vdu";
+		interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x22000000 0x20000>;
+		clock-names = "vdu_clk_en";
+		clocks = <&vousys CKG_VDEC460_EN>;
+		status = "okay";
+	};
+
+	jpeg: jpeg@1D000000 {
+		compatible = "molchip,xc01-mc-jpeg";
+		interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x1D000000 0x600>;
+		clock-names = "jpeg_clk",
+			"jpeg_ahb_clk";
+		clocks = <&veusys CKG_AHB_JPG_EN>,
+			<&veusys CKG_JPG_EN>;
+		status = "okay";
+	};
+
+	venc: venc@1C000000 {
+		compatible = "molchip,mc-venc";
+		//interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
+		//reg = <0x1C000000 0x600>;
+		clock-s0 = <24000000>,<74250000>, <200100000>;
+		clock-s1 = <24000000>,<74250000>, <200100000>;
+		clock-s2 = <24000000>,<74250000>, <200100000>;
+		clock-s3 = <24000000>,<74250000>, <200100000>;
+		status = "okay";
+	};
+
+	spi-nor-controller@0x1C700000 {
+		compatible = "mc,spi-nor";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x1C700000 0x4000>;
+		reg-names = "control";
+		//clocks = <&hsif_clk CKG_APB_SFC>,<&hsif_clk CKG_SFC>;
+		//clock-names = "apb_sfc","clk_sfc";
+		spi-max-frequency = <91428571>;
+		status = "disabled";
+
+		spi-nor@0x0 {
+			compatible = "jedec,spi-nor";
+			reg = <0>;
+			partitions {
+				compatible = "fixed-partitions";
+				#address-cells = <1>;
+		 		#size-cells = <1>;
+	 			partition@0x0 {
+	 				label = "boot-nor";
+					reg = <0 0x100000>;
+	 			};
+	 			partition@0x100000 {
+	 				label = "fs-nor";
+					reg = <0x100000 0x10000>;
+				};
+	 		};
+		};
+	};
+
+	spi_nfc@0x1C700000 {
+		compatible = "mc, spi-nand-controller";
+		reg = <0x1C700000 0x4000>;
+		reg-names = "control";
+		//clocks = <&hsif_clk CKG_APB_SFC>,<&hsif_clk CKG_SFC>,<&hsif_clk CLK_MUX_SFC>;
+		//clock-names = "apb_spci","ahb_spic","spic_clk";
+		spi-max-frequency = <100000000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		spi_nfc@0 {
+			compatible = "mc-spi-nfc";
+			reg = <0>;
+		};
+	};
+
+	scene_mangt {
+		compatible = "scene-mangt,mc";
+		default-scene = <1>;
+		status = "disabled";
+	};
+
+	i2c0: i2c@08d00000 {
+		/*clock-names = "i2c_clk",
+			"i2c_apb_clk",
+			"i2c_mux_clk";
+		clocks = <&apapb_gate CKG_I2C0>,
+			<&apapb_gate CKG_APB_I2C0>,
+			<&apclk CLK_MUX_I2C0>;*/
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "molchip,i2c";
+		reg = <0x08d00000 0x100>;
+		interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+		clock-frequency = <100000>;
+		i2c-sda-hold-time-ns = <50>;
+		i2c-sda-falling-time-ns = <10>;
+		i2c-scl-falling-time-ns = <10>;
+		molchip,i2c-default-clk = <36000000>;
+		status = "disabled";
+	};
+
+	i2c1: i2c@08e00000 {
+		/*clock-names = "clk",
+			"i2c_apb_clk",
+			"i2c_mux_clk";
+		clocks = <&apapb_gate CKG_I2C1>,
+			<&apapb_gate CKG_APB_I2C1>,
+			<&apclk CLK_MUX_I2C1>;*/
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "molchip,i2c";
+		reg = <0x08e00000 0x100>;
+		interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+		clock-frequency = <100000>;
+		i2c-sda-hold-time-ns = <50>;
+		i2c-sda-falling-time-ns = <10>;
+		i2c-scl-falling-time-ns = <10>;
+		molchip,i2c-default-clk = <36000000>;
+		status = "disabled";
+	};
+	vou: vou@22200000 {
+                compatible = "molchip,mc-vou";
+                interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
+                reg = <0x22200000 0x2000>;
+                clock-names = "vou_clk_en",
+                        "vou_apb_clk_en";
+                clocks = <&vousys CKG_VOU400_EN>,
+                        <&topsys_gate CKG_GLB_APB_VOU_EN>;
+                status = "okay";
+        };
+
+        acw: acw@1cc00000 {
+                compatible = "molchip,acw";
+                reg = <0x1CC00000 0x1000>;
+                interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
+                clock-names = "clk_acw_en";
+                clocks = <&veusys CKG_APB_AUDIO_CODEC_EN>;
+                molchip,dma-rx-id = <40>;
+                molchip,dma-tx-id = <39>;
+                status = "okay";
+        };
+
+        dmic: acw@0a200000 {
+                compatible = "molchip,dmic";
+                reg = <0x0a200000 0x1000>,
+                        <0x0A300000 0x1000>;
+                interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>,
+                        <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+                clock-names = "apb_clk_en0",
+                        "dmic_clk_en0",
+                        "dmic_mux_en0",
+                        "apb_clk_en1",
+                        "dmic_clk_en1",
+                        "dmic_mux_en1";
+                clocks = <&cpusys_gatemux CKG_APB_DMIC0_EN>,
+                        <&cpusys_gatemux CKG_DMIC0_EN>,
+                        <&cpusys_gatemux CKG_MUX_DMIC0>,
+                        <&cpusys_gatemux CKG_APB_DMIC1_EN>,
+                        <&cpusys_gatemux CKG_DMIC1_EN>,
+                        <&cpusys_gatemux CKG_MUX_DMIC1>;
+                status = "okay";
+        };
+
+		pre_rolling {
+                compatible = "molchip,pre_rolling";
+                share_ram_level = <3>;
+                sys_params = <0x30037000 0x1000>;
+                share_mem = <0x71000000 0x400000>;
+                spl_image_info = <0x0 0x30000000 0x10000>;
+                prg_image_info = <0x10000 0x30010000 0x30000>;
+                image_load_type = <0>;
+                status = "okay";
+        };
+
+		vdsp: vdsp@20100000 {
+			compatible = "molchip,mc-vdsp";
+			mc,syscon = <&vou_sys_clk>;
+			reg = <0x20100000 0x0>;
+			interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+			status = "okay";
+		};
+
+	sdmmc0: dwmmc@1d400000 {
+		compatible = "molchip,dw-mshc";
+		reg = <0x1d400000 0x400>;
+		//mc,peripheral-syscon = <&veu_sys_apb>;
+		interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+		/*ctrl2 = <0x018c>;
+		dlloutstatus_spl = <0x0148>;
+		dlloutstatus_drv = <0x0154>;
+		ctrl = <0x0138>;
+		dllinctrlreg_spl = <0x0140>;
+		dllininforeg_spl = <0x0144>;
+		dllinctrlreg_drv = <0x014c>;
+		dllininforeg_drv = <0x0150>;
+		cd-detect-level = <1>;
+		clock-names = "biu",
+			"ciu",
+			"dllref",
+			"sdioclk";
+		clocks = <&apahb_gate CKG_SYS_SDIO>,
+				 <&apahb_gate CKG_SDIO>,
+				 <&apahb_gate CKG_SDIO_DLLREF>,
+				<&apclk CLK_MUX_SDIO0>;*/
+		status = "okay";
+	};
+	sdmmc1: dwmmc@1d300000 {
+		compatible = "molchip,dw-mshc";
+		non-removable;
+		reg = <0x1d300000 0x400>;
+		//mc,peripheral-syscon = <&veu_sys_apb>;
+		interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
+		/*ctrl = <0x00cc>;
+		ctrl2 = <0xf0>;
+		dlloutstatus_spl = <0x0170>;
+		dlloutstatus_drv = <0x017c>;
+		dllinctrlreg_spl = <0x0168>;
+		dllininforeg_spl = <0x016c>;
+		dllinctrlreg_drv = <0x0174>;
+		dllininforeg_drv = <0x0178>;
+		clock-names = "biu",
+			"ciu",
+			"dllref",
+			"sdioclk";
+		clocks = <&apahb_gate CKG_SYS_SDIO1>,
+			 <&apahb_gate CKG_SDIO1>,
+			 <&apahb_gate CKG_SDIO1_DLLREF>,
+			<&apclk CLK_MUX_SDIO1>;*/
+		status = "disabled";
+	};
+	usb3_0: usb30@0 {
+		compatible = "molchip,dwc3";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		/*clocks = <&gcc USB30_0_MASTER_CLK>;*/
+		/*clock-names = "core";*/
+
+		ranges;
+
+		status = "okay";
+
+		dwc3: dwc3@2d400000 {
+			/*clock-names = "otg";*/
+			/*clocks = <&hsif_clk CKG_AXI_USB3_EN>;*/
+			compatible = "snps,dwc3";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x2d400000 0x40000>;
+			interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
+			/*interrupt-names = "peripheral";*/
+			/*dr_mode = "peripheral";*/
+			interrupt-names = "host";
+			dr_mode = "host";
+			snps,dis_u3_susphy_quirk;
+			snps,dis_u2_susphy_quirk;
+			phys = <&usb2_phy>, <&usb3_phy>;
+			phy-names = "usb2-phy", "usb3-phy";
+		};
+	};
+
+	usb2_phy: usb2-phy {
+		compatible = "snps,usb2-phy";
+		#phy-cells = <0>;
+		status = "okay";
+	};
+
+	usb3_phy: usb3-phy {
+		compatible = "molchip,usb3-phy";
+		molchip,syscon-clk-gate = <&isp_sys_clk>;
+		molchip,syscon-usb3-cfg = <&usb3_apb_cfg_1>;
+		#phy-cells = <0>;
+		status = "okay";
+	};
+	lcm: lcm@20400000 {
+                compatible = "molchip,mc-lcm";
+                status = "okay";
+        };
+
+};

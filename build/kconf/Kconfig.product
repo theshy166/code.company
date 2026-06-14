@@ -1,0 +1,204 @@
+#XOS Product Configure
+#
+menu "XOS Product"
+
+choice
+    prompt "XOS Product"
+    default PRODUCT_AICAMERA
+
+config PRODUCT_AICAMERA
+    bool "aicamera"
+    ## select XOS_USE_APP_AICAMERA
+    ## add select more features here
+    help
+      Configuration for aicamera.
+
+config PRODUCT_DEMO
+    bool "demo"
+    help
+      Configuration for demo.
+
+config PRODUCT_CAMERA
+    bool "camera"
+    help
+      Configuration for camera.
+
+config PRODUCT_NXF7
+    bool "nxf7"
+    help
+      Configuration for nxf7.
+
+config PRODUCT_NXF7E
+    bool "nxf7e"
+    help
+      Configuration for nxf7e.
+
+config PRODUCT_MOMOTALK
+    bool "momotalk"
+    help
+      Configuration for momotalk.
+
+config PRODUCT_KIDCAMERA
+    bool "aicamera"
+    ## select XOS_USE_APP_AICAMERA
+    ## add select more features here
+    help
+      Configuration for kidcamera.
+
+config PRODUCT_KIDCAMERA_NOR
+    bool "aicamera"
+    ## select XOS_USE_APP_AICAMERA
+    ## add select more features here
+    help
+      Configuration for kidcamera_nor.
+
+config PRODUCT_STUDYPILOT
+    bool "studypilot"
+    help
+      Set the product.
+
+config PRODUCT_AIGLASSES_LV
+    bool "aicamera"
+    ## select XOS_USE_APP_AICAMERA
+    ## add select more features here
+    help
+      Configuration for aiglasses_lv.
+
+config PRODUCT_QM10XV_EVB
+    bool "qm10xv_evb"
+    help
+      Configuration for qm10xv evb.
+
+config PRODUCT_D629
+    bool "d629"
+    help
+      Configuration for d629.
+
+config PRODUCT_SPHOTO
+    bool "sphoto"
+    help
+      Configuration for sphoto.
+
+config PRODUCT_XMPHOTO
+    bool "xmphoto"
+    help
+      Configuration for xmphoto.
+
+config PRODUCT_MOTOX
+    bool "motox"
+    help
+      Configuration for motox.
+
+config PRODUCT_IPC
+    bool "ipc"
+    help
+      Configuration for ipc.
+
+config PRODUCT_GALLERY
+    bool "gallery"
+    help
+      Configuration for gallery.
+
+config PRODUCT_SMARTHOME
+    bool "smarthome"
+    help
+      Configuration for smarthome.
+
+config PRODUCT_SIMULATOR
+    bool "simulator"
+    help
+      Configuration for simulator.
+
+config PRODUCT_MOTO
+    bool "moto"
+    help
+      Configuration for moto.
+
+config PRODUCT_WIFIX
+    bool "wifix"
+    help
+      Configuration for wifix.
+
+config PRODUCT_ESL
+    bool "esl"
+    help
+      Configuration for esl.
+
+config PRODUCT_ESL2
+    bool "esl2"
+    help
+      Configuration for esl.
+
+config PRODUCT_SMARTDOOR
+    bool "smartdoor"
+    help
+      Configuration for smartdoor.
+
+config PRODUCT_SMARTLOCK
+    bool "smartlock"
+    help
+      Configuration for smartlock.
+
+config PRODUCT_PETROBOT
+    bool "petrobot"
+    help
+      Configuration for petrobot.
+
+config PRODUCT_XKPHOTO
+    bool "xkphoto"
+    help
+      Configuration for xkphoto.
+
+config PRODUCT_XHOME
+    bool "xhome"
+    help
+      Configuration for xhome.
+
+config PRODUCT_WIFINVR
+    bool "wifinvr"
+    help
+      Configuration for wifinvr.
+
+config PRODUCT_AIGLASSES_LH
+    bool "aiglasses lh"
+    help
+      Configuration for aiglasses(qm108h linux).
+
+config PRODUCT_MOTOX102D
+    bool "motox102d"
+    help
+      Configuration for motox102d.
+
+config PRODUCT_MOTOX_RD
+    bool "motox_rd"
+    help
+      Configuration for motox_rd
+
+config PRODUCT_MOTOX_LD
+    bool "motox_ld"
+    help
+      Configuration for motox_ld
+
+config PRODUCT_CB1_LD
+    bool "cb1_ld"
+    help
+      Configuration for cb1_ld
+
+config PRODUCT_CB1_LV
+    bool "cb1_lv"
+    help
+      Configuration for cb1_lv
+
+config PRODUCT_QM102D_BASE
+    bool "qm102d_base"
+    help
+      Configuration for qm102d_base
+endchoice
+
+endmenu
+
+# Include configuration if selected
+source "product/.Kconfig"
+source "build/kconf/Kconfig.base"
+source "build/kconf/Kconfig.core"
+

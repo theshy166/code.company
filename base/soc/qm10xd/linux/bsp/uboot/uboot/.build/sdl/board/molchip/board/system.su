@@ -1,0 +1,7 @@
+../board/molchip/board/system.c:29:7:smalloc	8	static
+../board/molchip/board/system.c:58:6:sfree	0	static
+../board/molchip/board/system.c:88:6:heap_init	0	static
+../board/molchip/board/system.c:105:6:sys_timer_enable	0	static
+../board/molchip/board/system.c:118:6:timer_enable	8	static
+../board/molchip/board/system.c:132:6:mc_udelay	8	static
+../board/molchip/board/system.c:154:5:system_boot_mode	0	static

@@ -1,0 +1,6 @@
+../drivers/gpio/molchip_gpio.c:29:12:gpio_set_mask.isra	0	static
+../drivers/gpio/molchip_gpio.c:85:5:gpio_set_value	0	static
+../drivers/gpio/molchip_gpio.c:108:5:gpio_direction_output	16	static
+../drivers/gpio/molchip_gpio.c:119:5:gpio_direction_input	16	static
+../drivers/gpio/molchip_gpio.c:130:5:gpio_get_value	0	static
+../drivers/gpio/molchip_gpio.c:145:5:gpio_request	8	static

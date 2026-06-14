@@ -1,0 +1,2 @@
+../common/mc/lcm/mc_lcm.c:57:15:get_lcm_handle	8	static
+../common/mc/lcm/mc_lcm.c:84:5:mc_lcm_probe	24	static

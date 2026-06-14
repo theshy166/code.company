@@ -1,0 +1,2 @@
+../common/mc/lcm/dsi/dsi_phy_v0_pll_calc.c:68:21:_get_dsi_pll_context	0	static
+../common/mc/lcm/dsi/dsi_phy_v0_pll_calc.c:145:9:dsi_phy_pll_cfg_get	56	static

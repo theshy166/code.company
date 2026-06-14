@@ -1,0 +1,2557 @@
+Archive member included to satisfy reference by file (symbol)
+
+arch/arm/lib/lib.a(lib1funcs.o)
+                              board/molchip/built-in.o (__aeabi_uidiv)
+arch/arm/lib/lib.a(uldivmod.o)
+                              lib/built-in.o (__aeabi_uldivmod)
+arch/arm/lib/lib.a(div0.o)    arch/arm/lib/lib.a(lib1funcs.o) (__div0)
+
+Discarded input sections
+
+ .data          0x0000000000000000        0x0 arch/arm/cpu/armv7/start.o
+ .bss           0x0000000000000000        0x0 arch/arm/cpu/armv7/start.o
+ .text          0x0000000000000000        0x0 arch/arm/mach-molchip/built-in.o
+ .text.arch_cpu_init
+                0x0000000000000000        0x8 arch/arm/mach-molchip/built-in.o
+ .text.enable_caches
+                0x0000000000000000       0x10 arch/arm/mach-molchip/built-in.o
+ .data          0x0000000000000000        0x0 arch/arm/mach-molchip/built-in.o
+ .bss           0x0000000000000000        0x0 arch/arm/mach-molchip/built-in.o
+ .text          0x0000000000000000      0x148 arch/arm/cpu/armv7/built-in.o
+ .text.invalidate_icache_all
+                0x0000000000000000       0x18 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_enable
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_disable
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_flush_all
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.flush_dcache_all
+                0x0000000000000000       0x10 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_inval_all
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.invalidate_dcache_all
+                0x0000000000000000       0x10 arch/arm/cpu/armv7/built-in.o
+ .text.arm_init_before_mmu
+                0x0000000000000000       0x28 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_flush_range
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.flush_dcache_range
+                0x0000000000000000       0x54 arch/arm/cpu/armv7/built-in.o
+ .text.mmu_page_table_flush
+                0x0000000000000000       0x24 arch/arm/cpu/armv7/built-in.o
+ .text.v7_outer_cache_inval_range
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.invalidate_dcache_range
+                0x0000000000000000       0x64 arch/arm/cpu/armv7/built-in.o
+ .text.cpu_cache_initialization
+                0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .text.cleanup_before_linux_select
+                0x0000000000000000       0x60 arch/arm/cpu/armv7/built-in.o
+ .text.cleanup_before_linux
+                0x0000000000000000        0x8 arch/arm/cpu/armv7/built-in.o
+ .text.v7_arch_cp15_set_l2aux_ctrl
+                0x0000000000000000        0x8 arch/arm/cpu/armv7/built-in.o
+ .text.v7_arch_cp15_set_acr
+                0x0000000000000000        0x8 arch/arm/cpu/armv7/built-in.o
+ .text.sdelay   0x0000000000000000        0xc arch/arm/cpu/armv7/built-in.o
+ .text.wait_on_value
+                0x0000000000000000       0x38 arch/arm/cpu/armv7/built-in.o
+ .text.s_init   0x0000000000000000        0x4 arch/arm/cpu/armv7/built-in.o
+ .data          0x0000000000000000        0x0 arch/arm/cpu/armv7/built-in.o
+ .bss           0x0000000000000000        0x0 arch/arm/cpu/armv7/built-in.o
+ .text.relocate_vectors
+                0x0000000000000000       0x70 arch/arm/lib/built-in.o
+ .text.arch_fixup_fdt
+                0x0000000000000000       0x34 arch/arm/lib/built-in.o
+ .text.boot_prep_linux
+                0x0000000000000000       0x4c arch/arm/lib/built-in.o
+ .text.mc_bringup_ca7
+                0x0000000000000000      0x11c arch/arm/lib/built-in.o
+ .text.arch_lmb_reserve
+                0x0000000000000000       0x24 arch/arm/lib/built-in.o
+ .text.board_quiesce_devices
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.boot_jump_linux
+                0x0000000000000000       0xa4 arch/arm/lib/built-in.o
+ .text.setup_board_tags
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.armv7_boot_nonsec_default
+                0x0000000000000000        0x8 arch/arm/lib/built-in.o
+ .text.do_bootm_linux
+                0x0000000000000000       0x64 arch/arm/lib/built-in.o
+ .text.boot_prep_vxworks
+                0x0000000000000000       0x4c arch/arm/lib/built-in.o
+ .text.boot_jump_vxworks
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .text.bootz_setup
+                0x0000000000000000       0x8c arch/arm/lib/built-in.o
+ .text.arch_reserve_stacks
+                0x0000000000000000       0x1c arch/arm/lib/built-in.o
+ .text.interrupt_init
+                0x0000000000000000       0x1c arch/arm/lib/built-in.o
+ .text.enable_interrupts
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.disable_interrupts
+                0x0000000000000000        0x8 arch/arm/lib/built-in.o
+ .text.bad_mode
+                0x0000000000000000       0x10 arch/arm/lib/built-in.o
+ .text.show_regs
+                0x0000000000000000      0x2ac arch/arm/lib/built-in.o
+ .text.do_undefined_instruction
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_software_interrupt
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_prefetch_abort
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_data_abort
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_not_used
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_fiq   0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.do_irq   0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .text.reset_misc
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.do_reset
+                0x0000000000000000       0x18 arch/arm/lib/built-in.o
+ .text.enable_caches
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .text.invalidate_dcache_range
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.flush_dcache_range
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.flush_cache
+                0x0000000000000000        0x8 arch/arm/lib/built-in.o
+ .text.flush_dcache_all
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .text.check_cache_range
+                0x0000000000000000       0x34 arch/arm/lib/built-in.o
+ .text.noncached_init
+                0x0000000000000000       0x48 arch/arm/lib/built-in.o
+ .text.noncached_alloc
+                0x0000000000000000       0x54 arch/arm/lib/built-in.o
+ .text.arm_init_before_mmu
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.arm_init_domains
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.set_section_dcache
+                0x0000000000000000       0x14 arch/arm/lib/built-in.o
+ .text.mmu_page_table_flush
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text.mmu_set_region_dcache_behaviour
+                0x0000000000000000       0x54 arch/arm/lib/built-in.o
+ .text.dram_bank_mmu_setup
+                0x0000000000000000       0x3c arch/arm/lib/built-in.o
+ .text.icache_enable
+                0x0000000000000000       0x14 arch/arm/lib/built-in.o
+ .text.icache_disable
+                0x0000000000000000       0x18 arch/arm/lib/built-in.o
+ .text.icache_status
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .text.dcache_enable
+                0x0000000000000000       0x80 arch/arm/lib/built-in.o
+ .text.dcache_disable
+                0x0000000000000000       0x28 arch/arm/lib/built-in.o
+ .text.dcache_status
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .text.fdt_psci
+                0x0000000000000000        0x8 arch/arm/lib/built-in.o
+ .rodata        0x0000000000000000       0x80 arch/arm/lib/built-in.o
+ .rodata.boot_prep_linux.str1.1
+                0x0000000000000000       0x5a arch/arm/lib/built-in.o
+ .rodata.boot_jump_linux.str1.1
+                0x0000000000000000       0x2c arch/arm/lib/built-in.o
+ .rodata.boot_prep_vxworks.str1.1
+                0x0000000000000000       0x2a arch/arm/lib/built-in.o
+ .rodata.bootz_setup.str1.1
+                0x0000000000000000       0x1d arch/arm/lib/built-in.o
+ .rodata.str1.1
+                0x0000000000000000       0xeb arch/arm/lib/built-in.o
+ .rodata.bad_mode.str1.1
+                0x0000000000000000       0x13 arch/arm/lib/built-in.o
+ .rodata.show_regs.str1.1
+                0x0000000000000000      0x174 arch/arm/lib/built-in.o
+ .rodata.do_undefined_instruction.str1.1
+                0x0000000000000000       0x17 arch/arm/lib/built-in.o
+ .rodata.do_software_interrupt.str1.1
+                0x0000000000000000       0x14 arch/arm/lib/built-in.o
+ .rodata.do_prefetch_abort.str1.1
+                0x0000000000000000       0x10 arch/arm/lib/built-in.o
+ .rodata.do_data_abort.str1.1
+                0x0000000000000000        0xc arch/arm/lib/built-in.o
+ .rodata.do_not_used.str1.1
+                0x0000000000000000        0xa arch/arm/lib/built-in.o
+ .rodata.do_fiq.str1.1
+                0x0000000000000000       0x18 arch/arm/lib/built-in.o
+ .rodata.do_irq.str1.1
+                0x0000000000000000       0x13 arch/arm/lib/built-in.o
+ .rodata.do_reset.str1.1
+                0x0000000000000000       0x14 arch/arm/lib/built-in.o
+ .rodata.enable_caches.str1.1
+                0x0000000000000000       0x1d arch/arm/lib/built-in.o
+ .rodata.check_cache_range.str1.1
+                0x0000000000000000       0x35 arch/arm/lib/built-in.o
+ .data          0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__bss_end     0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__bss_start   0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__efi_runtime_rel_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__efi_runtime_rel_stop
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__efi_runtime_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__efi_runtime_stop
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__end         0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__image_copy_end
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__image_copy_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__rel_dyn_end
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__rel_dyn_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__secure_end  0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__secure_stack_end
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__secure_stack_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .__secure_start
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .bss           0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .bss.noncached_end
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .bss.noncached_next
+                0x0000000000000000        0x4 arch/arm/lib/built-in.o
+ .text          0x0000000000000000        0x0 board/molchip/built-in.o
+ .text.jump_to  0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.ana_bias_reset
+                0x0000000000000000       0x34 board/molchip/built-in.o
+ .text.nosec_jump_to
+                0x0000000000000000        0x8 board/molchip/built-in.o
+ .text.nosec_boot
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .text.aes_cbc_init
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.aes_cbc_decode_init
+                0x0000000000000000       0x6c board/molchip/built-in.o
+ .text.aes_init
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .text.aes_inter_dma_init
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.aes_inter_dma_en
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .text.aes_inter_dma_start
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.aes_done
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.aes_cbc_decode
+                0x0000000000000000       0x5c board/molchip/built-in.o
+ .text.aes_handle_start
+                0x0000000000000000       0x8c board/molchip/built-in.o
+ .text.aes_enable
+                0x0000000000000000       0x34 board/molchip/built-in.o
+ .text.aes_enable_1st_iv
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.aes_threshold
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .text.aes_clr_intr
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.aes_en_intr
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.aes_intr_src
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .text.aes_decrypt
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.aes_write_iv
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .text.aes_config_mode
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.aes_start
+                0x0000000000000000       0x30 board/molchip/built-in.o
+ .text.sha256_ctx_continue
+                0x0000000000000000        0x8 board/molchip/built-in.o
+ .text.rsa_decrypte
+                0x0000000000000000       0x90 board/molchip/built-in.o
+ .text.aes_iv_valid
+                0x0000000000000000       0x28 board/molchip/built-in.o
+ .text.public_key_verify
+                0x0000000000000000       0xa0 board/molchip/built-in.o
+ .text.signature_verify
+                0x0000000000000000       0x5c board/molchip/built-in.o
+ .text.secure_verify
+                0x0000000000000000      0x190 board/molchip/built-in.o
+ .text.spi_cpu_sched_boot
+                0x0000000000000000       0x9c board/molchip/built-in.o
+ .text.spi_sw_fastboot
+                0x0000000000000000       0x60 board/molchip/built-in.o
+ .text.spi_cpu_sched_finish
+                0x0000000000000000       0x68 board/molchip/built-in.o
+ .text.read_efuse_entry.part.0
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.read_efuse_entry
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.tran_aes_key
+                0x0000000000000000       0x78 board/molchip/built-in.o
+ .text.cbc_key_writed
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.sw_bonding_option_init
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.secure_enalbe
+                0x0000000000000000       0x78 board/molchip/built-in.o
+ .text.secure_mode_get
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.aes_sel  0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.rsa_sel  0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.header_secure_enable
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.get_aes_iv
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .text.sfc_peri_speed_get
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.soc_freq_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.board_voltage_level
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_cmd_clk_polarity
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_rx_clk_polarity
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_tx_clk_polarity
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_base_clk_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_image_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_baud_rate
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_mode_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.sdio_sampling_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.if_ip_clock_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.emmc_clock_select
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.watchdog_sel
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.get_wdt_loadvalue
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.efuse_enable
+                0x0000000000000000       0x34 board/molchip/built-in.o
+ .text.efuse_ece_enable
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.efuse_wait_cmd_complete
+                0x0000000000000000       0x3c board/molchip/built-in.o
+ .text.efuse_load_user_cmd
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.efuse_set_match_key
+                0x0000000000000000        0x8 board/molchip/built-in.o
+ .text.efuse_read_cmd
+                0x0000000000000000       0x38 board/molchip/built-in.o
+ .text.efuse_wcmd_auto
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.efuse_write_cmd
+                0x0000000000000000       0xa4 board/molchip/built-in.o
+ .text.efuse_get_lock
+                0x0000000000000000       0x28 board/molchip/built-in.o
+ .text.efuse_init
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.efuse_apb_read
+                0x0000000000000000       0x84 board/molchip/built-in.o
+ .text.efuse_xfer_aes_key
+                0x0000000000000000       0xd0 board/molchip/built-in.o
+ .text.efuse_compare
+                0x0000000000000000       0x7c board/molchip/built-in.o
+ .text.smalloc  0x0000000000000000       0x6c board/molchip/built-in.o
+ .text.sfree    0x0000000000000000       0x7c board/molchip/built-in.o
+ .text.heap_init
+                0x0000000000000000       0x34 board/molchip/built-in.o
+ .text.sys_timer_enable
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .text.system_boot_mode
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.sfc_config
+                0x0000000000000000       0x9c board/molchip/built-in.o
+ .text.spi_transction_dma_read
+                0x0000000000000000       0xcc board/molchip/built-in.o
+ .text.spi_nor_quad_write_data
+                0x0000000000000000       0xe0 board/molchip/built-in.o
+ .text.sfc_transfer_start
+                0x0000000000000000       0xa0 board/molchip/built-in.o
+ .text.sfc_soft_dma_wait_ready
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .text.sfc_transfer_done
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .text.get_sys_ticks
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .text.uart_reset
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .text.uart_select_pority
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .text.uart_fifo_reset
+                0x0000000000000000       0x34 board/molchip/built-in.o
+ .text.uart_put_int
+                0x0000000000000000       0xfc board/molchip/built-in.o
+ .text.putc     0x0000000000000000        0xc board/molchip/built-in.o
+ .text.mc_printf
+                0x0000000000000000      0x184 board/molchip/built-in.o
+ .text.mc_get_cpu_clk
+                0x0000000000000000       0x2c board/molchip/built-in.o
+ .text.spi_nand_check_erased_buf
+                0x0000000000000000      0x134 board/molchip/built-in.o
+ .text.spi_nand_send_cmd
+                0x0000000000000000      0x350 board/molchip/built-in.o
+ .text.spi_nand_read_page_to_cache
+                0x0000000000000000       0x50 board/molchip/built-in.o
+ .text.spi_nand_write_enable
+                0x0000000000000000       0x30 board/molchip/built-in.o
+ .text.spi_nand_set_otp.isra.0
+                0x0000000000000000       0x4c board/molchip/built-in.o
+ .text.spi_nand_get_otp.isra.0
+                0x0000000000000000       0x4c board/molchip/built-in.o
+ .text.spi_nand_read_id.isra.0
+                0x0000000000000000       0x48 board/molchip/built-in.o
+ .text.spi_nand_wait
+                0x0000000000000000       0x6c board/molchip/built-in.o
+ .text.ilog2    0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.spi_nand_scan_id_table
+                0x0000000000000000       0xec board/molchip/built-in.o
+ .text.get_ecc_sts_with_check_ecc_chunk
+                0x0000000000000000      0x144 board/molchip/built-in.o
+ .text.spi_nand_read_from_cache.constprop.0
+                0x0000000000000000       0xc4 board/molchip/built-in.o
+ .text.spi_nand_do_read_page.constprop.0
+                0x0000000000000000      0x1bc board/molchip/built-in.o
+ .text.spi_nand_scan
+                0x0000000000000000       0x70 board/molchip/built-in.o
+ .text.spi_nand_disable_ecc
+                0x0000000000000000       0x58 board/molchip/built-in.o
+ .text.spi_nand_read_data
+                0x0000000000000000       0xf4 board/molchip/built-in.o
+ .text.spl_nand_ctroller_reset
+                0x0000000000000000       0x6c board/molchip/built-in.o
+ .text.spl_nand_load_image
+                0x0000000000000000       0xfc board/molchip/built-in.o
+ .text.spi_nand_read
+                0x0000000000000000       0xe0 board/molchip/built-in.o
+ .text.spi_nand_program
+                0x0000000000000000      0x1d8 board/molchip/built-in.o
+ .text.spi_nand_erase
+                0x0000000000000000      0x124 board/molchip/built-in.o
+ .text.spi_nor_read_data
+                0x0000000000000000       0xdc board/molchip/built-in.o
+ .text.spi_transaction_dma_read
+                0x0000000000000000      0x108 board/molchip/built-in.o
+ .text.spi_nor_reset
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .text.spi_nor_set_DS_3byte_addr_mode
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .text.spi_nor_reset_dummy_data
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.sched_nor_load_image
+                0x0000000000000000       0xcc board/molchip/built-in.o
+ .text.dma_enable
+                0x0000000000000000       0x1c board/molchip/built-in.o
+ .text.init_chn_reg
+                0x0000000000000000       0x30 board/molchip/built-in.o
+ .text.dma_chn_src
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.dma_chn_dst
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .text.dma_trsc_len
+                0x0000000000000000       0x58 board/molchip/built-in.o
+ .text.hash_dma_trsc_len
+                0x0000000000000000       0x58 board/molchip/built-in.o
+ .text.aes_dma_trsc_len
+                0x0000000000000000       0x58 board/molchip/built-in.o
+ .text.dma_request
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.dma_int_clear
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.dma_wait_complete
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.soft_dma_wait_complete
+                0x0000000000000000       0x30 board/molchip/built-in.o
+ .text.aes_dma_wait_done
+                0x0000000000000000       0x48 board/molchip/built-in.o
+ .text.hash_dma_wait_complete
+                0x0000000000000000       0x44 board/molchip/built-in.o
+ .text.aes_request_cid
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.hash_request_cid
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .text.aes_dma_fix_enable
+                0x0000000000000000       0x28 board/molchip/built-in.o
+ .text.hash_dma_init
+                0x0000000000000000       0xb8 board/molchip/built-in.o
+ .text.aes_dma_trac_init
+                0x0000000000000000       0xb8 board/molchip/built-in.o
+ .text.aes_dma_trac
+                0x0000000000000000       0x4c board/molchip/built-in.o
+ .text.sdio_read
+                0x0000000000000000       0x5c board/molchip/built-in.o
+ .text.spl_sdio0_load_image
+                0x0000000000000000       0x54 board/molchip/built-in.o
+ .text.spl_sdio1_load_image
+                0x0000000000000000       0x54 board/molchip/built-in.o
+ .text.dw_mci_idmac_stop_dma
+                0x0000000000000000       0x30 board/molchip/built-in.o
+ .text.dw_mci_card_busy
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .text.wait_dll_ready
+                0x0000000000000000       0x70 board/molchip/built-in.o
+ .text.usb_complete_info
+                0x0000000000000000       0x84 board/molchip/built-in.o
+ .text.usb_vpid
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .text.dwc2_init
+                0x0000000000000000      0x2b0 board/molchip/built-in.o
+ .text.usb_enumerate_device
+                0x0000000000000000       0x5c board/molchip/built-in.o
+ .rodata.aes_cbc_decode_init.str1.1
+                0x0000000000000000        0xe board/molchip/built-in.o
+ .rodata.aes_init.str1.1
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .rodata.signature_verify.str1.1
+                0x0000000000000000        0x6 board/molchip/built-in.o
+ .rodata.secure_verify.str1.1
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .rodata.spi_cpu_sched_boot.str1.1
+                0x0000000000000000        0x6 board/molchip/built-in.o
+ .rodata.spi_sw_fastboot.str1.1
+                0x0000000000000000       0x18 board/molchip/built-in.o
+ .rodata.spi_nor_quad_write_data.str1.1
+                0x0000000000000000       0x1e board/molchip/built-in.o
+ .rodata.mc_printf.str1.1
+                0x0000000000000000       0x1d board/molchip/built-in.o
+ .rodata.digits
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .rodata.CSWTCH.5
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .rodata.spi_nand_scan_id_table.str1.1
+                0x0000000000000000       0x36 board/molchip/built-in.o
+ .rodata.get_ecc_sts_with_check_ecc_chunk.str1.1
+                0x0000000000000000       0x51 board/molchip/built-in.o
+ .rodata.spi_nand_read_from_cache.constprop.0.str1.1
+                0x0000000000000000       0x2a board/molchip/built-in.o
+ .rodata.spl_nand_load_image.str1.1
+                0x0000000000000000       0x68 board/molchip/built-in.o
+ .rodata.spi_nand_program.str1.1
+                0x0000000000000000        0x5 board/molchip/built-in.o
+ .rodata.sched_nor_load_image.str1.1
+                0x0000000000000000       0x4c board/molchip/built-in.o
+ .rodata.spl_sdio0_load_image.str1.1
+                0x0000000000000000       0x14 board/molchip/built-in.o
+ .rodata.usb_func_list
+                0x0000000000000000        0xc board/molchip/built-in.o
+ .rodata.c_desc
+                0x0000000000000000        0x9 board/molchip/built-in.o
+ .data          0x0000000000000000        0x0 board/molchip/built-in.o
+ .data.boot     0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.mbedtls_rsa_init
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.rsa_hw_sel
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.rsa_pkcs1_verify
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.sha256_ctx
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.core1_done
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.heap_resize
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .data.spi_nand_table
+                0x0000000000000000      0x2ac board/molchip/built-in.o
+ .bss           0x0000000000000000        0x0 board/molchip/built-in.o
+ .bss.aes_start_cnt
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.aes_cbc_key
+                0x0000000000000000       0x10 board/molchip/built-in.o
+ .bss.calc_hash
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .bss.corr_hash
+                0x0000000000000000       0x20 board/molchip/built-in.o
+ .bss.secure_mode
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.sw_fsb_header
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.secure_block
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.secure_block_flag
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.core1_path
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.heap_region
+                0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.heap_top  0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.chip      0x0000000000000000        0x4 board/molchip/built-in.o
+ .bss.nand_chip
+                0x0000000000000000       0x24 board/molchip/built-in.o
+ .bss.page_buf  0x0000000000000000     0x1100 board/molchip/built-in.o
+ .bss.trc_base  0x0000000000000000        0x4 board/molchip/built-in.o
+ .text          0x0000000000000000        0x0 common/built-in.o
+ .text.sbrk     0x0000000000000000       0x68 common/built-in.o
+ .text.malloc_trim
+                0x0000000000000000       0xcc common/built-in.o
+ .text.free     0x0000000000000000      0x240 common/built-in.o
+ .text.malloc   0x0000000000000000      0x60c common/built-in.o
+ .text.calloc   0x0000000000000000      0x140 common/built-in.o
+ .text.realloc  0x0000000000000000      0x428 common/built-in.o
+ .text.memalign
+                0x0000000000000000      0x174 common/built-in.o
+ .text.valloc   0x0000000000000000        0xc common/built-in.o
+ .text.pvalloc  0x0000000000000000       0x18 common/built-in.o
+ .text.cfree    0x0000000000000000        0x4 common/built-in.o
+ .text.malloc_usable_size
+                0x0000000000000000       0x3c common/built-in.o
+ .text.mallopt  0x0000000000000000       0x54 common/built-in.o
+ .text.initf_malloc
+                0x0000000000000000       0x18 common/built-in.o
+ .text.malloc_simple
+                0x0000000000000000       0x30 common/built-in.o
+ .text.memalign_simple
+                0x0000000000000000       0x44 common/built-in.o
+ .text.stdio_serial_tstc
+                0x0000000000000000        0x4 common/built-in.o
+ .text.stdio_serial_getc
+                0x0000000000000000        0x4 common/built-in.o
+ .text.stdio_serial_puts
+                0x0000000000000000        0x8 common/built-in.o
+ .text.stdio_serial_putc
+                0x0000000000000000        0x8 common/built-in.o
+ .text.stdio_get_list
+                0x0000000000000000        0xc common/built-in.o
+ .text.stdio_get_by_name
+                0x0000000000000000       0x4c common/built-in.o
+ .text.stdio_clone
+                0x0000000000000000       0x38 common/built-in.o
+ .text.stdio_register_dev
+                0x0000000000000000       0x50 common/built-in.o
+ .text.stdio_register
+                0x0000000000000000        0x8 common/built-in.o
+ .text.stdio_init_tables
+                0x0000000000000000       0x1c common/built-in.o
+ .text.stdio_add_devices
+                0x0000000000000000       0x7c common/built-in.o
+ .text.stdio_init
+                0x0000000000000000       0x14 common/built-in.o
+ .rodata.realloc.str1.1
+                0x0000000000000000       0x25 common/built-in.o
+ .rodata.stdio_add_devices.str1.1
+                0x0000000000000000        0x7 common/built-in.o
+ .rodata.str1.1
+                0x0000000000000000       0x14 common/built-in.o
+ .data          0x0000000000000000        0x0 common/built-in.o
+ .data.av_      0x0000000000000000      0x408 common/built-in.o
+ .data.sbrk_base
+                0x0000000000000000        0x4 common/built-in.o
+ .data.trim_threshold
+                0x0000000000000000        0x4 common/built-in.o
+ .data.stdio_names
+                0x0000000000000000        0xc common/built-in.o
+ .bss           0x0000000000000000        0x0 common/built-in.o
+ .bss.current_mallinfo
+                0x0000000000000000       0x28 common/built-in.o
+ .bss.max_sbrked_mem
+                0x0000000000000000        0x4 common/built-in.o
+ .bss.max_total_mem
+                0x0000000000000000        0x4 common/built-in.o
+ .bss.top_pad   0x0000000000000000        0x4 common/built-in.o
+ .bss.devs      0x0000000000000000       0x4c common/built-in.o
+ .bss.stdio_devices
+                0x0000000000000000        0xc common/built-in.o
+ .text          0x0000000000000000        0x0 drivers/spi/built-in.o
+ .text.spi_set_wordlen
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.spi_do_alloc_slave
+                0x0000000000000000       0x4c drivers/spi/built-in.o
+ .text.sfc_driver_strength
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_enable
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_set_imr
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.spi_disalble_slave
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.spi_set_frame_format
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.spi_set_data_size
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.spi_set_transfer_mode
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.spi_set_read_data_num
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_set_baudrate
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.spi_disable_irq
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_enable_irq
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_get_status
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.spi_enable_port
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.spi_disable_port
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.spi_rx_sample_delay
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.spi_timing
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.spi_set_wire_mode
+                0x0000000000000000       0x38 drivers/spi/built-in.o
+ .text.spi_set_field_format
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.spi_set_frame_form
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.spi_set_addr_mode
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.sfc_ecc_enable
+                0x0000000000000000       0x34 drivers/spi/built-in.o
+ .text.sfc_addr_length
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.sfc_spare_length
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.sfc_spare_len_1k
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.ecc_sts_clr
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.sfc_ecc_clr
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.sfc_start_exec
+                0x0000000000000000       0x7c drivers/spi/built-in.o
+ .text.sfc_cmd  0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.sfc_addr
+                0x0000000000000000       0x70 drivers/spi/built-in.o
+ .text.sfc_xfc_mode
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.sfc_ecc_pos
+                0x0000000000000000       0x38 drivers/spi/built-in.o
+ .text.sfc_dma_mode
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.sfc_read_reg
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_wait_fbuf2_ready
+                0x0000000000000000       0x34 drivers/spi/built-in.o
+ .text.sfc_fbuf2_ack
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_dma_tx0_enable
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.sfc_dma_tx1_enable
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.sfc_dma_rx0_enable
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.sfc_dma_rx1_enable
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.sfc_dma_disable
+                0x0000000000000000       0x14 drivers/spi/built-in.o
+ .text.sfc_dma_tx0_start
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.sfc_dma_tx1_start
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.sfc_dma_tx0_stop
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_dma_tx1_stop
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_dma_rx0_start
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.sfc_dma_rx1_start
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.sfc_dma_rx0_stop
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_dma_rx1_stop
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_dma_write_data
+                0x0000000000000000       0x54 drivers/spi/built-in.o
+ .text.sfc_dma_write_spare
+                0x0000000000000000       0x54 drivers/spi/built-in.o
+ .text.sfc_dma_read_data
+                0x0000000000000000       0x58 drivers/spi/built-in.o
+ .text.sfc_dma_read_spare
+                0x0000000000000000       0x58 drivers/spi/built-in.o
+ .text.sfc_dma_wait_ready
+                0x0000000000000000        0x8 drivers/spi/built-in.o
+ .text.sfc_write_spare
+                0x0000000000000000       0x60 drivers/spi/built-in.o
+ .text.sfc_fill_spare
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.sfc_read_spare
+                0x0000000000000000       0x8c drivers/spi/built-in.o
+ .text.sfc_deal_spare
+                0x0000000000000000       0x98 drivers/spi/built-in.o
+ .text.sfc_ecc_enc_mode
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.sfc_spare_ecc_byte
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.sfc_ecc_page_size
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.sfc_ecc_mode
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.sfc_all_clr
+                0x0000000000000000        0x4 drivers/spi/built-in.o
+ .text.dma_rx0_cfg1
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.nfc_cmd_mode_clr
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.nfc_cmd_set_clr
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.nfc_dev_mode_clr
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.nfc_dma_common_clr
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.nfc_dma_en
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.nfc_dma_common_reg_set
+                0x0000000000000000       0x3c drivers/spi/built-in.o
+ .text.nfc_dma_rx_ch0_cfg1_reg_set
+                0x0000000000000000        0x4 drivers/spi/built-in.o
+ .text.nfc_dma_rx_ch0_start
+                0x0000000000000000       0x38 drivers/spi/built-in.o
+ .text.nfc_dma_rx_ch0_reg_set
+                0x0000000000000000        0x4 drivers/spi/built-in.o
+ .text.nfc_dma_clr
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.access_start_clr
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.access_start_set
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.nfc_access_start_reg_set
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.nfc_ccmd_datalength
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.nfc_dev_mode_reg_set
+                0x0000000000000000       0x54 drivers/spi/built-in.o
+ .text.nfc_cmd_mode_reg_set
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.nfc_addr4
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.nfc_cmd_set_reg_set
+                0x0000000000000000       0x58 drivers/spi/built-in.o
+ .text.sfc_dma_nor_read_data
+                0x0000000000000000       0x40 drivers/spi/built-in.o
+ .text.sfc_start
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.sfc_wait_fbuf0_ready
+                0x0000000000000000       0x34 drivers/spi/built-in.o
+ .text.sfc_start_ecc_encode
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.sfc_read_ecc
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.spi_nand_calculate_ecc
+                0x0000000000000000       0x40 drivers/spi/built-in.o
+ .text.mc_spi_xfer_set_cs.part.0
+                0x0000000000000000       0x4c drivers/spi/built-in.o
+ .text.molchip_spi_clk_enable
+                0x0000000000000000       0xac drivers/spi/built-in.o
+ .text.reset_spi
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text.mc_spi_enable
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.mc_spi_set_polarity
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.mc_spi_set_phase
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.mc_spi_set_frame_format
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.mc_spi_set_data_size
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .text.mc_spi_set_transfer_mode
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.mc_spi_set_read_data_num
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.mc_spi_set_baudrate
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.mc_spi_disable_irq
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.mc_spi_enable_irq
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.mc_spi_get_status
+                0x0000000000000000        0x8 drivers/spi/built-in.o
+ .text.mc_spi_enable_port
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.mc_spi_disable_port
+                0x0000000000000000       0x10 drivers/spi/built-in.o
+ .text.mc_spi_rx_sample_delay
+                0x0000000000000000        0xc drivers/spi/built-in.o
+ .text.mc_spi_xfer_set_cs
+                0x0000000000000000       0x60 drivers/spi/built-in.o
+ .text.mc_spi_set_slave_mode
+                0x0000000000000000       0x50 drivers/spi/built-in.o
+ .text.mc_spi_xfer
+                0x0000000000000000      0x120 drivers/spi/built-in.o
+ .text.mc_spi_init
+                0x0000000000000000       0x5c drivers/spi/built-in.o
+ .text.mc_spi_pinmux_cfg
+                0x0000000000000000       0x4c drivers/spi/built-in.o
+ .text.board_spi_init
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.mc_spi_slave_clk_enable
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.reset_spi_slave
+                0x0000000000000000       0x4c drivers/spi/built-in.o
+ .text.mc_spi_slave_enable
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.mc_spi_slave_set_polarity
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.mc_spi_slave_set_phase
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.mc_spi_slave_set_frame_format
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.mc_spi_slave_set_data_size
+                0x0000000000000000       0x2c drivers/spi/built-in.o
+ .text.mc_spi_slave_set_transfer_mode
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.mc_spi_slave_disable_irq
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.mc_spi_slave_enable_irq
+                0x0000000000000000       0x24 drivers/spi/built-in.o
+ .text.mc_spi_slave_get_status
+                0x0000000000000000       0x1c drivers/spi/built-in.o
+ .text.mc_spi_slave_rx_sample_delay
+                0x0000000000000000       0x20 drivers/spi/built-in.o
+ .text.mc_spi_slave_set_slave_mode
+                0x0000000000000000       0x30 drivers/spi/built-in.o
+ .text.poll_tx_only_data
+                0x0000000000000000       0x64 drivers/spi/built-in.o
+ .text.poll_rx_only_data
+                0x0000000000000000       0x7c drivers/spi/built-in.o
+ .text.mc_spi_slave_xfer
+                0x0000000000000000       0x90 drivers/spi/built-in.o
+ .text.mc_spi_slave_pinmux_cfg
+                0x0000000000000000       0x60 drivers/spi/built-in.o
+ .text.mc_spi_slave_init
+                0x0000000000000000       0x78 drivers/spi/built-in.o
+ .text.board_spi_slave_init
+                0x0000000000000000       0x48 drivers/spi/built-in.o
+ .rodata.spi_set_wordlen.str1.1
+                0x0000000000000000       0x19 drivers/spi/built-in.o
+ .rodata.board_spi_slave_init.str1.1
+                0x0000000000000000       0x18 drivers/spi/built-in.o
+ .data          0x0000000000000000        0x0 drivers/spi/built-in.o
+ .bss           0x0000000000000000        0x0 drivers/spi/built-in.o
+ .bss.spi       0x0000000000000000       0x10 drivers/spi/built-in.o
+ .bss.spi_slave
+                0x0000000000000000       0x28 drivers/spi/built-in.o
+ .text          0x0000000000000000        0x0 lib/built-in.o
+ .text.strncasecmp
+                0x0000000000000000       0x80 lib/built-in.o
+ .text.strcasecmp
+                0x0000000000000000        0x8 lib/built-in.o
+ .text.strncpy  0x0000000000000000       0x24 lib/built-in.o
+ .text.strcat   0x0000000000000000       0x30 lib/built-in.o
+ .text.strncat  0x0000000000000000       0x50 lib/built-in.o
+ .text.strcmp   0x0000000000000000       0x28 lib/built-in.o
+ .text.strncmp  0x0000000000000000       0x3c lib/built-in.o
+ .text.strchr   0x0000000000000000       0x2c lib/built-in.o
+ .text.strchrnul
+                0x0000000000000000       0x20 lib/built-in.o
+ .text.strlcpy  0x0000000000000000       0x50 lib/built-in.o
+ .text.strrchr  0x0000000000000000       0x38 lib/built-in.o
+ .text.strcspn  0x0000000000000000       0x48 lib/built-in.o
+ .text.strdup   0x0000000000000000       0x34 lib/built-in.o
+ .text.strspn   0x0000000000000000       0x4c lib/built-in.o
+ .text.strpbrk  0x0000000000000000       0x54 lib/built-in.o
+ .text.strtok   0x0000000000000000       0x68 lib/built-in.o
+ .text.strsep   0x0000000000000000       0x34 lib/built-in.o
+ .text.strswab  0x0000000000000000       0x48 lib/built-in.o
+ .text.memmove  0x0000000000000000       0x3c lib/built-in.o
+ .text.memscan  0x0000000000000000       0x28 lib/built-in.o
+ .text.strstr   0x0000000000000000       0x60 lib/built-in.o
+ .text.memchr   0x0000000000000000       0x30 lib/built-in.o
+ .text.memchr_inv
+                0x0000000000000000      0x100 lib/built-in.o
+ .text.crc32_no_comp
+                0x0000000000000000       0xd8 lib/built-in.o
+ .text.crc32    0x0000000000000000       0x14 lib/built-in.o
+ .text.crc32_wd
+                0x0000000000000000        0x4 lib/built-in.o
+ .text.crc32_wd_buf
+                0x0000000000000000       0x38 lib/built-in.o
+ .text.tick_to_time
+                0x0000000000000000       0xb0 lib/built-in.o
+ .text.get_tbclk
+                0x0000000000000000        0x8 lib/built-in.o
+ .text.timer_read_counter
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.timer_get_boot_us
+                0x0000000000000000       0x2c lib/built-in.o
+ .text.get_ticks
+                0x0000000000000000       0x30 lib/built-in.o
+ .text.timer_init
+                0x0000000000000000        0x8 lib/built-in.o
+ .text.get_timer
+                0x0000000000000000       0x18 lib/built-in.o
+ .text.timer_get_us
+                0x0000000000000000       0x1c lib/built-in.o
+ .text.__udelay
+                0x0000000000000000        0x4 lib/built-in.o
+ .text.udelay   0x0000000000000000      0x11c lib/built-in.o
+ .text.copy_from_user
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.kmalloc  0x0000000000000000       0x38 lib/built-in.o
+ .text.get_mem  0x0000000000000000       0x1c lib/built-in.o
+ .text.kmem_cache_alloc
+                0x0000000000000000        0xc lib/built-in.o
+ .text.skip_spaces
+                0x0000000000000000       0x28 lib/built-in.o
+ .text.strim    0x0000000000000000       0x5c lib/built-in.o
+ .text.panic_finish
+                0x0000000000000000       0x30 lib/built-in.o
+ .text.panic_str
+                0x0000000000000000        0xc lib/built-in.o
+ .text.panic    0x0000000000000000       0x1c lib/built-in.o
+ .text.fdtdec_get_int
+                0x0000000000000000       0x34 lib/built-in.o
+ .text.fdtdec_get_uint
+                0x0000000000000000       0x34 lib/built-in.o
+ .text.vsnprintf
+                0x0000000000000000        0x4 lib/built-in.o
+ .text.snprintf
+                0x0000000000000000       0x28 lib/built-in.o
+ .text.scnprintf
+                0x0000000000000000       0x28 lib/built-in.o
+ .text.vsprintf
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.sprintf  0x0000000000000000       0x28 lib/built-in.o
+ .text.vprintf  0x0000000000000000       0x34 lib/built-in.o
+ .text.__assert_fail
+                0x0000000000000000       0x14 lib/built-in.o
+ .text.simple_itoa
+                0x0000000000000000       0x58 lib/built-in.o
+ .text.print_grouped_ull
+                0x0000000000000000       0x88 lib/built-in.o
+ .text.str2off  0x0000000000000000       0x3c lib/built-in.o
+ .text.str2long
+                0x0000000000000000       0x3c lib/built-in.o
+ .text.__div64_32
+                0x0000000000000000       0xc8 lib/built-in.o
+ .text.div_s64_rem
+                0x0000000000000000       0xb0 lib/built-in.o
+ .text.div64_u64_rem
+                0x0000000000000000      0x148 lib/built-in.o
+ .text.div64_u64
+                0x0000000000000000      0x120 lib/built-in.o
+ .text.div64_s64
+                0x0000000000000000       0x44 lib/built-in.o
+ .text.iter_div_u64_rem
+                0x0000000000000000       0x3c lib/built-in.o
+ .text.get_prop_check_min_len
+                0x0000000000000000       0x3c lib/built-in.o
+ .text.fdtdec_get_compatible
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.fdtdec_get_uint64
+                0x0000000000000000       0x40 lib/built-in.o
+ .text.fdtdec_get_is_enabled
+                0x0000000000000000       0x3c lib/built-in.o
+ .text.fdtdec_lookup
+                0x0000000000000000       0x48 lib/built-in.o
+ .text.fdtdec_next_compatible
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.fdtdec_next_compatible_subnode
+                0x0000000000000000       0x68 lib/built-in.o
+ .text.fdtdec_next_alias
+                0x0000000000000000       0x94 lib/built-in.o
+ .text.fdtdec_add_aliases_for_id
+                0x0000000000000000      0x264 lib/built-in.o
+ .text.fdtdec_find_aliases_for_id
+                0x0000000000000000       0x44 lib/built-in.o
+ .text.fdtdec_get_alias_seq
+                0x0000000000000000      0x118 lib/built-in.o
+ .text.fdtdec_get_chosen_prop
+                0x0000000000000000       0x34 lib/built-in.o
+ .text.fdtdec_get_chosen_node
+                0x0000000000000000       0x28 lib/built-in.o
+ .text.fdtdec_prepare_fdt
+                0x0000000000000000       0x44 lib/built-in.o
+ .text.fdtdec_check_fdt
+                0x0000000000000000       0x10 lib/built-in.o
+ .text.fdtdec_lookup_phandle
+                0x0000000000000000       0x34 lib/built-in.o
+ .text.fdtdec_get_int_array
+                0x0000000000000000       0x64 lib/built-in.o
+ .text.decode_timing_property
+                0x0000000000000000       0x80 lib/built-in.o
+ .text.fdtdec_get_int_array_count
+                0x0000000000000000       0x58 lib/built-in.o
+ .text.fdtdec_locate_array
+                0x0000000000000000       0x28 lib/built-in.o
+ .text.fdtdec_get_bool
+                0x0000000000000000       0x1c lib/built-in.o
+ .text.fdtdec_parse_phandle_with_args
+                0x0000000000000000      0x14c lib/built-in.o
+ .text.fdtdec_get_child_count
+                0x0000000000000000       0x38 lib/built-in.o
+ .text.fdtdec_get_byte_array
+                0x0000000000000000       0x48 lib/built-in.o
+ .text.fdtdec_locate_byte_array
+                0x0000000000000000       0x24 lib/built-in.o
+ .text.fdtdec_get_config_int
+                0x0000000000000000       0x40 lib/built-in.o
+ .text.fdtdec_get_config_bool
+                0x0000000000000000       0x44 lib/built-in.o
+ .text.fdtdec_get_config_string
+                0x0000000000000000       0x3c lib/built-in.o
+ .text.fdtdec_decode_region
+                0x0000000000000000       0x54 lib/built-in.o
+ .text.fdtdec_get_number
+                0x0000000000000000       0x2c lib/built-in.o
+ .text.fdtdec_get_addr_size_fixed
+                0x0000000000000000       0xb8 lib/built-in.o
+ .text.fdtdec_get_addr_size_auto_parent
+                0x0000000000000000       0x6c lib/built-in.o
+ .text.fdtdec_get_addr_size_auto_noparent
+                0x0000000000000000       0x54 lib/built-in.o
+ .text.fdtdec_get_addr_size
+                0x0000000000000000       0x34 lib/built-in.o
+ .text.fdtdec_get_addr
+                0x0000000000000000        0x8 lib/built-in.o
+ .text.fdt_get_resource
+                0x0000000000000000       0xe0 lib/built-in.o
+ .text.fdt_get_named_resource
+                0x0000000000000000       0x40 lib/built-in.o
+ .text.fdtdec_decode_memory_region
+                0x0000000000000000      0x130 lib/built-in.o
+ .text.fdtdec_decode_display_timing
+                0x0000000000000000      0x2d4 lib/built-in.o
+ .text.fdtdec_setup_memory_size
+                0x0000000000000000       0x64 lib/built-in.o
+ .text.fdtdec_setup_memory_banksize
+                0x0000000000000000       0x80 lib/built-in.o
+ .text.fdtdec_setup
+                0x0000000000000000       0x30 lib/built-in.o
+ .rodata.crc_table
+                0x0000000000000000      0x400 lib/built-in.o
+ .rodata.udelay.str1.1
+                0x0000000000000000       0x1e lib/built-in.o
+ .rodata.__assert_fail.str1.1
+                0x0000000000000000       0x22 lib/built-in.o
+ .rodata.print_grouped_ull.str1.1
+                0x0000000000000000        0xb lib/built-in.o
+ .rodata.fdtdec_get_is_enabled.str1.1
+                0x0000000000000000        0xc lib/built-in.o
+ .rodata.fdtdec_next_alias.str1.1
+                0x0000000000000000        0x7 lib/built-in.o
+ .rodata.fdtdec_add_aliases_for_id.str1.1
+                0x0000000000000000        0x9 lib/built-in.o
+ .rodata.fdtdec_get_chosen_prop.str1.1
+                0x0000000000000000        0x8 lib/built-in.o
+ .rodata.fdtdec_prepare_fdt.str1.1
+                0x0000000000000000       0x96 lib/built-in.o
+ .rodata.fdtdec_get_config_int.str1.1
+                0x0000000000000000        0x8 lib/built-in.o
+ .rodata.fdtdec_decode_memory_region.str1.1
+                0x0000000000000000       0x25 lib/built-in.o
+ .rodata.fdtdec_decode_display_timing.str1.1
+                0x0000000000000000       0xca lib/built-in.o
+ .rodata.fdtdec_setup.str1.1
+                0x0000000000000000        0xf lib/built-in.o
+ .rodata.str1.1
+                0x0000000000000000      0x347 lib/built-in.o
+ .rodata.compat_names
+                0x0000000000000000       0xa0 lib/built-in.o
+ .data          0x0000000000000000        0x0 lib/built-in.o
+ .data.cur      0x0000000000000000        0x4 lib/built-in.o
+ .data.current  0x0000000000000000        0x4 lib/built-in.o
+ .bss           0x0000000000000000        0x0 lib/built-in.o
+ .bss.___strtok
+                0x0000000000000000        0x4 lib/built-in.o
+ .bss.local.0   0x0000000000000000       0x16 lib/built-in.o
+ .text          0x0000000000000000        0x0 lib/libfdt/built-in.o
+ .text.fdt_check_header
+                0x0000000000000000       0x74 lib/libfdt/built-in.o
+ .text.fdt_offset_ptr
+                0x0000000000000000       0x6c lib/libfdt/built-in.o
+ .text.fdt_next_tag
+                0x0000000000000000       0xf4 lib/libfdt/built-in.o
+ .text._fdt_check_node_offset
+                0x0000000000000000       0x3c lib/libfdt/built-in.o
+ .text._fdt_check_prop_offset
+                0x0000000000000000       0x3c lib/libfdt/built-in.o
+ .text.fdt_next_node
+                0x0000000000000000       0xbc lib/libfdt/built-in.o
+ .text.fdt_first_subnode
+                0x0000000000000000       0x34 lib/libfdt/built-in.o
+ .text.fdt_next_subnode
+                0x0000000000000000       0x4c lib/libfdt/built-in.o
+ .text._fdt_find_string
+                0x0000000000000000       0x58 lib/libfdt/built-in.o
+ .text.fdt_move
+                0x0000000000000000       0x44 lib/libfdt/built-in.o
+ .text.fdt_path_next_separator
+                0x0000000000000000       0x50 lib/libfdt/built-in.o
+ .text._nextprop
+                0x0000000000000000       0x54 lib/libfdt/built-in.o
+ .text.fdt_string
+                0x0000000000000000       0x14 lib/libfdt/built-in.o
+ .text.fdt_get_mem_rsv
+                0x0000000000000000       0x5c lib/libfdt/built-in.o
+ .text.fdt_num_mem_rsv
+                0x0000000000000000       0x2c lib/libfdt/built-in.o
+ .text.fdt_subnode_offset_namelen
+                0x0000000000000000       0xd0 lib/libfdt/built-in.o
+ .text.fdt_subnode_offset
+                0x0000000000000000       0x30 lib/libfdt/built-in.o
+ .text.fdt_get_name
+                0x0000000000000000       0x74 lib/libfdt/built-in.o
+ .text.fdt_first_property_offset
+                0x0000000000000000       0x20 lib/libfdt/built-in.o
+ .text.fdt_next_property_offset
+                0x0000000000000000       0x20 lib/libfdt/built-in.o
+ .text.fdt_get_property_by_offset
+                0x0000000000000000       0x50 lib/libfdt/built-in.o
+ .text.fdt_get_property_namelen
+                0x0000000000000000       0xbc lib/libfdt/built-in.o
+ .text.fdt_get_property
+                0x0000000000000000       0x3c lib/libfdt/built-in.o
+ .text.fdt_getprop_namelen
+                0x0000000000000000       0x20 lib/libfdt/built-in.o
+ .text.fdt_getprop_by_offset
+                0x0000000000000000       0x44 lib/libfdt/built-in.o
+ .text.fdt_getprop
+                0x0000000000000000       0x3c lib/libfdt/built-in.o
+ .text.fdt_get_phandle
+                0x0000000000000000       0x70 lib/libfdt/built-in.o
+ .text.fdt_get_max_phandle
+                0x0000000000000000       0x6c lib/libfdt/built-in.o
+ .text.fdt_get_alias_namelen
+                0x0000000000000000       0x44 lib/libfdt/built-in.o
+ .text.fdt_path_offset_namelen
+                0x0000000000000000       0xd8 lib/libfdt/built-in.o
+ .text.fdt_path_offset
+                0x0000000000000000       0x28 lib/libfdt/built-in.o
+ .text.fdt_get_alias
+                0x0000000000000000       0x28 lib/libfdt/built-in.o
+ .text.fdt_get_path
+                0x0000000000000000      0x15c lib/libfdt/built-in.o
+ .text.fdt_supernode_atdepth_offset
+                0x0000000000000000       0x9c lib/libfdt/built-in.o
+ .text.fdt_node_depth
+                0x0000000000000000       0x28 lib/libfdt/built-in.o
+ .text.fdt_parent_offset
+                0x0000000000000000       0x30 lib/libfdt/built-in.o
+ .text.fdt_node_offset_by_prop_value
+                0x0000000000000000       0x98 lib/libfdt/built-in.o
+ .text.fdt_node_offset_by_phandle
+                0x0000000000000000       0x6c lib/libfdt/built-in.o
+ .text.fdt_stringlist_contains
+                0x0000000000000000       0x7c lib/libfdt/built-in.o
+ .text.fdt_stringlist_count
+                0x0000000000000000       0x64 lib/libfdt/built-in.o
+ .text.fdt_stringlist_search
+                0x0000000000000000       0xa4 lib/libfdt/built-in.o
+ .text.fdt_stringlist_get
+                0x0000000000000000       0xac lib/libfdt/built-in.o
+ .text.fdt_node_check_compatible
+                0x0000000000000000       0x40 lib/libfdt/built-in.o
+ .text.fdt_node_offset_by_compatible
+                0x0000000000000000       0x74 lib/libfdt/built-in.o
+ .text._fdt_blocks_misordered
+                0x0000000000000000       0x64 lib/libfdt/built-in.o
+ .text._fdt_splice
+                0x0000000000000000       0x9c lib/libfdt/built-in.o
+ .text._fdt_splice_mem_rsv
+                0x0000000000000000       0x54 lib/libfdt/built-in.o
+ .text._fdt_splice_struct
+                0x0000000000000000       0x4c lib/libfdt/built-in.o
+ .text._fdt_packblocks
+                0x0000000000000000       0x8c lib/libfdt/built-in.o
+ .text._fdt_find_add_string
+                0x0000000000000000       0xa4 lib/libfdt/built-in.o
+ .text._fdt_add_property
+                0x0000000000000000       0x90 lib/libfdt/built-in.o
+ .text._fdt_rw_check_header
+                0x0000000000000000       0x60 lib/libfdt/built-in.o
+ .text.fdt_add_mem_rsv
+                0x0000000000000000       0x84 lib/libfdt/built-in.o
+ .text.fdt_del_mem_rsv
+                0x0000000000000000       0x58 lib/libfdt/built-in.o
+ .text.fdt_set_name
+                0x0000000000000000       0x88 lib/libfdt/built-in.o
+ .text.fdt_setprop
+                0x0000000000000000       0xec lib/libfdt/built-in.o
+ .text.fdt_appendprop
+                0x0000000000000000       0xdc lib/libfdt/built-in.o
+ .text.fdt_delprop
+                0x0000000000000000       0x68 lib/libfdt/built-in.o
+ .text.fdt_add_subnode_namelen
+                0x0000000000000000       0xf0 lib/libfdt/built-in.o
+ .text.fdt_add_subnode
+                0x0000000000000000       0x30 lib/libfdt/built-in.o
+ .text.fdt_del_node
+                0x0000000000000000       0x50 lib/libfdt/built-in.o
+ .text.fdt_open_into
+                0x0000000000000000      0x18c lib/libfdt/built-in.o
+ .text.fdt_pack
+                0x0000000000000000       0x5c lib/libfdt/built-in.o
+ .text.fdt_remove_unused_strings
+                0x0000000000000000       0xb0 lib/libfdt/built-in.o
+ .text.fdt_strerror
+                0x0000000000000000       0x58 lib/libfdt/built-in.o
+ .text._fdt_sw_check_header
+                0x0000000000000000       0x1c lib/libfdt/built-in.o
+ .text._fdt_grab_space
+                0x0000000000000000       0x5c lib/libfdt/built-in.o
+ .text.fdt_create
+                0x0000000000000000       0x64 lib/libfdt/built-in.o
+ .text.fdt_resize
+                0x0000000000000000       0xbc lib/libfdt/built-in.o
+ .text.fdt_add_reservemap_entry
+                0x0000000000000000       0x8c lib/libfdt/built-in.o
+ .text.fdt_finish_reservemap
+                0x0000000000000000       0x1c lib/libfdt/built-in.o
+ .text.fdt_begin_node
+                0x0000000000000000       0x64 lib/libfdt/built-in.o
+ .text.fdt_end_node
+                0x0000000000000000       0x38 lib/libfdt/built-in.o
+ .text.fdt_property_placeholder
+                0x0000000000000000      0x10c lib/libfdt/built-in.o
+ .text.fdt_property
+                0x0000000000000000       0x3c lib/libfdt/built-in.o
+ .text.fdt_finish
+                0x0000000000000000      0x100 lib/libfdt/built-in.o
+ .text.fdt_setprop_inplace_namelen_partial
+                0x0000000000000000       0x54 lib/libfdt/built-in.o
+ .text.fdt_setprop_inplace
+                0x0000000000000000       0x74 lib/libfdt/built-in.o
+ .text.fdt_nop_property
+                0x0000000000000000       0x40 lib/libfdt/built-in.o
+ .text._fdt_node_end_offset
+                0x0000000000000000       0x40 lib/libfdt/built-in.o
+ .text.fdt_nop_node
+                0x0000000000000000       0x50 lib/libfdt/built-in.o
+ .text.fdt_find_regions
+                0x0000000000000000      0x370 lib/libfdt/built-in.o
+ .text.fdt_create_empty_tree
+                0x0000000000000000       0x74 lib/libfdt/built-in.o
+ .text.fdt_address_cells
+                0x0000000000000000       0x4c lib/libfdt/built-in.o
+ .text.fdt_size_cells
+                0x0000000000000000       0x48 lib/libfdt/built-in.o
+ .text.fdt_add_region
+                0x0000000000000000       0x9c lib/libfdt/built-in.o
+ .text.fdt_add_alias_regions
+                0x0000000000000000      0x1a4 lib/libfdt/built-in.o
+ .text.fdt_next_region
+                0x0000000000000000      0x50c lib/libfdt/built-in.o
+ .text.fdt_first_region
+                0x0000000000000000       0x48 lib/libfdt/built-in.o
+ .rodata.fdt_get_phandle.str1.1
+                0x0000000000000000       0x16 lib/libfdt/built-in.o
+ .rodata.fdt_get_alias_namelen.str1.1
+                0x0000000000000000        0x9 lib/libfdt/built-in.o
+ .rodata.fdt_node_check_compatible.str1.1
+                0x0000000000000000        0xb lib/libfdt/built-in.o
+ .rodata.fdt_strerror.str1.1
+                0x0000000000000000       0x31 lib/libfdt/built-in.o
+ .rodata.str1.1
+                0x0000000000000000      0x12d lib/libfdt/built-in.o
+ .rodata.fdt_errtable
+                0x0000000000000000       0x48 lib/libfdt/built-in.o
+ .rodata.fdt_create_empty_tree.str1.1
+                0x0000000000000000        0x1 lib/libfdt/built-in.o
+ .rodata.fdt_address_cells.str1.1
+                0x0000000000000000        0xf lib/libfdt/built-in.o
+ .rodata.fdt_size_cells.str1.1
+                0x0000000000000000        0xc lib/libfdt/built-in.o
+ .rodata.fdt_add_alias_regions.str1.1
+                0x0000000000000000        0x8 lib/libfdt/built-in.o
+ .data          0x0000000000000000        0x0 lib/libfdt/built-in.o
+ .bss           0x0000000000000000        0x0 lib/libfdt/built-in.o
+ .comment       0x0000000000000000      0x13b lib/libfdt/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 lib/libfdt/built-in.o
+ .ARM.attributes
+                0x0000000000000000       0x2d lib/libfdt/built-in.o
+ .debug_aranges
+                0x0000000000000000      0x3a0 lib/libfdt/built-in.o
+ .debug_info    0x0000000000000000     0x7d9c lib/libfdt/built-in.o
+ .debug_abbrev  0x0000000000000000     0x1509 lib/libfdt/built-in.o
+ .debug_line    0x0000000000000000     0x4147 lib/libfdt/built-in.o
+ .debug_frame   0x0000000000000000      0xbc0 lib/libfdt/built-in.o
+ .debug_str     0x0000000000000000     0x2c72 lib/libfdt/built-in.o
+ .debug_loc     0x0000000000000000     0x6805 lib/libfdt/built-in.o
+ .debug_ranges  0x0000000000000000      0xd98 lib/libfdt/built-in.o
+ .text          0x0000000000000000        0x0 common/init/built-in.o
+ .text.show_boot_progress
+                0x0000000000000000        0x4 common/init/built-in.o
+ .data          0x0000000000000000        0x0 common/init/built-in.o
+ .bss           0x0000000000000000        0x0 common/init/built-in.o
+ .text          0x0000000000000000        0x0 arch/arm/lib/eabi_compat.o
+ .data          0x0000000000000000        0x0 arch/arm/lib/eabi_compat.o
+ .bss           0x0000000000000000        0x0 arch/arm/lib/eabi_compat.o
+ .rodata.raise.str1.1
+                0x0000000000000000       0x1b arch/arm/lib/eabi_compat.o
+ .text.raise    0x0000000000000000       0x1c arch/arm/lib/eabi_compat.o
+ .text.__aeabi_unwind_cpp_pr0
+                0x0000000000000000        0x4 arch/arm/lib/eabi_compat.o
+ .text.__aeabi_unwind_cpp_pr1
+                0x0000000000000000        0x4 arch/arm/lib/eabi_compat.o
+ .text.__aeabi_memcpy
+                0x0000000000000000        0x4 arch/arm/lib/eabi_compat.o
+ .text.__aeabi_memset
+                0x0000000000000000       0x10 arch/arm/lib/eabi_compat.o
+ .debug_info    0x0000000000000000      0x207 arch/arm/lib/eabi_compat.o
+ .debug_abbrev  0x0000000000000000      0x12f arch/arm/lib/eabi_compat.o
+ .debug_loc     0x0000000000000000      0x12a arch/arm/lib/eabi_compat.o
+ .debug_aranges
+                0x0000000000000000       0x38 arch/arm/lib/eabi_compat.o
+ .debug_ranges  0x0000000000000000       0x28 arch/arm/lib/eabi_compat.o
+ .debug_line    0x0000000000000000      0x103 arch/arm/lib/eabi_compat.o
+ .debug_str     0x0000000000000000      0x2a9 arch/arm/lib/eabi_compat.o
+ .comment       0x0000000000000000       0x23 arch/arm/lib/eabi_compat.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 arch/arm/lib/eabi_compat.o
+ .debug_frame   0x0000000000000000       0x68 arch/arm/lib/eabi_compat.o
+ .ARM.attributes
+                0x0000000000000000       0x2d arch/arm/lib/eabi_compat.o
+ .text          0x0000000000000000        0x0 arch/arm/lib/lib.a(lib1funcs.o)
+ .data          0x0000000000000000        0x0 arch/arm/lib/lib.a(lib1funcs.o)
+ .bss           0x0000000000000000        0x0 arch/arm/lib/lib.a(lib1funcs.o)
+ .text.__umodsi3
+                0x0000000000000000       0xa0 arch/arm/lib/lib.a(lib1funcs.o)
+ .text.__modsi3
+                0x0000000000000000       0xb8 arch/arm/lib/lib.a(lib1funcs.o)
+ .text          0x0000000000000000        0x0 arch/arm/lib/lib.a(uldivmod.o)
+ .data          0x0000000000000000        0x0 arch/arm/lib/lib.a(uldivmod.o)
+ .bss           0x0000000000000000        0x0 arch/arm/lib/lib.a(uldivmod.o)
+ .text.__aeabi_uldivmod
+                0x0000000000000000      0x184 arch/arm/lib/lib.a(uldivmod.o)
+ .debug_line    0x0000000000000000       0xab arch/arm/lib/lib.a(uldivmod.o)
+ .debug_info    0x0000000000000000       0x26 arch/arm/lib/lib.a(uldivmod.o)
+ .debug_abbrev  0x0000000000000000       0x14 arch/arm/lib/lib.a(uldivmod.o)
+ .debug_aranges
+                0x0000000000000000       0x20 arch/arm/lib/lib.a(uldivmod.o)
+ .debug_str     0x0000000000000000       0x6e arch/arm/lib/lib.a(uldivmod.o)
+ .ARM.attributes
+                0x0000000000000000       0x1d arch/arm/lib/lib.a(uldivmod.o)
+ .text          0x0000000000000000        0x0 arch/arm/lib/lib.a(div0.o)
+ .data          0x0000000000000000        0x0 arch/arm/lib/lib.a(div0.o)
+ .bss           0x0000000000000000        0x0 arch/arm/lib/lib.a(div0.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000000000                . = 0x0
+                0x0000000000000000                . = ALIGN (0x4)
+
+.text           0x0000000040000400     0x5a40
+                0x0000000040000400                __image_copy_start = .
+ *(.vectors)
+ .vectors       0x0000000040000400       0x44 arch/arm/lib/built-in.o
+                0x0000000040000400                _start
+                0x0000000040000420                _undefined_instruction
+                0x0000000040000424                _software_interrupt
+                0x0000000040000428                _prefetch_abort
+                0x000000004000042c                _data_abort
+                0x0000000040000430                _not_used
+                0x0000000040000434                _irq
+                0x0000000040000438                _fiq
+ arch/arm/cpu/armv7/start.o(.text*)
+ .text          0x0000000040000444       0xb0 arch/arm/cpu/armv7/start.o
+                0x0000000040000444                reset
+                0x0000000040000448                save_boot_params_ret
+                0x0000000040000484                c_runtime_cpu_setup
+                0x0000000040000494                save_boot_params
+                0x0000000040000498                cpu_init_cp15
+                0x00000000400004ec                cpu_init_crit
+ *(.text*)
+ .text.crc16    0x00000000400004f4       0x30 arch/arm/mach-molchip/built-in.o
+                0x00000000400004f4                crc16
+ .text.lowlevel_init
+                0x0000000040000524       0x20 arch/arm/cpu/armv7/built-in.o
+                0x0000000040000524                lowlevel_init
+ *fill*         0x0000000040000544       0x1c 
+ .text          0x0000000040000560      0x4e8 arch/arm/lib/built-in.o
+                0x0000000040000560                _main
+                0x00000000400005c0                memset
+                0x000000004000069c                memcpy
+ .text.nvm_boot_device
+                0x0000000040000a48       0x48 board/molchip/built-in.o
+                0x0000000040000a48                nvm_boot_device
+ .text.hang     0x0000000040000a90        0x4 board/molchip/built-in.o
+                0x0000000040000a90                hang
+ .text.timer_enable
+                0x0000000040000a94       0x58 board/molchip/built-in.o
+                0x0000000040000a94                timer_enable
+ .text.mc_udelay
+                0x0000000040000aec       0x48 board/molchip/built-in.o
+                0x0000000040000aec                mc_udelay
+ .text.delayms  0x0000000040000b34       0x1c board/molchip/built-in.o
+                0x0000000040000b34                delayms
+ .text.uart_set_baudrate
+                0x0000000040000b50       0x50 board/molchip/built-in.o
+                0x0000000040000b50                uart_set_baudrate
+ .text.uart_select_data_len
+                0x0000000040000ba0       0x1c board/molchip/built-in.o
+                0x0000000040000ba0                uart_select_data_len
+ .text.uart_pority_enable
+                0x0000000040000bbc       0x20 board/molchip/built-in.o
+                0x0000000040000bbc                uart_pority_enable
+ .text.uart_config_stop
+                0x0000000040000bdc       0x20 board/molchip/built-in.o
+                0x0000000040000bdc                uart_config_stop
+ .text.uart_fifo_enable
+                0x0000000040000bfc       0x20 board/molchip/built-in.o
+                0x0000000040000bfc                uart_fifo_enable
+ .text.uart_init
+                0x0000000040000c1c       0x24 board/molchip/built-in.o
+                0x0000000040000c1c                uart_init
+ .text.uart_hw_init
+                0x0000000040000c40       0x18 board/molchip/built-in.o
+                0x0000000040000c40                uart_hw_init
+ .text.uart_read_rbr
+                0x0000000040000c58       0x28 board/molchip/built-in.o
+                0x0000000040000c58                uart_read_rbr
+ .text.uart_getc
+                0x0000000040000c80       0x20 board/molchip/built-in.o
+                0x0000000040000c80                uart_getc
+ .text.uart_putc
+                0x0000000040000ca0       0x1c board/molchip/built-in.o
+                0x0000000040000ca0                uart_putc
+ .text.uart_puts
+                0x0000000040000cbc       0x40 board/molchip/built-in.o
+                0x0000000040000cbc                uart_puts
+ .text.puts     0x0000000040000cfc        0x4 board/molchip/built-in.o
+                0x0000000040000cfc                puts
+ .text.molchip_spic_clk_enable
+                0x0000000040000d00       0x20 board/molchip/built-in.o
+                0x0000000040000d00                molchip_spic_clk_enable
+ .text.molchip_dma_clk_enable
+                0x0000000040000d20       0x14 board/molchip/built-in.o
+                0x0000000040000d20                molchip_dma_clk_enable
+ .text.molchip_systimer_clk_enable
+                0x0000000040000d34       0x20 board/molchip/built-in.o
+                0x0000000040000d34                molchip_systimer_clk_enable
+ .text.molchip_uart_clk_enable
+                0x0000000040000d54       0x4c board/molchip/built-in.o
+                0x0000000040000d54                molchip_uart_clk_enable
+ .text.spi_nor_read_reg
+                0x0000000040000da0       0xac board/molchip/built-in.o
+                0x0000000040000da0                spi_nor_read_reg
+ .text.spi_nor_write_reg
+                0x0000000040000e4c       0x90 board/molchip/built-in.o
+                0x0000000040000e4c                spi_nor_write_reg
+ .text.spi_nor_set_winbond_adr_3mod
+                0x0000000040000edc       0x34 board/molchip/built-in.o
+                0x0000000040000edc                spi_nor_set_winbond_adr_3mod
+ .text.spi_nor_wait_ready
+                0x0000000040000f10       0x54 board/molchip/built-in.o
+                0x0000000040000f10                spi_nor_wait_ready
+ .text.spi_nor_erase_block
+                0x0000000040000f64       0x6c board/molchip/built-in.o
+                0x0000000040000f64                spi_nor_erase_block
+ .text.spi_nor_write_enable
+                0x0000000040000fd0        0xc board/molchip/built-in.o
+                0x0000000040000fd0                spi_nor_write_enable
+ .text.spi_enable_qe
+                0x0000000040000fdc       0x70 board/molchip/built-in.o
+                0x0000000040000fdc                spi_enable_qe
+ .text.spi_nor_set_gd256_extern
+                0x000000004000104c       0x70 board/molchip/built-in.o
+                0x000000004000104c                spi_nor_set_gd256_extern
+ .text.spi_nor_set_qe_enable_gd
+                0x00000000400010bc       0x40 board/molchip/built-in.o
+                0x00000000400010bc                spi_nor_set_qe_enable_gd
+ .text.spi_nor_set_status_fudan
+                0x00000000400010fc       0x74 board/molchip/built-in.o
+                0x00000000400010fc                spi_nor_set_status_fudan
+ .text.spi_nor_write_data
+                0x0000000040001170      0x114 board/molchip/built-in.o
+                0x0000000040001170                spi_nor_write_data
+ .text.spi_nor_erase_sector
+                0x0000000040001284       0x54 board/molchip/built-in.o
+                0x0000000040001284                spi_nor_erase_sector
+ .text.spi_nor_set_DS_Qual_enable
+                0x00000000400012d8       0x98 board/molchip/built-in.o
+                0x00000000400012d8                spi_nor_set_DS_Qual_enable
+ .text.spi_nor_set_ds_extern
+                0x0000000040001370       0x28 board/molchip/built-in.o
+                0x0000000040001370                spi_nor_set_ds_extern
+ .text.spi_nor_set_ds_25m4ba_extern
+                0x0000000040001398       0x60 board/molchip/built-in.o
+                0x0000000040001398                spi_nor_set_ds_25m4ba_extern
+ .text.spi_nor_read_id
+                0x00000000400013f8       0x8c board/molchip/built-in.o
+                0x00000000400013f8                spi_nor_read_id
+ .text.spi_nor_write_with_addr
+                0x0000000040001484       0x90 board/molchip/built-in.o
+                0x0000000040001484                spi_nor_write_with_addr
+ .text.spi_nor_erase
+                0x0000000040001514      0x118 board/molchip/built-in.o
+                0x0000000040001514                spi_nor_erase
+ .text.spi_nor_program_image
+                0x000000004000162c       0x4c board/molchip/built-in.o
+                0x000000004000162c                spi_nor_program_image
+ .text.dma_reset
+                0x0000000040001678       0x1c board/molchip/built-in.o
+                0x0000000040001678                dma_reset
+ .text.enable_channel
+                0x0000000040001694       0x14 board/molchip/built-in.o
+                0x0000000040001694                enable_channel
+ .text.dma_int_enable
+                0x00000000400016a8       0x18 board/molchip/built-in.o
+                0x00000000400016a8                dma_int_enable
+ .text.spic_request_cid
+                0x00000000400016c0       0x18 board/molchip/built-in.o
+                0x00000000400016c0                spic_request_cid
+ .text.dma_init
+                0x00000000400016d8       0xac board/molchip/built-in.o
+                0x00000000400016d8                dma_init
+ .text.sdio_init
+                0x0000000040001784       0xb8 board/molchip/built-in.o
+                0x0000000040001784                sdio_init
+ .text.sdio_write
+                0x000000004000183c       0x5c board/molchip/built-in.o
+                0x000000004000183c                sdio_write
+ .text.sdl_sdio1_program_image
+                0x0000000040001898       0x5c board/molchip/built-in.o
+                0x0000000040001898                sdl_sdio1_program_image
+ .text.unstuff_bits
+                0x00000000400018f4       0x4c board/molchip/built-in.o
+                0x00000000400018f4                unstuff_bits
+ .text.mmc_go_idle
+                0x0000000040001940       0x40 board/molchip/built-in.o
+                0x0000000040001940                mmc_go_idle
+ .text.mmc_send_if_cond
+                0x0000000040001980       0x6c board/molchip/built-in.o
+                0x0000000040001980                mmc_send_if_cond
+ .text.mmc_app_cmd
+                0x00000000400019ec       0x50 board/molchip/built-in.o
+                0x00000000400019ec                mmc_app_cmd
+ .text.mmc_wait_for_app_cmd
+                0x0000000040001a3c       0x64 board/molchip/built-in.o
+                0x0000000040001a3c                mmc_wait_for_app_cmd
+ .text.mmc_send_app_op_cond
+                0x0000000040001aa0       0x84 board/molchip/built-in.o
+                0x0000000040001aa0                mmc_send_app_op_cond
+ .text.mmc_send_cxd_native
+                0x0000000040001b24       0x60 board/molchip/built-in.o
+                0x0000000040001b24                mmc_send_cxd_native
+ .text.mmc_send_cid
+                0x0000000040001b84       0x10 board/molchip/built-in.o
+                0x0000000040001b84                mmc_send_cid
+ .text.mmc_send_relative_addr
+                0x0000000040001b94       0x4c board/molchip/built-in.o
+                0x0000000040001b94                mmc_send_relative_addr
+ .text.mmc_send_csd
+                0x0000000040001be0        0xc board/molchip/built-in.o
+                0x0000000040001be0                mmc_send_csd
+ .text.mmc_select_card
+                0x0000000040001bec       0x44 board/molchip/built-in.o
+                0x0000000040001bec                mmc_select_card
+ .text.mmc_dw_set_blocklen
+                0x0000000040001c30       0x3c board/molchip/built-in.o
+                0x0000000040001c30                mmc_dw_set_blocklen
+ .text.mmc_app_set_bus_width
+                0x0000000040001c6c       0x60 board/molchip/built-in.o
+                0x0000000040001c6c                mmc_app_set_bus_width
+ .text.mmc_blk_mq_issue_rw_rq
+                0x0000000040001ccc       0xd4 board/molchip/built-in.o
+                0x0000000040001ccc                mmc_blk_mq_issue_rw_rq
+ .text.init_sdcard
+                0x0000000040001da0       0xf8 board/molchip/built-in.o
+                0x0000000040001da0                init_sdcard
+ .text.mci_selection
+                0x0000000040001e98       0x28 board/molchip/built-in.o
+                0x0000000040001e98                mci_selection
+ .text.dw_mci_start_command
+                0x0000000040001ec0       0x68 board/molchip/built-in.o
+                0x0000000040001ec0                dw_mci_start_command
+ .text.dw_mci_prepare_command
+                0x0000000040001f28       0x78 board/molchip/built-in.o
+                0x0000000040001f28                dw_mci_prepare_command
+ .text.dw_mci_prepare_desc32
+                0x0000000040001fa0       0x84 board/molchip/built-in.o
+                0x0000000040001fa0                dw_mci_prepare_desc32
+ .text.dw_mci_idmac_start_dma
+                0x0000000040002024       0x24 board/molchip/built-in.o
+                0x0000000040002024                dw_mci_idmac_start_dma
+ .text.dw_mci_submit_data_dma
+                0x0000000040002048       0x28 board/molchip/built-in.o
+                0x0000000040002048                dw_mci_submit_data_dma
+ .text.dw_mci_start_request
+                0x0000000040002070       0x68 board/molchip/built-in.o
+                0x0000000040002070                dw_mci_start_request
+ .text.dw_mci_setup_bus
+                0x00000000400020d8       0xa8 board/molchip/built-in.o
+                0x00000000400020d8                dw_mci_setup_bus
+ .text.dw_mci_set_ios
+                0x0000000040002180       0x34 board/molchip/built-in.o
+                0x0000000040002180                dw_mci_set_ios
+ .text.dw_mci_hw_reset
+                0x00000000400021b4       0x20 board/molchip/built-in.o
+                0x00000000400021b4                dw_mci_hw_reset
+ .text.dw_mci_init_dma
+                0x00000000400021d4       0x6c board/molchip/built-in.o
+                0x00000000400021d4                dw_mci_init_dma
+ .text.dw_mci_init
+                0x0000000040002240       0x40 board/molchip/built-in.o
+                0x0000000040002240                dw_mci_init
+ .text.mci_addr_selection
+                0x0000000040002280      0x100 board/molchip/built-in.o
+                0x0000000040002280                mci_addr_selection
+ .text.mci_drive_strength
+                0x0000000040002380       0xfc board/molchip/built-in.o
+                0x0000000040002380                mci_drive_strength
+ .text.mci_pull_up
+                0x000000004000247c       0xfc board/molchip/built-in.o
+                0x000000004000247c                mci_pull_up
+ .text.mci_io_mux
+                0x0000000040002578       0x58 board/molchip/built-in.o
+                0x0000000040002578                mci_io_mux
+ .text.mci_clk_enable
+                0x00000000400025d0       0x44 board/molchip/built-in.o
+                0x00000000400025d0                mci_clk_enable
+ .text.mci_ctl_reset
+                0x0000000040002614       0x34 board/molchip/built-in.o
+                0x0000000040002614                mci_ctl_reset
+ .text.dw_mci_ctrl_reset
+                0x0000000040002648       0x58 board/molchip/built-in.o
+                0x0000000040002648                dw_mci_ctrl_reset
+ .text.dw_mci_idmac_reset
+                0x00000000400026a0       0x1c board/molchip/built-in.o
+                0x00000000400026a0                dw_mci_idmac_reset
+ .text.dw_mci_select_idmac_interface
+                0x00000000400026bc       0x1c board/molchip/built-in.o
+                0x00000000400026bc                dw_mci_select_idmac_interface
+ .text.dw_mci_deable_idmac
+                0x00000000400026d8       0x1c board/molchip/built-in.o
+                0x00000000400026d8                dw_mci_deable_idmac
+ .text.dw_mci_start_run
+                0x00000000400026f4       0x18 board/molchip/built-in.o
+                0x00000000400026f4                dw_mci_start_run
+ .text.dw_mci_mask_interrupts
+                0x000000004000270c       0x20 board/molchip/built-in.o
+                0x000000004000270c                dw_mci_mask_interrupts
+ .text.dw_mci_set_descriptor
+                0x000000004000272c       0x14 board/molchip/built-in.o
+                0x000000004000272c                dw_mci_set_descriptor
+ .text.dw_mci_cmd_start
+                0x0000000040002740       0x14 board/molchip/built-in.o
+                0x0000000040002740                dw_mci_cmd_start
+ .text.dw_mci_wait_while_busy
+                0x0000000040002754       0x5c board/molchip/built-in.o
+                0x0000000040002754                dw_mci_wait_while_busy
+ .text.mci_send_cmd
+                0x00000000400027b0       0x54 board/molchip/built-in.o
+                0x00000000400027b0                mci_send_cmd
+ .text.wait_cmd_done
+                0x0000000040002804       0x74 board/molchip/built-in.o
+                0x0000000040002804                wait_cmd_done
+ .text.dw_mci_cmdarg
+                0x0000000040002878       0x14 board/molchip/built-in.o
+                0x0000000040002878                dw_mci_cmdarg
+ .text.dw_mci_enable_dma_interface
+                0x000000004000288c       0x1c board/molchip/built-in.o
+                0x000000004000288c                dw_mci_enable_dma_interface
+ .text.dw_mci_disable_irq
+                0x00000000400028a8       0x1c board/molchip/built-in.o
+                0x00000000400028a8                dw_mci_disable_irq
+ .text.dw_mci_tmout
+                0x00000000400028c4       0x14 board/molchip/built-in.o
+                0x00000000400028c4                dw_mci_tmout
+ .text.dw_mci_bytcnt
+                0x00000000400028d8       0x14 board/molchip/built-in.o
+                0x00000000400028d8                dw_mci_bytcnt
+ .text.dw_mci_blksz
+                0x00000000400028ec       0x14 board/molchip/built-in.o
+                0x00000000400028ec                dw_mci_blksz
+ .text.dw_mci_reset
+                0x0000000040002900       0x3c board/molchip/built-in.o
+                0x0000000040002900                dw_mci_reset
+ .text.dw_mci_interrupt
+                0x000000004000293c       0xa4 board/molchip/built-in.o
+                0x000000004000293c                dw_mci_interrupt
+ .text.dw_mci_disable_clk
+                0x00000000400029e0       0x1c board/molchip/built-in.o
+                0x00000000400029e0                dw_mci_disable_clk
+ .text.dw_mci_div
+                0x00000000400029fc       0x14 board/molchip/built-in.o
+                0x00000000400029fc                dw_mci_div
+ .text.dw_mci_enable_clk
+                0x0000000040002a10       0x1c board/molchip/built-in.o
+                0x0000000040002a10                dw_mci_enable_clk
+ .text.dw_mci_slot_bus
+                0x0000000040002a2c       0x14 board/molchip/built-in.o
+                0x0000000040002a2c                dw_mci_slot_bus
+ .text.dw_mci_sdr_mode_set
+                0x0000000040002a40       0x28 board/molchip/built-in.o
+                0x0000000040002a40                dw_mci_sdr_mode_set
+ .text.sdio_cfg_init
+                0x0000000040002a68       0x30 board/molchip/built-in.o
+                0x0000000040002a68                sdio_cfg_init
+ .text.mci_init
+                0x0000000040002a98       0x68 board/molchip/built-in.o
+                0x0000000040002a98                mci_init
+ .text.get_cur_downinfo
+                0x0000000040002b00        0xc board/molchip/built-in.o
+                0x0000000040002b00                get_cur_downinfo
+ .text.get_downmap_info
+                0x0000000040002b0c       0xdc board/molchip/built-in.o
+                0x0000000040002b0c                get_downmap_info
+ .text.uart_xfr_data
+                0x0000000040002be8       0x78 board/molchip/built-in.o
+                0x0000000040002be8                uart_xfr_data
+ .text.uart_rcv_data
+                0x0000000040002c60       0xb4 board/molchip/built-in.o
+                0x0000000040002c60                uart_rcv_data
+ .text.send_ack
+                0x0000000040002d14       0x68 board/molchip/built-in.o
+                0x0000000040002d14                send_ack
+ .text.down_connect
+                0x0000000040002d7c       0x20 board/molchip/built-in.o
+                0x0000000040002d7c                down_connect
+ .text.down_start
+                0x0000000040002d9c       0x64 board/molchip/built-in.o
+                0x0000000040002d9c                down_start
+ .text.down_continue
+                0x0000000040002e00       0x6c board/molchip/built-in.o
+                0x0000000040002e00                down_continue
+ .text.down_finish
+                0x0000000040002e6c       0x30 board/molchip/built-in.o
+                0x0000000040002e6c                down_finish
+ .text.down_execute
+                0x0000000040002e9c       0x4c board/molchip/built-in.o
+                0x0000000040002e9c                down_execute
+ .text.xch_baudrate
+                0x0000000040002ee8       0x50 board/molchip/built-in.o
+                0x0000000040002ee8                xch_baudrate
+ .text.complete_info
+                0x0000000040002f38       0x8c board/molchip/built-in.o
+                0x0000000040002f38                complete_info
+ .text.down_comp_info
+                0x0000000040002fc4       0x14 board/molchip/built-in.o
+                0x0000000040002fc4                down_comp_info
+ .text.uart_send_heart_beat
+                0x0000000040002fd8       0x34 board/molchip/built-in.o
+                0x0000000040002fd8                uart_send_heart_beat
+ .text.uart_handshake
+                0x000000004000300c       0x3c board/molchip/built-in.o
+                0x000000004000300c                uart_handshake
+ .text.uart_identify
+                0x0000000040003048       0x34 board/molchip/built-in.o
+                0x0000000040003048                uart_identify
+ .text.send_string
+                0x000000004000307c       0x94 board/molchip/built-in.o
+                0x000000004000307c                send_string
+ .text.crc_check
+                0x0000000040003110       0x54 board/molchip/built-in.o
+                0x0000000040003110                crc_check
+ .text.lookfor_func
+                0x0000000040003164       0x38 board/molchip/built-in.o
+                0x0000000040003164                lookfor_func
+ .text.uart_preboot
+                0x000000004000319c       0x3c board/molchip/built-in.o
+                0x000000004000319c                uart_preboot
+ .text.uart_boot
+                0x00000000400031d8       0xbc board/molchip/built-in.o
+                0x00000000400031d8                uart_boot
+ .text.usb_identify
+                0x0000000040003294       0x3c board/molchip/built-in.o
+                0x0000000040003294                usb_identify
+ .text.usb_rcv_data
+                0x00000000400032d0       0x24 board/molchip/built-in.o
+                0x00000000400032d0                usb_rcv_data
+ .text.usb_send_string
+                0x00000000400032f4       0x9c board/molchip/built-in.o
+                0x00000000400032f4                usb_send_string
+ .text.usb_send_ack
+                0x0000000040003390       0x68 board/molchip/built-in.o
+                0x0000000040003390                usb_send_ack
+ .text.usb_down_connect
+                0x00000000400033f8       0x1c board/molchip/built-in.o
+                0x00000000400033f8                usb_down_connect
+ .text.usb_down_start
+                0x0000000040003414       0x60 board/molchip/built-in.o
+                0x0000000040003414                usb_down_start
+ .text.usb_down_continue
+                0x0000000040003474       0x64 board/molchip/built-in.o
+                0x0000000040003474                usb_down_continue
+ .text.usb_down_finish
+                0x00000000400034d8       0x2c board/molchip/built-in.o
+                0x00000000400034d8                usb_down_finish
+ .text.usb_down_execute
+                0x0000000040003504       0x48 board/molchip/built-in.o
+                0x0000000040003504                usb_down_execute
+ .text.usb_xch_baudrate
+                0x000000004000354c       0x14 board/molchip/built-in.o
+                0x000000004000354c                usb_xch_baudrate
+ .text.usb_crc_check
+                0x0000000040003560       0x54 board/molchip/built-in.o
+                0x0000000040003560                usb_crc_check
+ .text.usb_lookfor_func
+                0x00000000400035b4       0x84 board/molchip/built-in.o
+                0x00000000400035b4                usb_lookfor_func
+ .text.usb_preboot
+                0x0000000040003638       0x2c board/molchip/built-in.o
+                0x0000000040003638                usb_preboot
+ .text.usb_boot
+                0x0000000040003664       0xb0 board/molchip/built-in.o
+                0x0000000040003664                usb_boot
+ .text.dwc2_start_req
+                0x0000000040003714      0x1b4 board/molchip/built-in.o
+                0x0000000040003714                dwc2_start_req
+ .text.dwc2_program_zlp
+                0x00000000400038c8       0x48 board/molchip/built-in.o
+                0x00000000400038c8                dwc2_program_zlp
+ .text.dwc2_ep_enable
+                0x0000000040003910       0x64 board/molchip/built-in.o
+                0x0000000040003910                dwc2_ep_enable
+ .text.dwc2_setup_process
+                0x0000000040003974      0x370 board/molchip/built-in.o
+                0x0000000040003974                dwc2_setup_process
+ .text.dwc2_complete_request
+                0x0000000040003ce4       0x18 board/molchip/built-in.o
+                0x0000000040003ce4                dwc2_complete_request
+ .text.dwc2_enqueue_setup
+                0x0000000040003cfc       0x4c board/molchip/built-in.o
+                0x0000000040003cfc                dwc2_enqueue_setup
+ .text.dwc2_process_control
+                0x0000000040003d48      0x13c board/molchip/built-in.o
+                0x0000000040003d48                dwc2_process_control
+ .text.dwc2_irq_enumdone
+                0x0000000040003e84       0xec board/molchip/built-in.o
+                0x0000000040003e84                dwc2_irq_enumdone
+ .text.dwc2_complete_in
+                0x0000000040003f70      0x104 board/molchip/built-in.o
+                0x0000000040003f70                dwc2_complete_in
+ .text.dwc2_handle_outdone
+                0x0000000040004074      0x104 board/molchip/built-in.o
+                0x0000000040004074                dwc2_handle_outdone
+ .text.dwc2_epint
+                0x0000000040004178       0xac board/molchip/built-in.o
+                0x0000000040004178                dwc2_epint
+ .text.dwc2_irq
+                0x0000000040004224      0x114 board/molchip/built-in.o
+                0x0000000040004224                dwc2_irq
+ .text.dwc2_sw_init
+                0x0000000040004338      0x11c board/molchip/built-in.o
+                0x0000000040004338                dwc2_sw_init
+ .text.usb_xfr_data
+                0x0000000040004454       0xb0 board/molchip/built-in.o
+                0x0000000040004454                usb_xfr_data
+ .text.usb_get_data
+                0x0000000040004504       0xac board/molchip/built-in.o
+                0x0000000040004504                usb_get_data
+ .text.mem_malloc_init
+                0x00000000400045b0       0x34 common/built-in.o
+                0x00000000400045b0                mem_malloc_init
+ .text.s_init   0x00000000400045e4       0x24 common/built-in.o
+                0x00000000400045e4                s_init
+ .text.board_init_f
+                0x0000000040004608       0x10 common/built-in.o
+                0x0000000040004608                board_init_f
+ .text.board_init_r
+                0x0000000040004618      0x13c common/built-in.o
+                0x0000000040004618                board_init_r
+ .text.enalbe_spic
+                0x0000000040004754       0x1c drivers/spi/built-in.o
+                0x0000000040004754                enalbe_spic
+ .text.reset_spic
+                0x0000000040004770       0x3c drivers/spi/built-in.o
+                0x0000000040004770                reset_spic
+ .text.clk_select_spic
+                0x00000000400047ac       0x28 drivers/spi/built-in.o
+                0x00000000400047ac                clk_select_spic
+ .text.spi_set_polarity
+                0x00000000400047d4       0x20 drivers/spi/built-in.o
+                0x00000000400047d4                spi_set_polarity
+ .text.spi_set_phase
+                0x00000000400047f4       0x20 drivers/spi/built-in.o
+                0x00000000400047f4                spi_set_phase
+ .text.spi_set_dummy_byte
+                0x0000000040004814       0x20 drivers/spi/built-in.o
+                0x0000000040004814                spi_set_dummy_byte
+ .text.sfc_cmd_write
+                0x0000000040004834       0x18 drivers/spi/built-in.o
+                0x0000000040004834                sfc_cmd_write
+ .text.sfc_cmd_read
+                0x000000004000484c       0x18 drivers/spi/built-in.o
+                0x000000004000484c                sfc_cmd_read
+ .text.sfc_data_type
+                0x0000000040004864       0x20 drivers/spi/built-in.o
+                0x0000000040004864                sfc_data_type
+ .text.nfc_data_length
+                0x0000000040004884       0x28 drivers/spi/built-in.o
+                0x0000000040004884                nfc_data_length
+ .text.sfc_data_length
+                0x00000000400048ac       0x3c drivers/spi/built-in.o
+                0x00000000400048ac                sfc_data_length
+ .text.nfc_fb_incdec_mode
+                0x00000000400048e8       0x1c drivers/spi/built-in.o
+                0x00000000400048e8                nfc_fb_incdec_mode
+ .text.nfc_set_tmod
+                0x0000000040004904       0x20 drivers/spi/built-in.o
+                0x0000000040004904                nfc_set_tmod
+ .text.nfc_set_fldform
+                0x0000000040004924       0x20 drivers/spi/built-in.o
+                0x0000000040004924                nfc_set_fldform
+ .text.nfc_set_frmform
+                0x0000000040004944       0x20 drivers/spi/built-in.o
+                0x0000000040004944                nfc_set_frmform
+ .text.nfc_set_cmd_wmode
+                0x0000000040004964       0x20 drivers/spi/built-in.o
+                0x0000000040004964                nfc_set_cmd_wmode
+ .text.nfc_set_phase_vld
+                0x0000000040004984       0x1c drivers/spi/built-in.o
+                0x0000000040004984                nfc_set_phase_vld
+ .text.nfc_set_data_wmode
+                0x00000000400049a0       0x1c drivers/spi/built-in.o
+                0x00000000400049a0                nfc_set_data_wmode
+ .text.nfc_set_addr_wmode
+                0x00000000400049bc       0x20 drivers/spi/built-in.o
+                0x00000000400049bc                nfc_set_addr_wmode
+ .text.sfc_dev_mode_reg_set
+                0x00000000400049dc       0xa0 drivers/spi/built-in.o
+                0x00000000400049dc                sfc_dev_mode_reg_set
+ .text.sfc_write_reg
+                0x0000000040004a7c       0x10 drivers/spi/built-in.o
+                0x0000000040004a7c                sfc_write_reg
+ .text.sfc_write_data
+                0x0000000040004a8c       0x88 drivers/spi/built-in.o
+                0x0000000040004a8c                sfc_write_data
+ .text.sfc_read_data
+                0x0000000040004b14       0x78 drivers/spi/built-in.o
+                0x0000000040004b14                sfc_read_data
+ .text.nfc_dma_reg_inter_num
+                0x0000000040004b8c       0x18 drivers/spi/built-in.o
+                0x0000000040004b8c                nfc_dma_reg_inter_num
+ .text.spi_cs_holdtime
+                0x0000000040004ba4       0x1c drivers/spi/built-in.o
+                0x0000000040004ba4                spi_cs_holdtime
+ .text.spi_set_rd_delay_cnt
+                0x0000000040004bc0       0x18 drivers/spi/built-in.o
+                0x0000000040004bc0                spi_set_rd_delay_cnt
+ .text.spi_init
+                0x0000000040004bd8       0xa8 drivers/spi/built-in.o
+                0x0000000040004bd8                spi_init
+ .text.board_spic_init
+                0x0000000040004c80        0x8 drivers/spi/built-in.o
+                0x0000000040004c80                board_spic_init
+ .text.nfc_all_clr
+                0x0000000040004c88       0x30 drivers/spi/built-in.o
+                0x0000000040004c88                nfc_all_clr
+ .text.sfc_access_start
+                0x0000000040004cb8       0x10 drivers/spi/built-in.o
+                0x0000000040004cb8                sfc_access_start
+ .text.nfc_flowbuf_clr
+                0x0000000040004cc8       0x10 drivers/spi/built-in.o
+                0x0000000040004cc8                nfc_flowbuf_clr
+ .text.nfc_cmd  0x0000000040004cd8       0x18 drivers/spi/built-in.o
+                0x0000000040004cd8                nfc_cmd
+ .text.sfc_done
+                0x0000000040004cf0       0x44 drivers/spi/built-in.o
+                0x0000000040004cf0                sfc_done
+ .text.spi_set_4_bit_address_mode
+                0x0000000040004d34       0x30 drivers/spi/built-in.o
+                0x0000000040004d34                spi_set_4_bit_address_mode
+ .text.nfc_data_type
+                0x0000000040004d64       0x20 drivers/spi/built-in.o
+                0x0000000040004d64                nfc_data_type
+ .text.nfc_set_page_size
+                0x0000000040004d84       0x2c drivers/spi/built-in.o
+                0x0000000040004d84                nfc_set_page_size
+ .text.nfc_cmd_type
+                0x0000000040004db0       0x20 drivers/spi/built-in.o
+                0x0000000040004db0                nfc_cmd_type
+ .text.nfc_read_en
+                0x0000000040004dd0        0x4 drivers/spi/built-in.o
+                0x0000000040004dd0                nfc_read_en
+ .text.nfc_check_buf_p2_rdy
+                0x0000000040004dd4       0x30 drivers/spi/built-in.o
+                0x0000000040004dd4                nfc_check_buf_p2_rdy
+ .text.nfc_addr_length
+                0x0000000040004e04       0x20 drivers/spi/built-in.o
+                0x0000000040004e04                nfc_addr_length
+ .text.spic_addr
+                0x0000000040004e24       0x70 drivers/spi/built-in.o
+                0x0000000040004e24                spic_addr
+ .text.write_nfc_soft_fb_p2_ack
+                0x0000000040004e94       0x14 drivers/spi/built-in.o
+                0x0000000040004e94                write_nfc_soft_fb_p2_ack
+ .text.strcpy   0x0000000040004ea8       0x18 lib/built-in.o
+                0x0000000040004ea8                strcpy
+ .text.strlen   0x0000000040004ec0       0x20 lib/built-in.o
+                0x0000000040004ec0                strlen
+ .text.strnlen  0x0000000040004ee0       0x2c lib/built-in.o
+                0x0000000040004ee0                strnlen
+ .text.memcmp   0x0000000040004f0c       0x34 lib/built-in.o
+                0x0000000040004f0c                memcmp
+ .text.put_dec_trunc
+                0x0000000040004f40       0xe0 lib/built-in.o
+ .text.put_dec  0x0000000040005020      0x148 lib/built-in.o
+ .text.number   0x0000000040005168      0x2e0 lib/built-in.o
+ .text.string   0x0000000040005448       0xf0 lib/built-in.o
+ .text.vsnprintf_internal
+                0x0000000040005538      0x6c4 lib/built-in.o
+ .text.vscnprintf
+                0x0000000040005bfc       0x24 lib/built-in.o
+                0x0000000040005bfc                vscnprintf
+ .text.printf   0x0000000040005c20       0x44 lib/built-in.o
+                0x0000000040005c20                printf
+ .text.board_init_f_alloc_reserve
+                0x0000000040005c64       0x10 common/init/built-in.o
+                0x0000000040005c64                board_init_f_alloc_reserve
+ .text.board_init_f_init_reserve
+                0x0000000040005c74       0x20 common/init/built-in.o
+                0x0000000040005c74                board_init_f_init_reserve
+ .text.__udivsi3
+                0x0000000040005c94       0x9c arch/arm/lib/lib.a(lib1funcs.o)
+                0x0000000040005c94                __udivsi3
+                0x0000000040005c94                __aeabi_uidiv
+ .text.__divsi3
+                0x0000000040005d30       0xcc arch/arm/lib/lib.a(lib1funcs.o)
+                0x0000000040005d30                __aeabi_idiv
+                0x0000000040005d30                __divsi3
+ .text.__aeabi_uidivmod
+                0x0000000040005dfc       0x30 arch/arm/lib/lib.a(lib1funcs.o)
+                0x0000000040005dfc                __aeabi_uidivmod
+                0x0000000040005e14                __aeabi_idivmod
+ .text.Ldiv0    0x0000000040005e2c       0x10 arch/arm/lib/lib.a(lib1funcs.o)
+ .text.__div0   0x0000000040005e3c        0x4 arch/arm/lib/lib.a(div0.o)
+                0x0000000040005e3c                __div0
+
+.glue_7         0x0000000040005e40        0x0
+ .glue_7        0x0000000040005e40        0x0 linker stubs
+
+.glue_7t        0x0000000040005e40        0x0
+ .glue_7t       0x0000000040005e40        0x0 linker stubs
+
+.vfp11_veneer   0x0000000040005e40        0x0
+ .vfp11_veneer  0x0000000040005e40        0x0 linker stubs
+
+.v4_bx          0x0000000040005e40        0x0
+ .v4_bx         0x0000000040005e40        0x0 linker stubs
+
+.iplt           0x0000000040005e40        0x0
+ .iplt          0x0000000040005e40        0x0 arch/arm/cpu/armv7/start.o
+                0x0000000040005e40                . = ALIGN (0x4)
+
+.rodata         0x0000000040005e40      0x770
+ *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.rodata*)))
+ .rodata.Line_Coding
+                0x0000000040005e40        0x7 board/molchip/built-in.o
+                0x0000000040005e40                Line_Coding
+ *fill*         0x0000000040005e47        0x1 
+ .rodata.bos_desc
+                0x0000000040005e48        0xc board/molchip/built-in.o
+                0x0000000040005e48                bos_desc
+ .rodata.cs_fs_desc
+                0x0000000040005e54       0x4b board/molchip/built-in.o
+                0x0000000040005e54                cs_fs_desc
+ *fill*         0x0000000040005e9f        0x1 
+ .rodata.cs_hs_desc
+                0x0000000040005ea0       0x4b board/molchip/built-in.o
+                0x0000000040005ea0                cs_hs_desc
+ *fill*         0x0000000040005eeb        0x1 
+ .rodata.device_string_index1
+                0x0000000040005eec       0x42 board/molchip/built-in.o
+                0x0000000040005eec                device_string_index1
+ *fill*         0x0000000040005f2e        0x2 
+ .rodata.device_string_index2
+                0x0000000040005f30       0x26 board/molchip/built-in.o
+                0x0000000040005f30                device_string_index2
+ *fill*         0x0000000040005f56        0x2 
+ .rodata.device_type_string
+                0x0000000040005f58        0x4 board/molchip/built-in.o
+                0x0000000040005f58                device_type_string
+ .rodata.freqs  0x0000000040005f5c       0x10 board/molchip/built-in.o
+ .rodata.pftbl  0x0000000040005f6c       0x1c board/molchip/built-in.o
+                0x0000000040005f6c                pftbl
+ .rodata.q_desc
+                0x0000000040005f88        0xa board/molchip/built-in.o
+                0x0000000040005f88                q_desc
+ *fill*         0x0000000040005f92        0x2 
+ .rodata.usb_pftbl
+                0x0000000040005f94       0x18 board/molchip/built-in.o
+                0x0000000040005f94                usb_pftbl
+ .rodata.crc16_table
+                0x0000000040005fac      0x200 arch/arm/mach-molchip/built-in.o
+                0x0000000040005fac                crc16_table
+ .rodata.func_list
+                0x00000000400061ac        0xe board/molchip/built-in.o
+                0x00000000400061ac                func_list
+ .rodata._ctype
+                0x00000000400061ba      0x100 lib/built-in.o
+                0x00000000400061ba                _ctype
+ .rodata.digits.1
+                0x00000000400062ba       0x10 lib/built-in.o
+ .rodata.dwc2_epint.str1.1
+                0x00000000400062ca        0x8 board/molchip/built-in.o
+ .rodata.dwc2_irq.str1.1
+                0x00000000400062d2       0x12 board/molchip/built-in.o
+ .rodata.dwc2_setup_process.str1.1
+                0x00000000400062e4        0xc board/molchip/built-in.o
+ .rodata.hex_asc
+                0x00000000400062f0       0x11 lib/built-in.o
+ .rodata.sdio_write.str1.1
+                0x0000000040006301       0x16 board/molchip/built-in.o
+ .rodata.send_string.str1.1
+                0x0000000040006317       0x11 board/molchip/built-in.o
+ .rodata.spi_nor_erase.str1.1
+                0x0000000040006328       0x16 board/molchip/built-in.o
+ .rodata.spi_nor_read_reg.str1.1
+                0x000000004000633e        0x6 board/molchip/built-in.o
+ .rodata.spl_sdio1_load_image.str1.1
+                0x0000000040006344       0x14 board/molchip/built-in.o
+ .rodata.str1.1
+                0x0000000040006358      0x22a board/molchip/built-in.o
+ .rodata.string.str1.1
+                0x0000000040006582        0x7 lib/built-in.o
+ .rodata.usb_complete_info.str1.1
+                0x0000000040006589        0x6 board/molchip/built-in.o
+ .rodata.usb_rcv_data.str1.1
+                0x000000004000658f        0x6 board/molchip/built-in.o
+ .rodata.usb_send_ack.str1.1
+                0x0000000040006595        0x6 board/molchip/built-in.o
+ .rodata.usb_send_string.str1.1
+                0x000000004000659b       0x15 board/molchip/built-in.o
+                0x00000000400065b0                . = ALIGN (0x4)
+
+.data           0x00000000400065b0      0x4c6
+ *(.data*)
+ .data.spi_nor_ids
+                0x00000000400065b0      0x3b8 board/molchip/built-in.o
+                0x00000000400065b0                spi_nor_ids
+ .data.MapTbl   0x0000000040006968       0xfc board/molchip/built-in.o
+                0x0000000040006968                MapTbl
+ .data.d_desc   0x0000000040006a64       0x12 board/molchip/built-in.o
+                0x0000000040006a64                d_desc
+
+.igot.plt       0x0000000040006a78        0x0
+ .igot.plt      0x0000000040006a78        0x0 arch/arm/cpu/armv7/start.o
+                0x0000000040006a78                . = ALIGN (0x4)
+
+.u_boot_list
+ *(SORT_BY_NAME(.u_boot_list*))
+                0x0000000040006a78                . = ALIGN (0x4)
+                0x0000000040006a78                __image_copy_end = .
+
+.rel.dyn        0x0000000040006a78        0x0
+                0x0000000040006a78                __rel_dyn_start = .
+ *(.rel*)
+ .rel.iplt      0x0000000040006a78        0x0 arch/arm/cpu/armv7/start.o
+                0x0000000040006a78                __rel_dyn_end = .
+
+.end
+ *(.__end)
+                0x0000000040006a78                _image_binary_end = .
+
+.bss            0x0000000040006a78    0x11280
+                0x0000000040006a78                __bss_start = .
+ *(.bss*)
+ .bss.info      0x0000000040006a78        0x4 board/molchip/built-in.o
+                0x0000000040006a78                info
+ .bss.csd_struct
+                0x0000000040006a7c        0x4 board/molchip/built-in.o
+ .bss.descriptor
+                0x0000000040006a80    0x10000 board/molchip/built-in.o
+                0x0000000040006a80                descriptor
+ .bss.reg_sdio_base
+                0x0000000040016a80        0x4 board/molchip/built-in.o
+ .bss.reg_sdio_clk_mux
+                0x0000000040016a84        0x4 board/molchip/built-in.o
+ .bss.reg_sdio_ctrl0
+                0x0000000040016a88        0x4 board/molchip/built-in.o
+ .bss.reg_sdio_ctrl1
+                0x0000000040016a8c        0x4 board/molchip/built-in.o
+ .bss.reg_sdio_ctrl2
+                0x0000000040016a90        0x4 board/molchip/built-in.o
+ .bss.reg_sdio_spl1
+                0x0000000040016a94        0x4 board/molchip/built-in.o
+ .bss.sdio_dllout_status_reg_drv
+                0x0000000040016a98        0x4 board/molchip/built-in.o
+ .bss.sdio_dllout_status_reg_spl
+                0x0000000040016a9c        0x4 board/molchip/built-in.o
+ .bss.counter.0
+                0x0000000040016aa0        0x4 board/molchip/built-in.o
+ .bss.d_info    0x0000000040016aa4       0x24 board/molchip/built-in.o
+                0x0000000040016aa4                d_info
+ .bss.recv_buf  0x0000000040016ac8      0x400 board/molchip/built-in.o
+                0x0000000040016ac8                recv_buf
+ .bss.txfr_buf  0x0000000040016ec8       0x40 board/molchip/built-in.o
+                0x0000000040016ec8                txfr_buf
+ .bss.rx_buf    0x0000000040016f08      0x400 board/molchip/built-in.o
+                0x0000000040016f08                rx_buf
+ .bss.tx_buf    0x0000000040017308      0x200 board/molchip/built-in.o
+                0x0000000040017308                tx_buf
+ .bss.dev_speed
+                0x0000000040017508        0x4 board/molchip/built-in.o
+                0x0000000040017508                dev_speed
+ .bss.dev_status
+                0x000000004001750c        0x4 board/molchip/built-in.o
+                0x000000004001750c                dev_status
+ .bss.ep0_state
+                0x0000000040017510        0x4 board/molchip/built-in.o
+                0x0000000040017510                ep0_state
+ .bss.ep1_in_buf
+                0x0000000040017514      0x200 board/molchip/built-in.o
+                0x0000000040017514                ep1_in_buf
+ .bss.ep1_out_buf
+                0x0000000040017714      0x400 board/molchip/built-in.o
+                0x0000000040017714                ep1_out_buf
+ .bss.eps0_in_buf
+                0x0000000040017b14       0x80 board/molchip/built-in.o
+                0x0000000040017b14                eps0_in_buf
+ .bss.eps0_out_buf
+                0x0000000040017b94       0x80 board/molchip/built-in.o
+                0x0000000040017b94                eps0_out_buf
+ .bss.eps_0     0x0000000040017c14       0x1c board/molchip/built-in.o
+                0x0000000040017c14                eps_0
+ .bss.eps_ctrl_req
+                0x0000000040017c30       0x18 board/molchip/built-in.o
+                0x0000000040017c30                eps_ctrl_req
+ .bss.eps_in    0x0000000040017c48       0x1c board/molchip/built-in.o
+                0x0000000040017c48                eps_in
+ .bss.eps_in_req
+                0x0000000040017c64       0x30 board/molchip/built-in.o
+                0x0000000040017c64                eps_in_req
+ .bss.eps_out   0x0000000040017c94       0x1c board/molchip/built-in.o
+                0x0000000040017c94                eps_out
+ .bss.eps_out_req
+                0x0000000040017cb0       0x30 board/molchip/built-in.o
+                0x0000000040017cb0                eps_out_req
+ .bss.setup_pack
+                0x0000000040017ce0        0x8 board/molchip/built-in.o
+                0x0000000040017ce0                setup_pack
+ .bss.mem_malloc_brk
+                0x0000000040017ce8        0x4 common/built-in.o
+                0x0000000040017ce8                mem_malloc_brk
+ .bss.mem_malloc_end
+                0x0000000040017cec        0x4 common/built-in.o
+                0x0000000040017cec                mem_malloc_end
+ .bss.mem_malloc_start
+                0x0000000040017cf0        0x4 common/built-in.o
+                0x0000000040017cf0                mem_malloc_start
+ .bss.flash_size
+                0x0000000040017cf4        0x4 drivers/spi/built-in.o
+                0x0000000040017cf4                flash_size
+                0x0000000040017cf8                . = ALIGN (0x4)
+                0x0000000040017cf8                __bss_end = .
+                0x0000000000011280                __bss_size = (__bss_end - __bss_start)
+
+.dynsym
+ *(.dynsym)
+
+.dynbss
+ *(.dynbss)
+
+.dynstr
+ *(.dynstr*)
+
+.dynamic
+ *(.dynamic*)
+
+.hash
+ *(.hash*)
+
+.plt
+ *(.plt*)
+
+.interp
+ *(.interp*)
+
+.gnu
+ *(.gnu*)
+
+.ARM.exidx
+ *(.ARM.exidx*)
+Address of section .text set to 0x40000400
+LOAD arch/arm/cpu/armv7/start.o
+START GROUP
+LOAD arch/arm/mach-molchip/built-in.o
+LOAD arch/arm/cpu/armv7/built-in.o
+LOAD arch/arm/cpu/built-in.o
+LOAD arch/arm/lib/built-in.o
+LOAD board/molchip/built-in.o
+LOAD common/built-in.o
+LOAD drivers/spi/built-in.o
+LOAD lib/built-in.o
+LOAD lib/libfdt/built-in.o
+LOAD common/init/built-in.o
+END GROUP
+LOAD arch/arm/lib/eabi_compat.o
+LOAD arch/arm/lib/lib.a
+OUTPUT(u-boot-sdl elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x0000000000000000       0x29
+ .ARM.attributes
+                0x0000000000000000       0x1d arch/arm/cpu/armv7/start.o
+ .ARM.attributes
+                0x000000000000001d       0x2d arch/arm/mach-molchip/built-in.o
+ .ARM.attributes
+                0x000000000000004a       0x2b arch/arm/cpu/armv7/built-in.o
+ .ARM.attributes
+                0x0000000000000075       0x29 arch/arm/lib/built-in.o
+ .ARM.attributes
+                0x000000000000009e       0x2d board/molchip/built-in.o
+ .ARM.attributes
+                0x00000000000000cb       0x2d common/built-in.o
+ .ARM.attributes
+                0x00000000000000f8       0x2d drivers/spi/built-in.o
+ .ARM.attributes
+                0x0000000000000125       0x2d lib/built-in.o
+ .ARM.attributes
+                0x0000000000000152       0x2d common/init/built-in.o
+ .ARM.attributes
+                0x000000000000017f       0x1d arch/arm/lib/lib.a(lib1funcs.o)
+ .ARM.attributes
+                0x000000000000019c       0x2d arch/arm/lib/lib.a(div0.o)
+
+.comment        0x0000000000000000       0x22
+ .comment       0x0000000000000000       0x22 arch/arm/mach-molchip/built-in.o
+                                         0x46 (size before relaxing)
+ .comment       0x0000000000000022       0x8c arch/arm/cpu/armv7/built-in.o
+ .comment       0x0000000000000022      0x15e arch/arm/lib/built-in.o
+ .comment       0x0000000000000022      0x325 board/molchip/built-in.o
+ .comment       0x0000000000000022       0x8c common/built-in.o
+ .comment       0x0000000000000022       0x8c drivers/spi/built-in.o
+ .comment       0x0000000000000022      0x181 lib/built-in.o
+ .comment       0x0000000000000022       0x23 common/init/built-in.o
+ .comment       0x0000000000000022       0x23 arch/arm/lib/lib.a(div0.o)
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 arch/arm/mach-molchip/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 arch/arm/cpu/armv7/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 arch/arm/lib/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 board/molchip/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 common/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 drivers/spi/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 lib/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 common/init/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 arch/arm/lib/lib.a(div0.o)
+
+.debug_line     0x0000000000000000    0x139d2
+ .debug_line    0x0000000000000000       0x89 arch/arm/cpu/armv7/start.o
+ .debug_line    0x0000000000000089      0x169 arch/arm/mach-molchip/built-in.o
+ .debug_line    0x00000000000001f2      0x635 arch/arm/cpu/armv7/built-in.o
+ .debug_line    0x0000000000000827     0x19fe arch/arm/lib/built-in.o
+ .debug_line    0x0000000000002225     0x8734 board/molchip/built-in.o
+ .debug_line    0x000000000000a959     0x1cc4 common/built-in.o
+ .debug_line    0x000000000000c61d     0x2bf8 drivers/spi/built-in.o
+ .debug_line    0x000000000000f215     0x4535 lib/built-in.o
+ .debug_line    0x000000000001374a      0x14e common/init/built-in.o
+ .debug_line    0x0000000000013898       0xf1 arch/arm/lib/lib.a(lib1funcs.o)
+ .debug_line    0x0000000000013989       0x49 arch/arm/lib/lib.a(div0.o)
+
+.debug_info     0x0000000000000000    0x27995
+ .debug_info    0x0000000000000000       0x26 arch/arm/cpu/armv7/start.o
+ .debug_info    0x0000000000000026      0x279 arch/arm/mach-molchip/built-in.o
+ .debug_info    0x000000000000029f      0xadb arch/arm/cpu/armv7/built-in.o
+ .debug_info    0x0000000000000d7a     0x4aea arch/arm/lib/built-in.o
+ .debug_info    0x0000000000005864     0xfc76 board/molchip/built-in.o
+ .debug_info    0x00000000000154da     0x3f7f common/built-in.o
+ .debug_info    0x0000000000019459     0x5354 drivers/spi/built-in.o
+ .debug_info    0x000000000001e7ad     0x8be0 lib/built-in.o
+ .debug_info    0x000000000002738d      0x58c common/init/built-in.o
+ .debug_info    0x0000000000027919       0x22 arch/arm/lib/lib.a(lib1funcs.o)
+ .debug_info    0x000000000002793b       0x5a arch/arm/lib/lib.a(div0.o)
+
+.debug_abbrev   0x0000000000000000     0x80a4
+ .debug_abbrev  0x0000000000000000       0x14 arch/arm/cpu/armv7/start.o
+ .debug_abbrev  0x0000000000000014      0x1a2 arch/arm/mach-molchip/built-in.o
+ .debug_abbrev  0x00000000000001b6      0x4e5 arch/arm/cpu/armv7/built-in.o
+ .debug_abbrev  0x000000000000069b     0x11b7 arch/arm/lib/built-in.o
+ .debug_abbrev  0x0000000000001852     0x35bf board/molchip/built-in.o
+ .debug_abbrev  0x0000000000004e11      0xb18 common/built-in.o
+ .debug_abbrev  0x0000000000005929      0xd14 drivers/spi/built-in.o
+ .debug_abbrev  0x000000000000663d     0x1845 lib/built-in.o
+ .debug_abbrev  0x0000000000007e82      0x1ac common/init/built-in.o
+ .debug_abbrev  0x000000000000802e       0x12 arch/arm/lib/lib.a(lib1funcs.o)
+ .debug_abbrev  0x0000000000008040       0x64 arch/arm/lib/lib.a(div0.o)
+
+.debug_aranges  0x0000000000000000     0x1c80
+ .debug_aranges
+                0x0000000000000000       0x20 arch/arm/cpu/armv7/start.o
+ .debug_aranges
+                0x0000000000000020       0x48 arch/arm/mach-molchip/built-in.o
+ .debug_aranges
+                0x0000000000000068      0x128 arch/arm/cpu/armv7/built-in.o
+ .debug_aranges
+                0x0000000000000190      0x300 arch/arm/lib/built-in.o
+ .debug_aranges
+                0x0000000000000490      0xb98 board/molchip/built-in.o
+ .debug_aranges
+                0x0000000000001028      0x158 common/built-in.o
+ .debug_aranges
+                0x0000000000001180      0x5b0 drivers/spi/built-in.o
+ .debug_aranges
+                0x0000000000001730      0x4b8 lib/built-in.o
+ .debug_aranges
+                0x0000000000001be8       0x30 common/init/built-in.o
+ .debug_aranges
+                0x0000000000001c18       0x48 arch/arm/lib/lib.a(lib1funcs.o)
+ .debug_aranges
+                0x0000000000001c60       0x20 arch/arm/lib/lib.a(div0.o)
+
+.debug_str      0x0000000000000000     0x734c
+ .debug_str     0x0000000000000000       0x71 arch/arm/cpu/armv7/start.o
+ .debug_str     0x0000000000000071      0x22e arch/arm/mach-molchip/built-in.o
+                                        0x4c8 (size before relaxing)
+ .debug_str     0x000000000000029f      0x3d7 arch/arm/cpu/armv7/built-in.o
+                                        0xd34 (size before relaxing)
+ .debug_str     0x0000000000000676     0x1dff arch/arm/lib/built-in.o
+                                       0x4304 (size before relaxing)
+ .debug_str     0x0000000000002475     0x2cce board/molchip/built-in.o
+                                       0x7ca3 (size before relaxing)
+ .debug_str     0x0000000000005143      0x548 common/built-in.o
+                                       0x2a93 (size before relaxing)
+ .debug_str     0x000000000000568b      0x89b drivers/spi/built-in.o
+                                       0x21fe (size before relaxing)
+ .debug_str     0x0000000000005f26     0x139d lib/built-in.o
+                                       0x42dd (size before relaxing)
+ .debug_str     0x00000000000072c3       0x55 common/init/built-in.o
+                                        0x53f (size before relaxing)
+ .debug_str     0x0000000000007318       0x19 arch/arm/lib/lib.a(lib1funcs.o)
+                                         0x6f (size before relaxing)
+ .debug_str     0x0000000000007331       0x1b arch/arm/lib/lib.a(div0.o)
+                                        0x18f (size before relaxing)
+
+.debug_frame    0x0000000000000000     0x4354
+ .debug_frame   0x0000000000000000       0x5c arch/arm/mach-molchip/built-in.o
+ .debug_frame   0x000000000000005c      0x1e8 arch/arm/cpu/armv7/built-in.o
+ .debug_frame   0x0000000000000244      0x47c arch/arm/lib/built-in.o
+ .debug_frame   0x00000000000006c0     0x1e8c board/molchip/built-in.o
+ .debug_frame   0x000000000000254c      0x338 common/built-in.o
+ .debug_frame   0x0000000000002884      0xce0 drivers/spi/built-in.o
+ .debug_frame   0x0000000000003564      0xd88 lib/built-in.o
+ .debug_frame   0x00000000000042ec       0x48 common/init/built-in.o
+ .debug_frame   0x0000000000004334       0x20 arch/arm/lib/lib.a(div0.o)
+
+.debug_loc      0x0000000000000000    0x19eff
+ .debug_loc     0x0000000000000000       0xc3 arch/arm/mach-molchip/built-in.o
+ .debug_loc     0x00000000000000c3      0x5b7 arch/arm/cpu/armv7/built-in.o
+ .debug_loc     0x000000000000067a     0x12b1 arch/arm/lib/built-in.o
+ .debug_loc     0x000000000000192b     0x9988 board/molchip/built-in.o
+ .debug_loc     0x000000000000b2b3     0x272c common/built-in.o
+ .debug_loc     0x000000000000d9df     0x3dc4 drivers/spi/built-in.o
+ .debug_loc     0x00000000000117a3     0x8634 lib/built-in.o
+ .debug_loc     0x0000000000019dd7      0x128 common/init/built-in.o
+
+.debug_ranges   0x0000000000000000     0x2b58
+ .debug_ranges  0x0000000000000000       0x40 arch/arm/mach-molchip/built-in.o
+ .debug_ranges  0x0000000000000040      0x140 arch/arm/cpu/armv7/built-in.o
+ .debug_ranges  0x0000000000000180      0x5c8 arch/arm/lib/built-in.o
+ .debug_ranges  0x0000000000000748      0xe60 board/molchip/built-in.o
+ .debug_ranges  0x00000000000015a8      0x2b0 common/built-in.o
+ .debug_ranges  0x0000000000001858      0x8d8 drivers/spi/built-in.o
+ .debug_ranges  0x0000000000002130      0x9a0 lib/built-in.o
+ .debug_ranges  0x0000000000002ad0       0x38 common/init/built-in.o
+ .debug_ranges  0x0000000000002b08       0x40 arch/arm/lib/lib.a(lib1funcs.o)
+ .debug_ranges  0x0000000000002b48       0x10 arch/arm/lib/lib.a(div0.o)

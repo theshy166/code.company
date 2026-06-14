@@ -1,0 +1,25 @@
+config MOLCHIP_PTS
+	bool "Molchip PTS"
+	help
+	  molchip pts driver
+
+
+config MOLCHIP_LZMA
+	bool "Molchip LZMA"
+	help
+	  molchip lzma driver
+
+config MOLCHIP_SYST
+	bool "Molchip SYST"
+	help
+	  molchip sys timer driver
+
+config MOLCHIP_APB_TIMER
+	bool "Molchip APB Timer"
+	help
+	  molchip apb timer driver
+config MOLCHIP_WAKEUP_SOURCE
+	bool "Molchip wakeup source cfg"
+	depends on ARCH_MOLCHIP_SUSPEND
+	help
+	  molchip wakeup source driver

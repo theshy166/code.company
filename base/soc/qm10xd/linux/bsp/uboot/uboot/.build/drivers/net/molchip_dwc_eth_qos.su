@@ -1,0 +1,16 @@
+../drivers/net/molchip_dwc_eth_qos.c:1330:5:qos_free_pkt	8	static
+../drivers/net/molchip_dwc_eth_qos.c:1211:6:qos_stop	8	static
+../drivers/net/molchip_dwc_eth_qos.c:750:12:qos_set_full_duplex	16	static
+../drivers/net/molchip_dwc_eth_qos.c:1264:5:qos_send	16	static
+../drivers/net/molchip_dwc_eth_qos.c:1305:5:qos_recv	16	static
+../drivers/net/molchip_dwc_eth_qos.c:851:12:qos_write_hwaddr	16	static
+../drivers/net/molchip_dwc_eth_qos.c:1366:12:qos_probe_resources_core	8	static
+../drivers/net/molchip_dwc_eth_qos.c:1750:12:qos_remove	16	static
+../drivers/net/molchip_dwc_eth_qos.c:663:12:qos_mdio_wait_idle.isra	16	static
+../drivers/net/molchip_dwc_eth_qos.c:669:12:qos_mdio_read	24	static
+../drivers/net/molchip_dwc_eth_qos.c:711:12:qos_mdio_write	24	static
+../drivers/net/molchip_dwc_eth_qos.c:165:12:bit_modify_rdata.isra	0	static
+../drivers/net/molchip_dwc_eth_qos.c:72:12:bit_check_and_modify.isra	4	static
+../drivers/net/molchip_dwc_eth_qos.c:1500:12:qos_probe	112	static
+../drivers/net/molchip_dwc_eth_qos.c:895:12:qos_start	40	static
+../drivers/net/molchip_dwc_eth_qos.c:1440:5:change_loopback	32	static

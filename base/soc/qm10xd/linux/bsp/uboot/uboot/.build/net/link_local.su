@@ -1,0 +1,5 @@
+../net/link_local.c:67:23:pick	8	static
+../net/link_local.c:87:13:configure_wait	8	static
+../net/link_local.c:130:13:link_local_timeout	16	static
+../net/link_local.c:105:6:link_local_start	16	static
+../net/link_local.c:210:6:link_local_receive_arp	32	static

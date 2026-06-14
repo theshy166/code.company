@@ -1,0 +1,210 @@
+#ifndef __FY_I2S_DRV_H__
+#define __FY_I2S_DRV_H__
+
+/******************************************************************************
+    Include other header files
+ *****************************************************************************/
+#include "fh_type.h"
+#include "fy_drv_aio.h"
+
+#ifdef __cplusplus
+#if __cplusplus
+extern "C"{
+#endif
+#endif /* End of #ifdef __cplusplus */
+
+#define IOC_TYPE_I2S				'x'
+
+#define IOCTL_AIO_SET_PUBATTR                   _IOW(IOC_TYPE_I2S,      IOC_SET_PUBATTR,        AIO_ATTR_S)
+#define IOCTL_AIO_GET_PUBATTR                   _IOR(IOC_TYPE_I2S,      IOC_GET_PUBATTR,        AIO_ATTR_S)
+#define IOCTL_AIO_QUERY_CHN_STAT                _IOW(IOC_TYPE_I2S,      IOC_QUERY_CHN_STAT,     AO_CHN_STATE_S)
+
+#define IOCTL_AC_INIT_CFG			_IOW(IOC_TYPE_I2S,	AC_INIT_CFG,		AIO_ATTR_S)
+#define IOCTL_AC_AI_CFG_CHN			_IOW(IOC_TYPE_I2S,	AC_AI_CFG_CHN,		AIO_CHN_PARAM_S)
+#define IOCTL_AC_AI_EN				_IOW(IOC_TYPE_I2S,	AC_AI_EN,		FY_U32)
+#define IOCTL_AC_AI_DISABLE			_IOW(IOC_TYPE_I2S,	AC_AI_DISABLE,		FY_U32)
+#define IOCTL_AC_AI_PAUSE			_IOW(IOC_TYPE_I2S,	AC_AI_PAUSE,		FY_U32)
+#define IOCTL_AC_AI_RESUME			_IOW(IOC_TYPE_I2S,	AC_AI_RESUME,		FY_U32)
+#define IOCTL_AC_AI_SET_VOL			_IOW(IOC_TYPE_I2S,	AC_AI_SET_VOL,		VOLUME_PARAM_S)
+#define IOCTL_AC_AI_SET_DIG_VOL			_IOW(IOC_TYPE_I2S,	AC_AI_SET_DIG_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AI_MICIN_SET_VOL		_IOW(IOC_TYPE_I2S,	AC_AI_MICIN_SET_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AI_GET_VOL			_IOW(IOC_TYPE_I2S,	AC_AI_GET_VOL,		VOLUME_PARAM_S)
+#define IOCTL_AC_AI_GET_DIG_VOL			_IOW(IOC_TYPE_I2S,	AC_AI_GET_DIG_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AI_MICIN_GET_VOL		_IOW(IOC_TYPE_I2S,	AC_AI_MICIN_GET_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AI_SET_TRACK			_IOW(IOC_TYPE_I2S,	AC_AI_SET_TRACK,	FY_U32)
+#define IOCTL_AC_AI_GET_TRACK			_IOR(IOC_TYPE_I2S,	AC_AI_GET_TRACK,	FY_U32)
+#define IOCTL_AC_USING_EXTERNAL_CODEC		_IOW(IOC_TYPE_I2S,	AC_USING_EXTERNAL_CODEC,FY_U32)
+#define IOCTL_AC_AO_CFG_CHN			_IOW(IOC_TYPE_I2S,	AC_AO_CFG_CHN,		AIO_CHN_PARAM_S)
+#define IOCTL_AC_AO_EN				_IOW(IOC_TYPE_I2S,	AC_AO_EN,		FY_U32)
+#define IOCTL_AC_AO_DISABLE			_IOW(IOC_TYPE_I2S,	AC_AO_DISABLE,		FY_U32)
+#define IOCTL_AC_AO_PAUSE			_IOW(IOC_TYPE_I2S,	AC_AO_PAUSE,		FY_U32)
+#define IOCTL_AC_AO_RESUME			_IOW(IOC_TYPE_I2S,	AC_AO_RESUME,		FY_U32)
+#define IOCTL_AC_AO_SET_VOL			_IOW(IOC_TYPE_I2S,	AC_AO_SET_VOL,		VOLUME_PARAM_S)
+#define IOCTL_AC_AO_SET_DIG_VOL			_IOW(IOC_TYPE_I2S,	AC_AO_SET_DIG_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AO_GET_VOL			_IOW(IOC_TYPE_I2S,	AC_AO_GET_VOL,		VOLUME_PARAM_S)
+#define IOCTL_AC_AO_GET_DIG_VOL			_IOW(IOC_TYPE_I2S,	AC_AO_GET_DIG_VOL,	VOLUME_PARAM_S)
+#define IOCTL_AC_AO_SET_TRACK			_IOW(IOC_TYPE_I2S,	AC_AO_SET_TRACK,	FY_U32)
+#define IOCTL_AC_AO_GET_TRACK			_IOR(IOC_TYPE_I2S,	AC_AO_GET_TRACK,	FY_U32)
+#define IOCTL_AC_WORK_MODE			_IOW(IOC_TYPE_I2S,	AC_WORK_MODE,		FY_U32)
+#define IOCTL_AC_EXT_INTF			_IOR(IOC_TYPE_I2S,	AC_EXT_INTF,		FY_U32)
+#define IOCTL_AC_GET_VERSION             	_IOR(IOC_TYPE_I2S,	AC_GET_VERSION,		FY_U32)
+#define IOCTL_AC_HPF_CTRL             		_IOW(IOC_TYPE_I2S,	AC_HPF_CTRL,		FY_U32)
+#define IOCTL_AC_ALC_CTRL             		_IOW(IOC_TYPE_I2S,	AC_ALC_CTRL,		FY_U32)
+#define IOCTL_AC_NOTCE_CTRL             	_IOW(IOC_TYPE_I2S,	AC_NOTCE_CTRL,		FY_U32)
+#define IOCTL_AC_NOISE_GATE            		_IOW(IOC_TYPE_I2S,	AC_NOISE_GATE,		FY_U32)
+#define IOCTL_AC_DAC_LIMITER             	_IOW(IOC_TYPE_I2S,	AC_DAC_LIMITER,		FY_U32)
+#define IOCTL_AC_MUTE		             	_IOW(IOC_TYPE_I2S,	AC_MUTE,		FY_U32)
+#define IOCTL_AC_EQ_CTRL	             	_IOW(IOC_TYPE_I2S,	AC_EQ_CTRL,		FY_U32)
+#define IOCTL_AC_IMCLK		             	_IOW(IOC_TYPE_I2S,	AC_IMCLK_CTRL,		FY_U32)
+#define IOCTL_AC_POWER_ON             		_IOW(IOC_TYPE_I2S,	AC_POWER_ON,		FY_U32)
+#define IOCTL_AC_READ_SELECT			_IOW(IOC_TYPE_I2S,	AC_READ_SELECT,		FRAME_SYNC_INFO)
+#define IOCTL_AC_READ_PTR_SYNC			_IOW(IOC_TYPE_I2S,	AC_READ_PTR_SYNC,	FY_U32)
+#define IOCTL_AC_WRITE_SELECT			_IOW(IOC_TYPE_I2S,	AC_WRITE_SELECT,	FRAME_SYNC_INFO)
+#define IOCTL_AC_WRITE_PTR_SYNC			_IOW(IOC_TYPE_I2S,	AC_WRITE_PTR_SYNC,	FY_U32)
+#define IOCTL_AC_CHN_NUM			_IOW(IOC_TYPE_I2S,	AC_AI_CHN_NUM,		AIO_CHN_NUM)
+
+#if 0
+#define IOCTL_DMIC_GET_PARAM			_IOWR(IOC_TYPE_I2S,	DMIC_GET_PARAM,		DMIC_DEV_CFG)
+#define IOCTL_DMIC_SET_PARAM			_IOW(IOC_TYPE_I2S,	DMIC_SET_PARAM,		DMIC_DEV_CFG)
+#define IOCTL_DMIC_DEV_ENABLE			_IOW(IOC_TYPE_I2S,	DMIC_DEV_ENABLE,	DMIC_EN_CFG)
+#define IOCTL_DMIC_DEV_DISABLE			_IOW(IOC_TYPE_I2S,	DMIC_DEV_DISABLE,	DMIC_EN_CFG)
+#define IOCTL_DMIC_QUERY_DATA			_IOWR(IOC_TYPE_I2S,	DMIC_QUERY_DATA,	DMIC_EN_CFG)
+#define IOCTL_DMIC_SET_FRMSIZE			_IOWR(IOC_TYPE_I2S,	DMIC_SET_FRMSIZE,	AIO_CHN_PARAM_S)
+#define	IOCTL_DMIC_GET_FRAME			_IOWR(IOC_TYPE_I2S,	DMIC_GET_FRAME,		AUDIO_FRAME_INFO)
+#endif
+
+#define ACW_IOC_EXTENSION			FY_DRV_ADV_IOC(IOC_TYPE_I2S)
+//#define DMIC_IOC_EXTENSION			FY_DRV_ADV_IOC(IOC_TYPE_I2S)
+
+
+static inline FY_S32 MPI_AIO_Get_IOCmd(FY_U32 cmd)
+{
+	FY_S32 s32IoCmd=0;
+
+	switch(cmd)
+	{
+		case IOC_SET_PUBATTR:
+			s32IoCmd=IOCTL_AIO_SET_PUBATTR;
+			break;
+		case IOC_GET_PUBATTR:
+			s32IoCmd=IOCTL_AIO_GET_PUBATTR;
+			break;
+		case AC_INIT_CFG:
+			s32IoCmd=IOCTL_AC_INIT_CFG;
+			break;
+		case AC_AI_CFG_CHN:
+			s32IoCmd=IOCTL_AC_AI_CFG_CHN;
+			break;
+		case AC_AI_EN:
+			s32IoCmd=IOCTL_AC_AI_EN;
+			break;
+		case AC_AI_DISABLE:
+			s32IoCmd=IOCTL_AC_AI_DISABLE;
+			break;
+		case AC_AI_PAUSE:
+			s32IoCmd=IOCTL_AC_AI_PAUSE;
+			break;
+		case AC_AI_RESUME:
+			s32IoCmd=IOCTL_AC_AI_RESUME;
+			break;
+		case AC_AI_SET_VOL:
+			s32IoCmd=IOCTL_AC_AI_SET_VOL;
+			break;
+		case AC_AI_SET_DIG_VOL:
+			s32IoCmd=IOCTL_AC_AI_SET_DIG_VOL;
+			break;
+		case AC_AI_MICIN_SET_VOL:
+			s32IoCmd=IOCTL_AC_AI_SET_VOL;
+			break;
+		case AC_AI_SET_TRACK:
+			s32IoCmd=IOCTL_AC_AI_SET_TRACK;
+			break;
+		case AC_AI_GET_TRACK:
+			s32IoCmd=IOCTL_AC_AI_GET_TRACK;
+			break;
+		case AC_USING_EXTERNAL_CODEC:
+			s32IoCmd=IOCTL_AC_USING_EXTERNAL_CODEC;
+			break;
+		case AC_AO_CFG_CHN:
+			s32IoCmd=IOCTL_AC_AO_CFG_CHN;
+			break;
+		case AC_AO_EN:
+			s32IoCmd=IOCTL_AC_AO_EN;
+			break;
+		case AC_AO_DISABLE:
+			s32IoCmd=IOCTL_AC_AO_DISABLE;
+			break;
+		case AC_AO_PAUSE:
+			s32IoCmd=IOCTL_AC_AO_PAUSE;
+			break;
+		case AC_AO_RESUME:
+			s32IoCmd=IOCTL_AC_AO_RESUME;
+			break;
+		case AC_AO_SET_VOL:
+			s32IoCmd=IOCTL_AC_AO_SET_VOL;
+			break;
+		case AC_AO_SET_DIG_VOL:
+			s32IoCmd=IOCTL_AC_AO_SET_DIG_VOL;
+			break;
+		case AC_AO_SET_TRACK:
+			s32IoCmd=IOCTL_AC_AO_SET_TRACK;
+			break;
+		case AC_AO_GET_TRACK:
+			s32IoCmd=IOCTL_AC_AO_GET_TRACK;
+			break;
+		case AC_WORK_MODE:
+			s32IoCmd=IOCTL_AC_WORK_MODE;
+			break;
+		case AC_EXT_INTF:
+			s32IoCmd=IOCTL_AC_EXT_INTF;
+			break;
+		case AC_GET_VERSION:
+			s32IoCmd=IOCTL_AC_GET_VERSION;
+			break;
+		case AC_HPF_CTRL:
+			s32IoCmd=IOCTL_AC_HPF_CTRL;
+			break;
+		case AC_ALC_CTRL:
+			s32IoCmd=IOCTL_AC_ALC_CTRL;
+			break;
+		case AC_NOTCE_CTRL:
+			s32IoCmd=IOCTL_AC_NOTCE_CTRL;
+			break;
+		case AC_NOISE_GATE:
+			s32IoCmd=IOCTL_AC_NOISE_GATE;
+			break;
+		case AC_DAC_LIMITER:
+			s32IoCmd=IOCTL_AC_DAC_LIMITER;
+			break;
+		case AC_MUTE:
+			s32IoCmd=IOCTL_AC_MUTE;
+			break;
+		case AC_IMCLK_CTRL:
+			s32IoCmd=IOCTL_AC_IMCLK;
+			break;
+		case AC_EQ_CTRL:
+			s32IoCmd=IOCTL_AC_EQ_CTRL;
+			break;
+		case AC_POWER_ON:
+			s32IoCmd=IOCTL_AC_POWER_ON;
+			break;
+		case IOC_CMD_BUTT:
+		case AC_CMD_BUTT:
+			s32IoCmd=cmd;
+			break;
+		default:
+		break;
+	}
+	return s32IoCmd;
+}
+
+
+#ifdef __cplusplus
+#if __cplusplus
+}
+#endif
+#endif /* End of #ifdef __cplusplus */
+
+
+#endif//__FY_AI_DRV_H__
+

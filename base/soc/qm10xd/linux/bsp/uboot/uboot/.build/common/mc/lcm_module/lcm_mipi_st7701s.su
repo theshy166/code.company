@@ -1,0 +1,7 @@
+../common/mc/lcm_module/lcm_mipi_st7701s.c:87:16:_lcm_mipi_st7701s_PowerOn	8	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:101:16:_lcm_mipi_st7701s_PowerOff	16	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:159:16:_lcm_mipi_st7701s_init	16	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:181:16:_lcm_mipi_st7701s_suspend	0	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:199:16:_lcm_mipi_st7701s_resume	0	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:217:16:_lcm_mipi_st7701s_deinit	16	static
+../common/mc/lcm_module/lcm_mipi_st7701s.c:118:16:_lcm_mipi_st7701s_identify	8	static

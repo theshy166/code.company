@@ -1,0 +1,19 @@
+#
+# For a description of the syntax of this configuration file,
+# core package configuration.
+#
+
+menu "Core Package"
+
+source "build/kconf/Kconfig.guiengine"
+source "build/kconf/Kconfig.framework"
+source "build/kconf/Kconfig.external"
+source "build/kconf/Kconfig.inner"
+source "build/kconf/Kconfig.hardware"
+source "build/kconf/Kconfig.recovery"
+source "build/kconf/Kconfig.res"
+source "build/kconf/Kconfig.example"
+source "build/kconf/Kconfig.utils"
+source "build/kconf/Kconfig.feature"
+
+endmenu

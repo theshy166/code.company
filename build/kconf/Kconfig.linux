@@ -1,0 +1,10 @@
+## uboot config files
+source "build/kconf/Kconfig.uboot"
+## kernel config files
+source "build/kconf/Kconfig.kernel"
+## select rootfs
+source "build/kconf/Kconfig.rootfs"
+##   
+## add more here
+#
+#TODO

@@ -1,0 +1,2 @@
+../common/mc/lcm_module/mol_lcm_module.c:40:5:mc_lcm_module_init	8	static
+../common/mc/lcm_module/mol_lcm_module.c:53:6:mc_lcm_module_exit	0	static

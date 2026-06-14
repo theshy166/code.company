@@ -1,0 +1,1 @@
+cmd_drivers/misc/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o drivers/misc/built-in.o drivers/misc/misc-uclass.o drivers/misc/mc_efuse_r4p0.o drivers/misc/mc_aes_dma.o drivers/misc/mc_aes.o 

@@ -1,0 +1,5 @@
+../board/molchip/pts/pts_drv.c:10:6:pts_init	0	static
+../board/molchip/pts/pts_drv.c:60:20:pts_get_value	0	static
+../board/molchip/pts/pts_drv.c:74:20:pts_get_value_us	0	static
+../board/molchip/pts/pts_drv.c:79:20:pts_get_value_ms	8	static
+../board/molchip/pts/pts_drv.c:84:5:pts_udelay	24	static

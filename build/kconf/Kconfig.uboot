@@ -1,0 +1,54 @@
+menu "Uboot"
+
+config UBOOT_DEFCONFIG
+        string "defconfig file"
+        default "quaming_qm108h_defconfig"
+        help
+          Enter the name of the xxx_xx_defconfig file, eg:
+          quaming_qm108h_defconfig
+
+config UBOOT_VERSION
+        string "uboot version"
+        default "v1.0"
+        help
+          Enter uboot version
+
+config UBOOT_FEATURE_FB_MODE
+    bool "system bootup fast mode"
+
+config UBOOT_FEATURE_FASTBOOT_FLASH
+    bool "fastboot flash feature"
+    default y
+
+config UBOOT_FEATURE_UDISK_FLASH
+    bool "udisk flash feature"
+    default y
+
+#config UBOOT_FEATURE_BOOT_ANDROID
+#    bool "bootandroid cmd in uboot"
+#    default y if STORAGE_TYPE_EMMC
+    #TODO
+    #we gonna bringup bootandroid cmd for nand,nor etc.
+
+#config UBOOT_FEATURE_VBMETA
+#    bool "Configure vbmeta feature"
+#    depends on UBOOT_FEATURE_BOOT_ANDROID
+
+config QM_MAX_SPLIT_SIZE
+    int "split sparse image to pices"
+    default 268435456
+
+config UBOOT_BOARD_NAME
+    string "board name under uboot"
+    default "NAME_NOT_DEFINED"
+    help
+          The option specifies the name of the target board
+          for which uboot is being built. Its primary purpose is
+          to ensure that the correct board-specific settings, drivers,
+          configurations are applied during the build process or runtime
+
+## add more features in uboot here
+#TODO
+endmenu
+
+

@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libappsrc.a CMakeFiles/appsrc.dir/utils/xn_time.c.o CMakeFiles/appsrc.dir/utils/xos_misc.c.o CMakeFiles/appsrc.dir/appsmain.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libappsrc.a

@@ -1,0 +1,80 @@
+#!/bin/sh
+
+i2s_src_test_dir=/mnt/SLT_BSP_FILE/i2s_src_test/audio
+spi_test_dir=/mnt/SLT_BSP_FILE/2.3.10_spi
+
+
+load_test_case() {
+	mkdir /mnt/
+	mount -t vfat /dev/sda2 /mnt/
+	echo "Test Case load in /mnt"
+}
+
+#2.3.10 SPI
+spi_test() {
+	cd ${spi_test_dir}
+	devmem 0x102000a0 32 0x3 #SPI CS
+	devmem 0x102000a4 32 0x3 #SPI CLK
+	devmem 0x102000a8 32 0x3 #SPI DO
+	devmem 0x1020009c 32 0x1 #SPI DI
+
+	./spi_test_slt > ./spi_log.txt
+	test=`cat ./spi_log.txt | awk '{print $3}' | tail -1`
+	rm ./spi_log.txt
+	if [ "$test" = "success!" ]
+	then
+		echo "spi_test pass" >> /slt_log/spi_log.log
+		return 0
+	else
+		echo -e "\033[31merror:spi_test failed\033[0m" >> /slt_log/spi_log.log
+		return 1
+	fi
+}
+
+
+bsp_1st_test_case () {
+	echo -e "\033[47;30m>>>spi_test start<<<\033[0m"
+	spi_test
+	echo -e "\033[47;30m>>>spi_test end<<<\033[0m"
+}
+
+load_ko_lcd() {
+	insmod lcm_module.ko
+	insmod lcm.ko lcm0_id_cfg=1 lcm1_id_cfg=1 lcm0_id=0 lcm1_id=4
+	insmod vou.ko
+	insmod vdu.ko
+	insmod jpeg.ko
+	insmod g2d.ko
+	insmod acw.ko
+
+#	devmem 0x260020c0 w 0x06208000
+#	devmem 0x260020c4 w 0x0e6318a4
+#	devmem 0x260020c8 w 0x18c5a928
+#	devmem 0x260020cc w 0x2307b9ac
+}
+
+sleep 5s #wait usb identify
+./etc/init.d/clean_sync.sh &
+load_test_case
+sleep 1s
+mkdir -p /slt_log
+mkdir -p /slt_file
+cd /ko
+./loadko.sh -i
+sleep 1
+
+bsp_1st_test_case
+
+cd /ko
+load_ko_lcd
+#cd /etc/init.d/ &&. ./koap /ko/ko_cp /ko/ko_ap
+#cd /etc/init.d/
+cd /mnt/test
+#export PATH="$PATH:/lib"
+#export LD_PRELOAD="/lib/libstdc++.so.6 /lib/libgcc_s.so.1"
+
+#sleep 1
+./slt_vdppo test_slt2.ini  2 &
+
+
+

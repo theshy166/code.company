@@ -1,0 +1,5 @@
+../common/mc/mc_jpegd_drv.c:10:13:jpeg_clk_off	16	static
+../common/mc/mc_jpegd_drv.c:77:14:JPEG_WaitIRQ	8	static
+../common/mc/mc_jpegd_drv.c:97:14:JPEG_WaitIRQ_Timeout	8	static
+../common/mc/mc_jpegd_drv.c:123:6:hw_jpeg_dec	32	static
+../common/mc/mc_jpegd_drv.c:132:6:sw_jpeg_dec	0	static

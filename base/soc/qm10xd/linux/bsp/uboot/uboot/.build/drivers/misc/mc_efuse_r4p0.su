@@ -1,0 +1,11 @@
+../drivers/misc/mc_efuse_r4p0.c:117:12:dump_efuses	88	static
+../drivers/misc/mc_efuse_r4p0.c:664:12:mc_efuse_ofdata_to_platdata	16	static
+../drivers/misc/mc_efuse_r4p0.c:155:12:write_efuse	24	static
+../drivers/misc/mc_efuse_r4p0.c:366:13:efuse_init	0	static
+../drivers/misc/mc_efuse_r4p0.c:677:12:mc_efuse_probe	8	static
+../drivers/misc/mc_efuse_r4p0.c:501:12:mc_efuse_read	32	static
+../drivers/misc/mc_efuse_r4p0.c:538:12:mc_efuse_write	32	static
+../drivers/misc/mc_efuse_r4p0.c:445:6:mc_efuse_read_op	24	static
+../drivers/misc/mc_efuse_r4p0.c:470:6:secure_enalbe_judge	16	static
+../drivers/misc/mc_efuse_r4p0.c:578:5:mc_aes_use_efuse_key	48	static
+../drivers/misc/mc_efuse_r4p0.c:647:5:mc_aeskey_release	8	static

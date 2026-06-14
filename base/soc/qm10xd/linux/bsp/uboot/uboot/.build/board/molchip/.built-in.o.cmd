@@ -1,0 +1,1 @@
+cmd_board/molchip/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o board/molchip/built-in.o board/molchip/lib/built-in.o board/molchip/uart/built-in.o board/molchip/flash/built-in.o board/molchip/clk/built-in.o board/molchip/pwm/built-in.o board/molchip/pts/built-in.o board/molchip/sdcard/built-in.o 

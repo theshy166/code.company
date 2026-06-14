@@ -1,0 +1,7 @@
+core/package/guiengine/lvgl-v9/lvgl/CMakeFiles/lvgl.dir/src/stdlib/clib/lv_sprintf_clib.c.o: \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/clib/lv_sprintf_clib.c \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/clib/../../lv_conf_internal.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/guiengine/lvgl-v9/lvgl/src/stdlib/clib/../../lv_conf_kconfig.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_drv_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/lv_conf.h

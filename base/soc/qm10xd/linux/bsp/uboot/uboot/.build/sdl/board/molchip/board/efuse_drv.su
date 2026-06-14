@@ -1,0 +1,4 @@
+../board/molchip/board/efuse_drv.c:16:6:read_efuse_entry.part.0	16	static
+../board/molchip/board/efuse_drv.c:16:6:read_efuse_entry	0	static
+../board/molchip/board/efuse_drv.c:36:6:tran_aes_key	16	static
+../board/molchip/board/efuse_drv.c:92:6:cbc_key_writed	8	static

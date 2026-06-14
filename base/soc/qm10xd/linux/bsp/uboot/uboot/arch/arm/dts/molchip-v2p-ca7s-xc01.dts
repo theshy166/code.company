@@ -1,0 +1,286 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/net/mc_ephy.h>
+#include <dt-bindings/gpio/gpio.h>
+
+
+/dts-v1/;
+
+/ {
+	model = "XC01";
+	compatible = "arm,molchip,xc01", "arm,molchip";
+	interrupt-parent = <&gic>;
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	config {
+		bootdelay = <2>;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0xf00>;
+		};
+
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0xf01>;
+		};
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x80000000 0x10000000>;
+	};
+
+	sysreg: sysreg@10000000 {
+		compatible = "arm,molchip-sysreg";
+		reg = <0x10000000 0x1000>;
+	};
+
+	scu: scu@00200000 {
+		compatible = "arm,cortex-a7-scu";
+		reg = <0x00200000 0x100>;
+	};
+
+	timer {
+		compatible = "arm,armv7-timer";
+		interrupts = <1 13 0xf08>,
+			<1 14 0xf08>,
+			<1 11 0xf08>,
+			<1 10 0xf08>;
+		clock-frequency = <48000000>;
+	};
+
+	gic: interrupt-controller@00200000 {
+		compatible = "arm,cortex-a7-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x00201000 0x1000>,
+			<0x00202000 0x1000>;
+	};
+
+	uart0: uart@0x8f00000 {
+		compatible = "molchip,serial";
+		reg = <0x8f00000 0x100>;
+		interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+	};
+
+	rtc@18E00000 {
+		compatible = "mc,fy00-rtc";
+		reg = <0x18E00000 0x400>;
+		/*
+		clocks = <&topsys_gate CKG_APB_RTCT_EN>;
+		clock-names = "ckg_apb_rtct_en";
+		interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+		nvmem-cells = <&tsens_calib>;
+		nvmem-cell-names = "calib";
+		rtc-slope = <2500>;
+		rtc-precision-ctrl = <1000000>;
+		rtc-production-line-temp = <70>;
+		rtc-precision-frc-ctrl = <10000>;
+		rtc-default-intercept = <2220>;
+		*/
+		status = "okay";
+	};
+
+
+	
+	ethernet: ethernet@1c600000 {
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x1c600000 0x4000>;
+		phy-mode = "mii";
+		phy-addr = <0x0>;
+		ctrl_id = <0x0>;
+		phy-type = <INTERNAL_PHY>;
+		snps,gmac-axi-en = <0x1c000000>,<0x0>,<0x28>,<0>,<1>,<1>;
+		snps,gmac-csr-en = <0x1c000000>,<0x0>,<0x28>,<1>,<1>,<1>;
+		snps,ephy-type-sel = <0x1c000000>,<0x0>,<0x100>,<0>,<0x3>,<INTERNAL_PHY>;
+		snps,rmii-pad-sel = <0x1c000000>,<0x0>,<0x28>,<11>,<0x1>,<MII_PAD_SEL>;
+		snps,phy-intf-sel = <0x1c000000>,<0x0>,<0x100>,<13>,<0x7>,<MII_INTF>;
+		snps,ephy-ref-en =  <0x1c000000>,<0x0>,<0x1a0>,<2>,<0x1>,<GMAC_REF_CLK_OUT_EN>;
+		snps,ephy-soft-reset = <0x1c000000>,<0x0>,<0x100>,<4>,<0x1>;
+		snps,tx-en = <0x1c000000>,<0x0>,<0x104>,<9>,<0x1>,<0x1>;
+		snps,rx-en = <0x1c000000>,<0x0>,<0x104>,<5>,<0x1>,<0x1>;
+		snps,rmii-en = <0x1c000000>,<0x0>,<0x104>,<1>,<0x1>,<0x1>;
+		platform = <CHIP_PLATFORM>;
+		molchip,syscon-ap-ahb = <0x1c000000>;
+		molchip,syscon-ap-apb = <0x1c000000>;
+		molchip,syscon-gl-apb = <0x1c000000>;
+		status = "okay";
+		/*status = "disabled";*/
+	};
+	
+	ethernet2: ethernet@2c500000 {
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x2c500000 0x4000>,
+		        <0x2c100100 0x10>, /*tx delay base*/
+                        <0x2c10009C 0x10>, /*rx delay base*/
+                        <0x2c10009C 0x10>; /*rxneg delay base*/
+		phy-mode = "rgmii";
+		phy-addr = <0x1>;
+		ctrl_id = <0x1>;
+		has_txrx_delay;
+		dpll_version = <0x2>;
+		tx_delay = <0x3b>;
+		rx_delay = <0x28>;
+		negrx_delay = <0x28>;
+		phy-type = <EXTERNAL_PHY>;
+		snps,gmac-axi-en = <0x2c100000>,<0x0>,<0x4>,<19>,<1>,<1>;
+		snps,gmac-csr-en = <0x2c100000>,<0x0>,<0x4>,<18>,<1>,<1>;
+		snps,rmii-pad-sel = <0x2c100000>,<0x0>,<0x4>,<20>,<0x1f>,<0x07>;
+		snps,phy-intf-sel = <0x2c100000>,<0x0>,<0x100>,<17>,<0x7>,<RGMII_INTF>;
+		snps,ephy-ref-en = <0x2c100000>,<0x0>,<0x4>,<27>,<0x1>,<GMAC_REF_CLK_OUT_EN>;
+		snps,ephy-soft-reset = <0x2c100000>,<0x0>,<0x100>,<16>,<0x1>;
+		platform = <CHIP_PLATFORM>;
+		molchip,syscon-ap-ahb = <0x2c100000>;
+		molchip,syscon-ap-apb = <0x2c100000>;
+		molchip,syscon-gl-apb = <0x2c100000>;
+		/*status = "okay";*/
+		status = "disabled";
+	};
+
+	efuse0: efuse@0A700000 {
+		compatible = "mc,efuse";
+		reg = <0x0A700000 0x1000>;
+		status = "okay";
+	};
+
+	aes: aes@0c600000 {
+		compatible = "mc,aes";
+		reg = <0xc600000 0x1000>;
+		status = "okay";
+	};
+
+        sdhci0: sdhci@23300000 {
+                compatible = "mc,dw-sdhci";
+                reg = <0x1d200000 0x1000>,
+                        <0x1ca00000 0x1000>;
+                status = "okay";
+                bus-width = <8>;
+                drv_ability = <6>;
+        };
+
+	gpio0: gpio0@18400000 {
+		compatible = "mc,gpio";
+		reg = <0x18400000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+
+	gpio1: gpio1@0b000000 {
+		compatible = "mc,gpio";
+		reg = <0x0b000000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio2: gpio2@0b010000 {
+		compatible = "mc,gpio";
+		reg = <0x0b010000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio3: gpio3@0b020000 {
+		compatible = "mc,gpio";
+		reg = <0x0b020000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio4: gpio4@0b030000 {
+		compatible = "mc,gpio";
+		reg = <0x0b030000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio5: gpio5@0b040000 {
+		compatible = "mc,gpio";
+		reg = <0x0b040000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio6: gpio6@0b050000 {
+		compatible = "mc,gpio";
+		reg = <0x0b050000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio7: gpio7@0b060000 {
+		compatible = "mc,gpio";
+		reg = <0x0b060000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio8: gpio8@0b070000 {
+		compatible = "mc,gpio";
+		reg = <0x0b070000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio9: gpio9@0b080000 {
+		compatible = "mc,gpio";
+		reg = <0x0b080000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio10: gpio10@0b090000 {
+		compatible = "mc,gpio";
+		reg = <0x0b090000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	gpio11: gpio11@0b0a0000 {
+		compatible = "mc,gpio";
+		reg = <0x0b0a0000 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+	
+		sdmmc0: dwmmc@1d400000 {
+                compatible = "mc,dw-sdmmc";
+				reg = <0x1d400000 0x400>;
+                status = "okay";
+                bus-width = <4>;
+        };
+
+	dwc3: dwc3@2d400000 {
+		compatible = "snps,dwc3";
+		reg = <0x2d400000 0x4000>;
+		dr_mode = "host";
+		status = "okay";
+	};
+
+};

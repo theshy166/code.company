@@ -1,0 +1,28 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+/dts-v1/;
+#include "molchip-kernel-xc01_6x8_mnet.dtsi"
+
+/ {
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x2c00000>;
+	};
+};
+
+	&spi1 {
+			cs-gpios = <&gpio4 7 0>;
+			pinctrl-names = "default";
+			//pinctrl-0 = <&spi1_pins_11>;
+			pin_spi_ctrl-0 = <&spi1_pins_11>;
+			spi1_pinctrl = <0x6>;
+			spi1_pinmux_addr = <0x102000a8>;
+	};
+
+

@@ -1,0 +1,1 @@
+cmd_sdl/lib/libfdt/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/lib/libfdt/built-in.o sdl/lib/libfdt/fdt.o sdl/lib/libfdt/fdt_ro.o sdl/lib/libfdt/fdt_rw.o sdl/lib/libfdt/fdt_strerror.o sdl/lib/libfdt/fdt_sw.o sdl/lib/libfdt/fdt_wip.o sdl/lib/libfdt/fdt_empty_tree.o sdl/lib/libfdt/fdt_addresses.o sdl/lib/libfdt/fdt_region.o 

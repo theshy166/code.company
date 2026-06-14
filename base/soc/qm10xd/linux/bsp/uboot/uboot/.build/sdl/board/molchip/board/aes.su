@@ -1,0 +1,10 @@
+../board/molchip/board/aes.c:8:6:aes_enable	16	static
+../board/molchip/board/aes.c:27:6:aes_enable_1st_iv	0	static
+../board/molchip/board/aes.c:39:6:aes_threshold	0	static
+../board/molchip/board/aes.c:52:6:aes_clr_intr	0	static
+../board/molchip/board/aes.c:60:6:aes_en_intr	0	static
+../board/molchip/board/aes.c:68:5:aes_intr_src	0	static
+../board/molchip/board/aes.c:76:6:aes_decrypt	0	static
+../board/molchip/board/aes.c:88:6:aes_write_iv	0	static
+../board/molchip/board/aes.c:96:6:aes_config_mode	0	static
+../board/molchip/board/aes.c:109:6:aes_start	0	static

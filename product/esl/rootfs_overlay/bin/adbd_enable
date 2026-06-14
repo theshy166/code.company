@@ -1,0 +1,8 @@
+#!/bin/sh
+wifi_start.sh "QuaMing" "QMwifi88"
+adbd &
+sleep 10
+ipaddr=$(ip addr show wlan0 | grep -w inet | awk '{printf $2}' | cut -d '/' -f 1)
+if [ ! -z "$ipaddr" ];then
+ echo "run \"adb connect $ipaddr:5555\" to connect adbd"
+fi

@@ -1,0 +1,6 @@
+../drivers/serial/serial_molchip.c:99:5:ts01_serial_setbrg	16	static
+../drivers/serial/serial_molchip.c:131:12:ts01_serial_probe	0	static
+../drivers/serial/serial_molchip.c:166:12:ts01_serial_getc	0	static
+../drivers/serial/serial_molchip.c:181:12:ts01_serial_putc	0	static
+../drivers/serial/serial_molchip.c:210:12:ts01_serial_pending	0	static
+../drivers/serial/serial_molchip.c:195:12:ts01_serial_ofdata_to_platdata	16	static

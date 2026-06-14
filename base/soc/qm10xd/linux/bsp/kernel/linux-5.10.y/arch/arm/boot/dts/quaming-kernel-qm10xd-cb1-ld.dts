@@ -1,0 +1,192 @@
+/*
+ * molchip
+ *
+ * Cortex-A7
+ *
+ * HBI-0225B
+ */
+
+/dts-v1/;
+#include "quaming-kernel-qm10xd-xkphoto.dtsi"
+#include "quaming-kernel-qm10xd-xkphoto-pinctrl.dtsi"
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/gpio/gpio.h>
+/ {
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x04000000>;
+	};
+	vdu {
+		compatible = "molchip,mc-vdu";
+		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b300000 0x10000>;
+	};
+	g2d {
+		compatible = "molchip,mc-g2d";
+		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x27000000 0x1000>;
+	};
+	vou {
+		compatible = "molchip,mc-vou";
+		interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x26000000 0x2000>;
+	};
+	jpeg {
+		compatible = "molchip,mc-jpeg";
+		interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b310000 0x1000>;
+	};
+
+	backlight {
+		compatible = "pwm-backlight";
+		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+							10  11  12  13  14  15  16  17  18  19
+							20  21  22  23  24  25  26  27  28  29
+							30  31  32  33  34  35  36  37  38  39
+							40  41  42  43  44  45  46  47  48  49
+							50  51  52  53  54  55  56  57  58  59
+							60  61  62  63  64  65  66  67  68  69
+							70  71  72  73  74  75  76  77  78  79
+							80  81  82  83  84  85  86  87  88  89
+							90  91  92  93  94  95  96  97  98  99
+							100 >;
+		default-brightness-level = <90>;
+		pwms = <&pwm_ab 1 100000>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pwm1_pins>;
+		status = "okay";
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+		pinctrl-0 = <&gpio_keys_pins>;
+		pinctrl-names = "default";
+
+		power_key {
+			label = "power_key";
+			linux,code = <KEY_POWER>;
+			gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	gpio-poweroff {
+		compatible = "gpio-poweroff";
+		pinctrl-0 = <&poweroff_pin>;
+		pinctrl-names = "default";
+		active-delay = <0xFFFFFFFF>;
+		gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
+	};
+};
+
+&ethernet_a {
+
+/* For mphy */
+	/*
+	phy-mode = "rmii";
+	snps,en-rmii-inv;
+	snps,inv-sel = <0x1F8>,<0>,<0x1>;
+	phy-type = <EXTERNAL_PHY>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&eth_pins_rmii_defaults>;
+
+	status = "okay";
+
+	mdio {
+		phy0: phy@0 {
+			reg = <0x1>;
+		};
+	};
+	*/
+
+};
+
+&pinctrl{
+	wake_pins:wake_pins {
+		pins1 {
+			pinmux = <MC_PIN_35_PAD16_G2_FUNC_GPIO5_3>;
+			bias-pull-up = <MC_PUPD_SET_R2_1>;
+		};
+	};
+
+	pwm1_pins:pwm1_pins {
+		pins1 {
+			pinmux = <MC_PIN_38_PAD19_G2_FUNC_PWM_OUT1>;
+		};
+	};
+
+	i2c0_pins:i2c0_pins {
+		pins1 {
+			pinmux = <MC_PIN_30_PAD10_G2_FUNC_I2C0_SCL>,
+					<MC_PIN_29_PAD11_G2_FUNC_I2C0_SDA>;
+		};
+	};
+
+	i2c1_pins:i2c1_pins {
+		pins1 {
+			pinmux = <MC_PIN_53_PAD0_G4__FUNC_I2C1_SCL>,
+					<MC_PIN_54_PAD1_G4__FUNC_I2C1_SDA>;
+		};
+	};
+
+	gpio_keys_pins:gpio_keys_pins {
+		pins1 {
+			pinmux = <MC_PIN_25_PAD6_G2__FUNC_GPIO4_1>;
+		};
+	};
+
+	ts_pins:ts_pins {
+		pins1 {
+			pinmux = <MC_PIN_20_PAD1_G2__FUNC_GPIO3_4>,
+				<MC_PIN_26_PAD8_G2__FUNC_GPIO4_3>;
+		};
+	};
+
+	poweroff_pin:poweroff_pin {
+		pins1 {
+			pinmux = <MC_PIN_27_PAD7_G2__FUNC_GPIO4_2>;
+		};
+	};
+
+	saradc_pins:saradc_pins {
+		pins1 {
+			pinmux = <MC_PIN_53_PAD0_G4__FUNC_XAIN0_SADC>,
+				<MC_PIN_54_PAD1_G4__FUNC_XAIN1_SADC>;
+		};
+	};
+};
+
+&wakeup_source {
+//	gpio-wakeup-en = <43>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&wake_pins>;
+
+	saradc-wakeup-en;
+	ethernet-wakeup-en = <INTERNAL_PHY>;
+	systimer-wakeup-en;
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins>;
+
+	gsl1680:gsl1680@40 {
+		reg = <0x40>;
+		compatible = "gslx680";
+		touch-gpio = <&gpio4 3 IRQ_TYPE_LEVEL_HIGH>;
+		reset-gpio = <&gpio3 4 GPIO_ACTIVE_HIGH>;
+		screen_max_x = <800>;
+		screen_max_y = <1280>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&ts_pins>;
+		status = "disabled";
+	};
+};
+
+&saradc {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&saradc_pins>;
+};

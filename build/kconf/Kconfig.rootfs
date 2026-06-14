@@ -1,0 +1,39 @@
+menu "Rootfs"
+
+config ROOTFS_VERSION
+        string "ROOTFS version"
+        default "v1.0"
+        help
+          Enter rootfs version
+
+config ROOTFS_BUSYBOX_CONFIG
+        string "Config file"
+        default "busybox_quaming_config"
+        help
+          Enter the name of the _config file, eg:
+          busybox_quaming_config
+
+config ROOTFS_BUSYBOX_VERSION
+        string "Busybox version"
+        default "v1.0"
+
+config ROOTFS_FORMAT
+        string "Compressed format"
+        default "xz"
+        help
+          Enter the compressed format, eg:
+          xz
+          lz4
+          ubifs
+
+config XOS_SQUASHFS_USE_LZO_COMPR
+        bool "Squashfs compressed format"
+
+## Please add new fs type here
+## TODO
+
+
+endmenu
+
+
+

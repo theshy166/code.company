@@ -1,0 +1,17 @@
+menu "Partition"
+
+
+config QM_SYS_PARTI_NAME_LIST
+   string "Partition list"
+   default "uboot recovery boot logo res qua rootfs data"
+
+config QM_SYS_PARTI_INFOFILE
+    string "Partition info"
+    default "partition-info.txt"
+
+config QM_SYS_PARTI_DEFAULT_FS_TYPE
+    string "Filesystem type"
+    default "ext4"
+
+endmenu
+

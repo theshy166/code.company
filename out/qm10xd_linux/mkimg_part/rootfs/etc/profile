@@ -1,0 +1,25 @@
+# /etc/profile: system-wide .profile file for the Bourne shells
+
+echo
+echo -n "Processing /etc/profile... "
+
+#export the library path
+export LD_LIBRARY_PATH=/lib:/nfs/lib:/vendor/qua/lib:/vendor/qua/wifi/lib
+export PATH=$PATH:/vendor/qua/ko:/vendor/qua/BT:/vendor/qua/wifi/bin
+
+# Read timezone from param.ini
+if [ -f /data/config/param.ini ]; then
+    TZ=$(awk -F'=' '/^timezone[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}' /data/config/param.ini)
+    if [ -n "$TZ" ]; then
+        export TZ
+        echo "Timezone set to: $TZ"
+    else
+        echo "Warning: Could not read timezone from param.ini"
+        export TZ="CST-8"  # default
+    fi
+else
+    echo "Warning: /data/config/param.ini not found"
+    export TZ="CST-8"  # default
+fi
+echo "Done"
+echo

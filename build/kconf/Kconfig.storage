@@ -1,0 +1,90 @@
+#storage size and type configure
+#
+menu "System Partition"
+
+menu "System storage"
+
+#### storage type
+
+choice
+    prompt "Storage type:"
+    default STORAGE_TYPE_EMMC if CHIPSET_QM10XH
+    default STORAGE_TYPE_SPINOR if CHIPSET_MC331X
+
+config STORAGE_TYPE_SPINOR
+    bool "spi nor"
+
+config STORAGE_TYPE_SPINAND
+    bool "spi nand"
+
+config STORAGE_TYPE_EMMC
+    bool "emmc"
+
+# add more here
+# TODO
+#
+endchoice
+
+
+#### storage size
+choice
+    prompt "Storage size:"
+    default STORAGE_SIZE_16G if STORAGE_TYPE_EMMC
+    default STORAGE_SIZE_128MB if STORAGE_TYPE_SPINAND
+    default STORAGE_SIZE_16MB if STORAGE_TYPE_SPINOR
+
+config STORAGE_SIZE_4MB
+    bool "4MB"
+    depends on STORAGE_TYPE_SPINOR
+
+config STORAGE_SIZE_8MB
+    bool "8MB"
+    depends on STORAGE_TYPE_SPINOR
+
+config STORAGE_SIZE_16MB
+    bool "16MB"
+    depends on STORAGE_TYPE_SPINOR
+
+config STORAGE_SIZE_32MB
+    bool "32MB"
+    depends on STORAGE_TYPE_SPINOR
+
+config STORAGE_SIZE_128MB
+    bool "128MB"
+    depends on STORAGE_TYPE_SPINAND
+
+config STORAGE_SIZE_256MB
+    bool "256MB"
+    depends on STORAGE_TYPE_SPINAND
+
+config STORAGE_SIZE_512MB
+    bool "512MB"
+    depends on STORAGE_TYPE_SPINAND
+
+config STORAGE_SIZE_1G
+    bool "1G"
+    depends on STORAGE_TYPE_EMMC || STORAGE_TYPE_SPINAND
+
+config STORAGE_SIZE_8G
+    bool "8G"
+    depends on STORAGE_TYPE_EMMC
+
+config STORAGE_SIZE_16G
+    bool "16G"
+    depends on STORAGE_TYPE_EMMC
+
+config STORAGE_SIZE_64G
+    bool "64G"
+    depends on STORAGE_TYPE_EMMC
+
+# add more here
+# TODO
+#
+endchoice
+
+endmenu
+
+source "build/kconf/Kconfig.partition"
+endmenu
+
+

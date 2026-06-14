@@ -1,0 +1,74 @@
+ifeq ($(PARAM_FILE), )
+    PARAM_FILE:=../../Makefile.param
+    include $(PARAM_FILE)
+endif
+
+obj-m = lcm_module.o
+
+lcm_module-objs += utils/qua_lcm_gpio.o \
+                   utils/qua_lcm_args.o \
+                   utils/qua_lcm_mipi_jd9365d_jlm101b021.o \
+                   mol_lcm_table.o \
+                   lcm_mcu_st7796s.o \
+                   lcm_mcu_st7796s_16bits.o \
+                   lcm_rgb_at070tn94.o \
+                   lcm_rgb_at070tn94_18bits.o \
+                   lcm_mipi_ek79007.o \
+                   lcm_mipi_st7701s.o \
+                   lcm_mipi_sample_1920.o \
+                   lcm_rgb_sample_640.o \
+                   lcm_mipi_sample_1280.o \
+                   lcm_mipi_qfh24004.o \
+                   lcm_mipi_qua_jd9365d_jlm101b021.o \
+                   lcm_rgb_qua_ek79001h_tg78550b3.o \
+                   lcm_rgb_qua_ek79001h_tg78550b3_24bits.o \
+                   lcm_rgb_qua_st7265_tcxd050iblma.o
+
+
+lcm_module-objs += mol_lcm_module.o \
+
+EXTRA_CFLAGS +=  -I$(PWD)/ \
+                 -I$(PWD)/include \
+                 -I$(MPP_PATH)/drv_include \
+
+#EXTRA_CFLAGS += -O2
+
+ifeq ($(KERNEL_VER),4.9.138)
+EXTRA_CFLAGS += -Wno-error=date-time
+EXTRA_CFLAGS += -Wno-date-time
+endif
+ifeq ($(CONFIG_MULTIMEDIA_DEBUG), y)
+EXTRA_CFLAGS += -DMM_DEBUG
+endif
+
+$(info $(EXTRA_CFLAGS))
+
+EXTRA_CFLAGS += -Werror -Wno-date-time
+
+
+EXTRA_CFLAGS += -DARM_FW -DERR_DETECT -DTRACE_32=0 -D_MVC_=0
+EXTRA_CFLAGS += -D$(CHIP) -DSW_BSM_0 -DSW_BSM_1 -DREG_MODE=1
+
+ifeq ($(KERNEL_VER),5.10.y)
+KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/osal/Module.symvers
+KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/mmz/Module.symvers
+KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/base/Module.symvers
+KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/sys/Module.symvers
+else
+export KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/osal/Module.symvers
+export KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/mmz/Module.symvers
+export KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/base/Module.symvers
+export KBUILD_EXTRA_SYMBOLS += $(DRIVER_PATH)/sys/Module.symvers
+endif
+
+KERNEL_DIR = $(LINUX_ROOT)
+#KERNEL_DIR :=/lib/modules/$(shell uname -r)/build
+all:
+	make O=.build -C $(KERNEL_DIR) M=$(PWD) CROSS_COMPILE=$(CROSS_COMPILE) modules
+	@$(STRIP) *.ko
+	@cp lcm_module.ko $(REL_KO)/lcm_module$(REL_TARGET_SUFFIX).ko
+	@cp lcm_module.o $(REL_OBJ)/lcm_module$(REL_TARGET_SUFFIX).o
+	#@cp lcm_module.ko $(MPP_PATH)/../../../nfs/lt00/ko
+
+clean:
+	make  O=.build -C $(KERNEL_DIR) M=$(PWD) clean

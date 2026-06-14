@@ -1,0 +1,9 @@
+../common/hash.c:104:12:hash_finish_crc32	8	static
+../common/hash.c:97:12:hash_update_crc32	8	static
+../common/hash.c:89:12:hash_init_crc32	8	static
+../common/hash.c:371:13:hash_show	24	static
+../common/hash.c:182:5:hash_lookup_algo	16	static
+../common/hash.c:197:5:hash_progressive_lookup_algo	16	static
+../common/hash.c:216:5:hash_parse_string	32	static
+../common/hash.c:236:5:hash_block	32	static
+../common/hash.c:380:5:hash_command	144	static

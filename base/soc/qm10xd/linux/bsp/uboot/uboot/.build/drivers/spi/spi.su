@@ -1,0 +1,2 @@
+../drivers/spi/spi.c:12:5:spi_set_wordlen	8	static
+../drivers/spi/spi.c:24:7:spi_do_alloc_slave	24	static

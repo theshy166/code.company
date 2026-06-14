@@ -1,0 +1,29 @@
+#Common Configuration
+
+menu "Common Feature configuration"
+
+config XOS_USE_DEBUG
+    bool "use debug"
+    default y
+
+## sample common configure
+config COMMON_FEATURE1
+    bool "Enable Feature 1"
+    default y
+
+config COMMON_FEATURE2
+    bool "Enable Feature 2"
+
+config COMMON_FEATURE3
+    bool "Enable Feature 3"
+
+config TEST_OPTION
+	bool "Test Option"
+	help
+		Test option description
+
+#TODO
+# Include or add more configuration here
+#source "xx/xxx/Kconfig"
+endmenu
+

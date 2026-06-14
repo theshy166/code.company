@@ -1,0 +1,10 @@
+../fs/ubifs/log.c:594:12:add_node	32	static
+../fs/ubifs/log.c:576:13:destroy_done_tree	16	static
+../fs/ubifs/log.c:34:19:ubifs_search_bud	0	static
+../fs/ubifs/log.c:63:20:ubifs_get_wbuf	0	static
+../fs/ubifs/log.c:116:6:ubifs_add_bud	16	static
+../fs/ubifs/log.c:168:5:ubifs_add_bud_to_log	56	static
+../fs/ubifs/log.c:351:5:ubifs_log_start_commit	40	static
+../fs/ubifs/log.c:450:5:ubifs_log_end_commit	4	static
+../fs/ubifs/log.c:499:5:ubifs_log_post_commit	48	static
+../fs/ubifs/log.c:625:5:ubifs_consolidate_log	72	static

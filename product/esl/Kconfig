@@ -1,0 +1,43 @@
+#Configuration
+
+menu "Esl Features"
+
+config XOS_PROJECT_TYPE
+    string
+    prompt "Project"
+    default "esl"
+    help
+      Set the xos project.
+
+config QM_VERSION
+    string "software version"
+    default "V1.00.00"
+
+config LCD_PANEL
+    bool "Display panel"
+    default n
+
+config TOUCH_PANEL
+    bool "Touch Panel Feature"
+    default n
+
+config WIFI_SUPPORT
+    bool "WiFi feature"
+    default n
+
+config XOS_WIFI_QUADRV
+    string
+    prompt "wifi_type"
+    default "aic8800d"
+    help
+    Set wifi type.
+
+config ETHERNET_SUPPORT
+    bool "Ethernet feature"
+    default n
+
+
+# Include more configuration here
+#source "xx/xxx/Kconfig"
+endmenu
+

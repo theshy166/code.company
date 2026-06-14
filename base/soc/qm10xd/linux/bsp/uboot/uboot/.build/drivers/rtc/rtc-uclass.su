@@ -1,0 +1,9 @@
+../drivers/rtc/rtc-uclass.c:13:5:dm_rtc_get	0	static
+../drivers/rtc/rtc-uclass.c:23:5:dm_rtc_set	0	static
+../drivers/rtc/rtc-uclass.c:33:5:dm_rtc_reset	0	static
+../drivers/rtc/rtc-uclass.c:43:5:rtc_read8	0	static
+../drivers/rtc/rtc-uclass.c:53:5:rtc_write8	0	static
+../drivers/rtc/rtc-uclass.c:63:5:rtc_read16	24	static
+../drivers/rtc/rtc-uclass.c:80:5:rtc_write16	16	static
+../drivers/rtc/rtc-uclass.c:93:5:rtc_read32	24	static
+../drivers/rtc/rtc-uclass.c:110:5:rtc_write32	24	static

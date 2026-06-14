@@ -1,0 +1,12 @@
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:59:13:get_lcm_ctrl	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:64:9:lcm_dvdd_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:105:9:lcm_avdd_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:146:9:lcm_iovdd_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:186:9:lcm_vcom_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:226:9:lcm_vgh_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:266:9:lcm_vgl_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:305:9:lcm_reset_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:345:9:lcm_standby_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:385:9:lcm_back_light_gpio_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:425:9:lcm_back_light_pwm_set	0	static
+../common/mc/lcm/ctrl/ctrl_lcm_v01_drv.c:459:9:lcm_power_pwm_set	0	static

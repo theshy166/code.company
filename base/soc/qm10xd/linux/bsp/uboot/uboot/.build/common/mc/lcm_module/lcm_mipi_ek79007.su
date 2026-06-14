@@ -1,0 +1,7 @@
+../common/mc/lcm_module/lcm_mipi_ek79007.c:100:16:_lcm_mipi_ek79007_PowerOff	8	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:118:16:_lcm_mipi_ek79007_PowerOn	8	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:177:16:_lcm_mipi_ek79007_init	16	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:197:16:_lcm_mipi_ek79007_suspend	0	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:231:16:_lcm_mipi_ek79007_deinit	0	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:135:16:_lcm_mipi_ek79007_identify	8	static
+../common/mc/lcm_module/lcm_mipi_ek79007.c:214:16:_lcm_mipi_ek79007_resume	0	static

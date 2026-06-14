@@ -1,0 +1,4 @@
+../common/sdl/sdl.c:39:6:s_init	8	static
+../common/sdl/sdl.c:67:6:board_init_f	8	static
+../common/sdl/sdl.c:78:5:spi_nand_program_image	112	static
+../common/sdl/sdl.c:181:6:board_init_r	24	static

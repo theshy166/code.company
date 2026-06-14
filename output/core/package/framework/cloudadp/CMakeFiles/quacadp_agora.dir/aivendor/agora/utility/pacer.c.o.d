@@ -1,0 +1,37 @@
+core/package/framework/cloudadp/CMakeFiles/quacadp_agora.dir/aivendor/agora/utility/pacer.c.o: \
+ /home/luoxin/work/X-AIOS-ESL/core/package/framework/cloudadp/aivendor/agora/utility/pacer.c \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/stdlib.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stddef.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/waitflags.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/waitstatus.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/endian.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/endian.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/byteswap.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/byteswap.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/byteswap-common.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/types.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/typesizes.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/byteswap-16.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/types.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/time.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/select.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/select.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/sigset.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/time.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/sysmacros.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/pthreadtypes.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/alloca.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/sys/time.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/framework/cloudadp/aivendor/agora/utility/utility.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/framework/cloudadp/aivendor/agora/include/vc_ability.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/xos_app_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/core/board/generic/qm10xd/conf/xos_res_conf.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stdint.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /home/luoxin/work/X-AIOS-ESL/core/package/framework/cloudadp/aivendor/agora/utility/pacer.h \
+ /home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/lib/gcc/arm-molv2-linux-uclibcgnueabi/10.3.1/include/stdbool.h

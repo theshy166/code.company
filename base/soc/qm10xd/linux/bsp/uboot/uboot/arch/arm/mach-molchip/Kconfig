@@ -1,0 +1,171 @@
+config MOLCHIP
+	bool "MOLCHIP  SoC support"
+	depends on ARCH_MOLCHIP
+	select ARMV8_LPAE if ARM64
+	select CPU_V7	if !ARM64
+
+menu "MOLCHIP xxx family"
+	depends on ARCH_MOLCHIP
+
+choice
+	prompt "MOLCHIP xxx board select"
+	optional
+
+config TARGET_MOLCHIP
+	bool "molchip xxx evb"
+	help
+	  Support for all molchip-based  variants.
+
+	  This option creates a build targetting the ARMv7/AArch32 ISA.
+	select MOLCHIP
+
+config TARGET_TS01
+	bool "molchip ts01 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+
+config TARGET_FY01
+	bool "molchip fy01 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY00
+	bool "molchip fy00 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY10D
+	bool "molchip fy10d evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY10DS
+	bool "molchip fy10ds evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY02
+	bool "molchip fy02 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY02B
+	bool "molchip fy02b evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY02P
+	bool "molchip fy02p evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_FY10P
+	bool "molchip fy10p evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_XC01
+        bool "molchip xc01 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_LT00
+        bool "molchip lt00 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+config TARGET_MC3302
+        bool "molchip mc3302 evb"
+        help
+          Support for all molchip-based  variants.
+
+          This option creates a build targetting the ARMv7/AArch32 ISA.
+        select MOLCHIP
+
+endchoice
+
+config SYS_SOC
+	default "molchip"
+
+endmenu
+
+menu "MOLCHIP ARM64 FAMILY"
+        depends on ARCH_MOLCHIP
+
+choice
+        prompt "MOLCHIP ARM64 board select"
+        optional
+
+config TARGET_FY12
+        bool "molchip fy12 evb"
+        help
+          Support for all molchip-based  variants.
+          This option creates a build targetting the ARMv8/AArch64 ISA.
+	select MOLCHIP
+endchoice
+
+config SYS_SOC
+        default "molchip"
+
+config UBOOT_WIFIX
+        bool "QM10XD WIFIX"
+        help
+          Support for WIFIX  variants.
+
+config UBOOT_XKPHOTO
+        bool "QM10XD XKPHOTO"
+        help
+          Support for XKPHOTO variants.
+
+
+config UBOOT_ESL
+        bool "QM10XD ESL"
+        help
+          Support for ESL variants.
+
+
+config UBOOT_SMARTDOOR
+        bool "QM10XD SMARTDOOR"
+        help
+          Support for SMARTDOOR variants.
+
+config UBOOT_CB1LD
+        bool "QM10XD Core board v1"
+        help
+          Support for core board variants.
+endmenu
+

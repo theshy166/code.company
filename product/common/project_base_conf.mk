@@ -1,0 +1,40 @@
+# Project Base Configuration
+#
+# Common definitions for all projcts
+#
+
+# export CONFIG_XOS_USE_APP_LAUNCHER=false
+# export CONFIG_XOS_USE_APP_STATUS_BAR=false
+# export CONFIG_XOS_USE_APP_ANALOG_CLOCK=false
+# export CONFIG_XOS_USE_APP_DIGITAL_CLOCK=false
+# export CONFIG_XOS_USE_APP_LAYER_DEMO=false
+# export CONFIG_XOS_USE_APP_AUDIO_PLAYER=false
+# export CONFIG_XOS_USE_APP_BOOT_ANIMATE=false
+# export CONFIG_XOS_USE_APP_DEMOLIST=false
+# export CONFIG_XOS_USE_APP_COFFEE_MILL=false
+# export CONFIG_XOS_USE_APP_COMMON=false
+# export CONFIG_XOS_USE_APP_CAMERA=false
+# export CONFIG_XOS_USE_APP_HEALTH=false
+# export CONFIG_XOS_USE_APP_VIDEO_CALL=false
+# export CONFIG_XOS_USE_APP_FILEEXPLORER=false
+# export CONFIG_XOS_USE_APP_GALLERY=false
+# export CONFIG_XOS_USE_APP_VIDEOPLAYER=false
+# export CONFIG_XOS_USE_APP_IMAGEVIEWER=false
+# export CONFIG_XOS_USE_APP_FACE_RECOGNIZE=false
+# export CONFIG_XOS_USE_APP_SETTING=false
+# export CONFIG_XOS_USE_APP_SMART_DOOR=false
+# export CONFIG_XOS_USE_APP_COOLFLORID=false
+# export CONFIG_XOS_USE_APP_QETV=false
+# export CONFIG_XOS_USE_APP_H5_ESL=false
+# export CONFIG_XOS_USE_APP_MOTO=false
+# export CONFIG_XOS_USE_APP_SCANPEN=false
+# export CONFIG_XOS_USE_APP_LOTTIEDEMO=false
+# export CONFIG_XOS_USE_APP_SMARTHOME=false
+# export CONFIG_XOS_USE_LVGL_DEMOSS=false
+# export CONFIG_XOS_FWK_EFFECTS=false
+# export CONFIG_XOS_EXT_FREETYPE=false
+# export CONFIG_XOS_USE_GIF=false
+# export CONFIG_XOS_USE_PLAYER=false
+export CONFIG_XOS_INN_QUAMISC=true
+export CONFIG_XOS_INN_QUANTP=false
+export CONFIG_XOS_FWK_PARAM=true

@@ -1,0 +1,51 @@
+/*
+ * molchip
+ *
+ * Cortex-A55 MPCore
+ *
+ *
+ */
+#include <dt-bindings/memory/os_layout.h>
+/ {
+	memory@40000000 {
+		device_type = "memory";
+		reg = <ap_os_start_h ap_os_start_l ap_os_size_h ap_os_size_l>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		reserved@50000000 {
+			reg = <reserved_start_h reserved_start_l reserved_size_h reserved_size_l>;
+			no-map;
+		};
+	};
+
+#ifdef fy13_mem_layout
+	cpinfo2ap@0x59000000 {
+		reg = <0x00000001 0x59600000 0x00000000 0x100000>;
+	};
+
+	syslink@02600000 {
+		compatible = "syslink,int";
+		reg = <0x00000000 0x02600000 0x00000000 0x4000>,
+				<0x00000001 0x58000000 0x00000000 0xA00000>,
+				<0x00000001 0x58A00000 0x00000000 0xA00000>,
+				<0x00000001 0x59400000 0x00000000 0x100000>,
+				<0x00000001 0x59500000 0x00000000 0x100000>;
+		reg-names = "reg", "tx_mem", "rx_mem", "rx_event_mem", "tx_event_mem";
+		interrupts = <0 132 4>, <0 133 4>, <0 134 4>, <0 135 4>,
+			<0 136 4>, <0 137 4>, <0 138 4>, <0 139 4>, <0 140 4>,
+			<0 141 4>, <0 142 4>, <0 143 4>, <0 144 4>, <0 145 4>,
+			<0 146 4>, <0 147 4>, <0 148 4>, <0 149 4>, <0 150 4>,
+			<0 151 4>, <0 152 4>;
+		interrupt-names = "port0", "port1", "port2", "port3",
+			"port4", "port5", "port6", "port7", "port8",
+			"port9", "port10", "port11", "port12", "port13",
+			"port14","port15", "port16", "port17","port18",
+			"port19","combi";
+		status = "ok";
+	};
+#endif
+};

@@ -1,0 +1,6 @@
+if PLAT_MOLCHIP
+
+config PLAT_MOLCHIP_SCHED_CLOCK
+	bool
+
+endif

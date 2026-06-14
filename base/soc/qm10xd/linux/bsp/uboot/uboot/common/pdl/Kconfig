@@ -1,0 +1,32 @@
+menu "PDL"
+
+config PDL
+	bool
+	prompt "Enable PDL"
+	help
+	  If you want to build PDL as well as the normal image, say Y.
+
+if PDL
+
+config PDL_LDSCRIPT
+	string "Linker script for the PDL stage"
+	default "arch/$(ARCH)/cpu/u-boot-pdl.lds"
+	depends on PDL
+	help
+	  The PDL stage will usually require a different linker-script
+	  (as it runs from a different memory region) than the regular
+	  U-Boot stage.	 Set this to the path of the linker-script to
+	  be used for PDL.
+
+
+config PDL_TEXT_BASE
+       	hex "Base address for the .text section of the PDL stage"
+	help
+	  The base address for the .text section of the PDL stage.
+
+config PDL_STACK
+        hex "Base address for PDL sp"
+
+endif # PDL
+endmenu
+

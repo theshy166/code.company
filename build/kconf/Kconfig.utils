@@ -1,0 +1,13 @@
+# For a description of the syntax of this configuration file,
+# core/package/utils configuration.
+#
+menu "Utils Configure"
+
+config XOS_UTILS_HELLO
+	bool "Build Hello"
+	default n
+	depends on XOS_USE_NO_QUAUI
+	help
+		Select the xos utils hello sample.
+
+endmenu

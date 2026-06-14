@@ -1,0 +1,9 @@
+../board/molchip/lib/vexpress_common.c:57:5:board_init	8	static
+../board/molchip/lib/vexpress_common.c:76:5:board_eth_init	0	static
+../board/molchip/lib/vexpress_common.c:107:5:dram_init	0	static
+../board/molchip/lib/vexpress_common.c:119:5:dram_init_banksize	16	static
+../board/molchip/lib/vexpress_common.c:158:5:v2m_cfg_write	0	static
+../board/molchip/lib/vexpress_common.c:183:6:reset_cpu	0	static
+../board/molchip/lib/vexpress_common.c:191:6:lowlevel_init	0	static
+../board/molchip/lib/vexpress_common.c:196:7:get_board_rev	0	static
+../board/molchip/lib/vexpress_common.c:262:5:board_early_init_f	0	static

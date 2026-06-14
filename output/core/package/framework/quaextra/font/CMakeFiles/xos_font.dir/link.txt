@@ -1,0 +1,2 @@
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ar qc libxos_font.a CMakeFiles/xos_font.dir/qua_fontv8.c.o CMakeFiles/xos_font.dir/qua_fontv9.c.o CMakeFiles/xos_font.dir/qua_font_ll.c.o
+/home/luoxin/work/X-AIOS-ESL/tools/toolchain/arm-molv2-linux-uclibcgnueabi/bin/arm-linux-ranlib libxos_font.a

@@ -1,0 +1,5 @@
+#!/bin/sh
+ifconfig lo up
+
+cd /vendor/qua/wifi/bin;
+./wifi_init.sh &

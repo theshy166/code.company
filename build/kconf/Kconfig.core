@@ -1,0 +1,9 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+#gsource "core/board/Kconfig"
+#gsource "core/res/Kconfig"
+source "build/kconf/Kconfig.apps"
+## source code localed at 'core/package/'
+source "build/kconf/Kconfig.pkg"

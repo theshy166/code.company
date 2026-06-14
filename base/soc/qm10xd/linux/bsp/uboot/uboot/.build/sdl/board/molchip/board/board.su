@@ -1,0 +1,6 @@
+../board/molchip/board/board.c:29:4:nvm_boot_device	0	static
+../board/molchip/board/board.c:43:6:hang	0	static
+../board/molchip/board/board.c:49:6:jump_to	0	static
+../board/molchip/board/board.c:56:6:ana_bias_reset	8	static
+../board/molchip/board/board.c:96:6:nosec_jump_to	0	static
+../board/molchip/board/board.c:101:6:nosec_boot	0	static

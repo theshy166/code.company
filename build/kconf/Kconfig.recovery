@@ -1,0 +1,21 @@
+#
+# For a description of the syntax of this configuration file,
+# core/package/recovery configuration.
+#
+
+menu "Recovery"
+
+config XOS_RECOVERY_MODE
+	bool "recovery mode"
+	default y
+	help
+		Select the xos recovery mode feature.
+
+config XOS_UPDATE_ENGINE
+	bool "update engine"
+	default y
+	help
+		Select the xos update engine feature.
+
+endmenu
+

@@ -1,0 +1,15 @@
+../board/molchip/sdcard/sd_card.c:12:5:unstuff_bits	4	static
+../board/molchip/sdcard/sd_card.c:27:5:mmc_go_idle	40	static
+../board/molchip/sdcard/sd_card.c:43:5:mmc_send_if_cond	40	static
+../board/molchip/sdcard/sd_card.c:71:5:mmc_app_cmd	40	static
+../board/molchip/sdcard/sd_card.c:92:5:mmc_wait_for_app_cmd	24	static
+../board/molchip/sdcard/sd_card.c:119:5:mmc_send_app_op_cond	56	static
+../board/molchip/sdcard/sd_card.c:149:5:mmc_send_cxd_native	48	static
+../board/molchip/sdcard/sd_card.c:167:5:mmc_send_cid	0	static
+../board/molchip/sdcard/sd_card.c:172:5:mmc_send_relative_addr	40	static
+../board/molchip/sdcard/sd_card.c:190:5:mmc_send_csd	0	static
+../board/molchip/sdcard/sd_card.c:197:5:mmc_select_card	40	static
+../board/molchip/sdcard/sd_card.c:209:5:mmc_dw_set_blocklen	40	static
+../board/molchip/sdcard/sd_card.c:220:5:mmc_app_set_bus_width	48	static
+../board/molchip/sdcard/sd_card.c:241:5:mmc_blk_mq_issue_rw_rq	112	static
+../board/molchip/sdcard/sd_card.c:287:5:init_sdcard	40	static

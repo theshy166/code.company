@@ -1,0 +1,96 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+
+/dts-v1/;
+
+/ {
+	model = "FY01";
+	compatible = "arm,molchip,fy01", "arm,molchip";
+	interrupt-parent = <&gic>;
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	config {
+		bootdelay = <2>;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0xf00>;
+		};
+
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0xf01>;
+		};
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x80000000 0x10000000>;
+	};
+
+	sysreg: sysreg@10000000 {
+		compatible = "arm,molchip-sysreg";
+		reg = <0x10000000 0x1000>;
+	};
+
+	scu: scu@00200000 {
+		compatible = "arm,cortex-a7-scu";
+		reg = <0x00200000 0x100>;
+	};
+
+	timer {
+		compatible = "arm,armv7-timer";
+		interrupts = <1 13 0xf08>,
+			<1 14 0xf08>,
+			<1 11 0xf08>,
+			<1 10 0xf08>;
+		clock-frequency = <48000000>;
+	};
+
+	gic: interrupt-controller@00200000 {
+		compatible = "arm,cortex-a7-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x00201000 0x1000>,
+			<0x00202000 0x1000>;
+	};
+
+	uart0: uart@0x18300000 {
+		compatible = "molchip,serial";
+		reg = <0x18300000 0x100>;
+		interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
+	};
+
+	ethernet: ethernet@1b900000 {
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x1b900000 0x4000>;
+		phy-mode = "mii";
+		phy-addr = <0xa>;
+		status = "okay";
+	};
+
+};

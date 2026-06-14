@@ -1,0 +1,72 @@
+config SYS_BOARD
+	default "molchip"
+config SYS_CONFIG_NAME
+	string "molchip project,such as fyxx"
+
+config SPL_MMC_SUPPORT
+	bool "emmc support"
+	default n
+
+config SELECT_LOAD_UBOOT
+	bool "Boot mode"
+	default y
+	help
+	  Select this option to boot image
+	  This option is enabled by default for U-Boot.
+
+config PRG_BOOT_STAGE_PLUSIN
+	bool "Pre-rolling boot stage"
+	default y
+	help
+	  This option is enabled to boot pre-rolling.
+
+config RTT_BOOT_STAGE_PLUSIN
+	bool "RT-thread boot stage"
+	default y
+	help
+	  This option is enabled to boot rtt.
+
+config BOOT_STAGE_LOAD_NN
+	bool "LOAD NN MODEL"
+	default y
+	help
+	  This option is enabled to load nnmodel.
+
+config ADAPTIVE_MEMORY_SUPPORT
+	bool "Enable adtaptive-memory"
+	default y
+	help
+	  Adaptive-memory detection mechanism on here.
+
+config SPL_ARGS_TRSF
+        bool "SPL Support ARGS Transmit"
+        help
+          This macro is used to turn on the SPL parameter passing function.
+
+config SPL_ARGS_STR
+        string "SPL Parameter to be passed"
+        default "earlycon console=ttyS0,115200 bbbbbbbbbbbbbbbbb111111111111111"
+        depends on SPL_ARGS_TRSF
+        help
+          Implement this macro to pass your parameters.
+
+config BOOT_RAM_SIZE
+        hex "Custom boot ram size"
+        help
+          Implement this macro to configure boot ram size
+
+config SUPPORT_USB2
+        bool "Support USB2"
+        default y
+        help
+          This option is enabled to support USB2.
+
+config  NOR_UPDATE
+	bool "Support for NOR flash"
+	help
+           The SoC supports having a NOR flash connected
+
+config  NAND_UPDATE
+	bool "Support for NAND flash"
+	help
+           The SoC supports having a NAND flash connected

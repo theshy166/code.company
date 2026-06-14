@@ -1,0 +1,6 @@
+../drivers/net/phy/molchip_net_phy_fh.c:234:12:mochip7c01_phy_reset	0	static
+../drivers/net/phy/molchip_net_phy_fh.c:250:5:mochip7c01_startup	8	static
+../drivers/net/phy/molchip_net_phy_fh.c:241:12:mochip7c01_config	8	static
+../drivers/net/phy/molchip_net_phy_fh.c:110:5:auto_find_phy	16	static
+../drivers/net/phy/molchip_net_phy_fh.c:223:5:mochip_ephy_test	8	static
+../drivers/net/phy/molchip_net_phy_fh.c:275:5:phy_molchip_init	8	static

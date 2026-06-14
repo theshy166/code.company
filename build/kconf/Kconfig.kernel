@@ -1,0 +1,39 @@
+menu "Kernel"
+
+config KERNEL_DEFCONFIG
+        string "defconfig file"
+        default "quaming_qm108h_defconfig"
+        help
+          Enter the name of the xxx_xx_defconfig file, eg:
+          quaming_qm108h_defconfig
+
+config KERNEL_VERSION
+        string "kernel version"
+        default "4.19"
+        help
+          Enter kernel version:
+
+config KERNEL_DTB
+        string "dtb file"
+        default "quaming-kernel.dtb"
+        help
+          Enter the name of the *.dtb file, eg:
+          quaming-kernel.dtb
+
+config QM_OS_MEM
+        string "system memmory size"
+        default "560M" if CHIPSET_QM10XH
+        default "64M" if CHIPSET_MC331X
+        help
+          max size for linux os, read it via 'cat /proc/cmdline' cmd
+
+config KERNEL_BOARD_NAME
+        string "board name under kernel"
+        default "NAME_NOT_DEFINED"
+        help
+          The option specifies the name of the target board
+          for which kernel is being built. Its primary purpose is
+          to ensure that the correct board-specific settings, drivers,
+          configurations are applied during the build process or runtime
+
+endmenu

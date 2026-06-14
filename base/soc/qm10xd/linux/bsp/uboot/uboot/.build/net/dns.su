@@ -1,0 +1,3 @@
+../net/dns.c:97:13:dns_timeout_handler	8	static
+../net/dns.c:103:13:dns_handler	48	static
+../net/dns.c:196:6:dns_start	40	static

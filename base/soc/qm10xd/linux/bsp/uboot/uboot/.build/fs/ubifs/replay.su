@@ -1,0 +1,4 @@
+../fs/ubifs/replay.c:270:12:replay_entries_cmp	0	static
+../fs/ubifs/replay.c:350:12:insert_node	32	static
+../fs/ubifs/replay.c:444:5:ubifs_validate_entry	24	static
+../fs/ubifs/replay.c:1002:5:ubifs_replay_journal	136	static

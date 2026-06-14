@@ -1,0 +1,707 @@
+/*
+ * molchip
+ *
+ * Cortex-A7
+ *
+ * HBI-0225B
+ */
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/pinctrl/mclt00-pinfunc.h>
+#include <dt-bindings/pinctrl/mcxcxx.h>
+#include <dt-bindings/net/molchip-ephy.h>
+
+/ {
+	model = "LT00";
+	compatible = "arm,molchip,lt00", "arm,molchip";
+	interrupt-parent = <&gic>;
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	chosen {
+		bootargs="earlycon console=ttyS0,115200";
+		stdout-path = &uart0;
+	};
+
+	aliases {
+		uart0 = "/uart@0x08F00000";
+		uart1 = "/uart@0x09000000";
+		uart2 = "/uart@0x09100000";
+		uart3 = "/uart@0x09400000";
+		gpio0 = "/gpio@0b000000";
+		gpio1 = "/gpio@0b010000";
+		gpio2 = "/gpio@0b020000";
+		gpio3 = "/gpio@0b030000";
+		gpio4 = "/gpio@0b040000";
+		gpio5 = "/gpio@0b050000";
+		gpio6 = "/gpio@0b060000";
+		gpio7 = "/gpio@0b070000";
+		efuse0 = "/efuse@0A700000";
+		spi0 = "/spi@08B00000";
+		spi1 = "/spi@08A00000";
+		spi2 = "/spi@09900000";
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a7";
+			reg = <0x100>;
+		};
+
+	};
+
+	scu: scu@00200000 {
+		compatible = "arm,cortex-a7-scu";
+		reg = <0x00200000 0x100>;
+	};
+
+	timer {
+		compatible = "arm,armv7-timer";
+		interrupts = <1 13 0xf08>; //Secure Physical Timer event
+			//<1 14 0xf08>,
+			//<1 11 0xf08>,
+			//<1 10 0xf08>;
+		clock-frequency = <960000000>;
+	};
+
+	gic: interrupt-controller@00200000 {
+		compatible = "arm,cortex-a7-gic", "arm,cortex-a9-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		reg = <0x00201000 0x1000>,
+			<0x00202000 0x1000>;
+	};
+
+
+	uart0: uart@0x08F00000 {
+		compatible = "mol,uart";
+		interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x08F00000 0x1000>;
+		clock-frequency = <24000000>;
+	};
+
+	uart1: uart@0x09000000 {
+		compatible = "mol,uart";
+		interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x09000000 0x1000>;
+		clock-frequency = <24000000>;
+		/* rs485 example */
+		//rs485-gpio-enable;
+		//rs485-gpio = <&gpio4 0 0>;
+	};
+
+	uart2: uart@0x09100000 {
+		compatible = "mol,uart";
+		interrupts = <GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x09100000 0x1000>;
+		clock-frequency = <24000000>;
+	};
+
+	uart3: uart@0x09400000 {
+		compatible = "mol,uart";
+		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x09400000 0x1000>;
+		clock-frequency = <24000000>;
+	};
+
+	cpu_sys_ahb: syscon@0c000000 {
+		compatible = "syscon";
+		reg = <0x0c000000 0x1000>;
+	};
+
+	ana: syscon@0b500000{
+		compatible = "syscon";
+		reg = <0x0b500000 0x1000>;
+	};
+	syscfg_pctl: syscfg_pctrl@10200000 {
+		compatible = "molchip,lt00-pctl-syscfg", "syscon";
+		reg = <0x10200000 0x1000>;
+	};
+
+	syscfg_pctl_a: syscfg_pctrl_a@25B00000 {
+		compatible = "molchip,lt00-pctl-a-syscfg", "syscon";
+		reg = <0x25B00000 0x200>;
+	};
+
+	syscfg_pctl_b: syscfg_pctrl_b@0B100000 {
+		compatible = "molchip,lt00-pctl-b-syscfg", "syscon";
+		reg = <0x0B100000 0x300>;
+	};
+
+	ethernet_a: ethernet@0b400000 {
+		/*
+		clock-names = "gmac_clk_eb",
+			"gmac_clk_csr", "apb_pclk" ,"tx_en", "rx_en", "rmii_en";
+		clocks = <&ispsys CKG_AXI_GMAC1_EN>,
+			<&ispsys CKG_APB_GMAC1_CSR_EN>,
+			<&ispsys CKG_GMAC1_TX_EN>,
+			<&ispsys CKG_GMAC1_RX_EN>,
+			<&ispsys CKG_GMAC1_RMII_EN>,
+			<&topsys_compostite CKG_MUX_GLB_APB_CFG>;
+		*/
+		compatible = "molchip,dwc-qos-ethernet-4.10";
+		reg = <0x0b400000 0x4000>;
+
+		interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+
+		interrupt-names = "sbdirq",
+                          "lpiirq",
+                          "pmtirq";
+
+		mac-address = [ 04 a1 a2 a3 a4 a5 ];
+		phy-mode = "mii";
+		phy-handle = <&phy0>;
+		phy-type = <INTERNAL_PHY>;
+		snps,en-tx-lpi-clockgating;
+		snps,en-lpi;
+		snps,write-requests = <2>;
+		snps,read-requests = <16>;
+		snps,burst-map = <0x7>;
+		snps,txpbl = <8>;
+		snps,rxpbl = <2>;
+		snps,axi-emac-en = <0xac>,<20>,<0x1>;
+		snps,ephy-type-sel = <0x1dc>,<0>,<0x1>;
+		snps,rmii-pad-sel =  <0x1d4>,<2>,<0x3>;
+		snps,phy-intf-sel =  <0x1dc>,<13>,<0x7>;
+		snps,ephy-ref-en =   <0x1fc>,<2>,<0x3>;
+		snps,ephy-soft-reset = <0x1dc>,<4>,<0x1>;
+		snps,ana-soft-reset = <0x1fc>,<4>,<0x1>;
+		ctrl_id = <0x0>;
+		platform = <CHIP_PLATFORM>;
+		molchip,haps-apclk = <150000000>;
+		molchip,syscon-ap-ahb = <&cpu_sys_ahb>;
+		molchip,syscon-pin = <&syscfg_pctl>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&eth_pins_mii_defaults>;
+
+		/* For Internal PHY(100T) */
+		molchip,syscon-ana = <&ana>;
+		status = "okay";
+
+		mdio {
+			#address-cells = <0x1>;
+			#size-cells = <0x0>;
+
+			phy0: phy@0 {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				device_type = "ethernet-phy";
+				reg = <0x0>;
+			};
+		};
+	};
+
+	pwm_ab: pwm@09500000 {
+                compatible = "molchip,pwm";
+                #pwm-cells = <2>;
+                reg = <0x09500000 0x1000>;
+                status = "okay";
+    };
+
+	saradc: saradc@0aa00000 {
+		compatible = "molchip,saradc";
+		reg = <0x0aa00000 0x400>;
+		interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	pts: pts@0x0b800000 {
+		compatible = "molchip,pts";
+		reg = <0x0b800000 0x1000>;
+		molchip,syscon-pts-value = <&cpu_sys_ahb>;
+		clock-freq = <1000000>;
+		status = "okay";
+	};
+
+	watchdog@09600000 {
+		compatible = "mc,wdt";
+		interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x09600000 0x400>;
+		timeout-sec = <10>;
+		status = "okay";
+	};
+
+	dma0: dma0@0c700000{
+		compatible = "molchip,mc-dma64";
+		reg = <0x0c700000 0x3000>;
+		interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
+		dma-channels = <32>;
+		chan_allocation_order = <0>;
+		status = "okay";
+	};
+
+	aes: aes@0c600000 {
+		compatible = "mc,aes";
+		reg = <0x0c600000 0x1000>;
+		molchip,syscon-cpu-reg = <&cpu_sys_ahb>;
+		aes_sw_clk_ctrl_reg = <0xDC>;
+		aes_sw_clk_ctrl_bit = <0x12>;
+		aes_sw_reset_reg = <0x1B4>;
+		aes_sw_reset_bit = <0x14>;
+		interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
+		molchip,dma-rx-id = <8>;
+        molchip,dma-tx-id = <9>;
+		status = "okay";
+	};
+
+	spi_nor_controller: spi-nor-controller@0x26400000 {
+                compatible = "mc,spi-nor";
+                #address-cells = <1>;
+                #size-cells = <0>;
+                reg = <0x26400000 0x4000>;
+                reg-names = "control";
+                spi-max-frequency = <480000000>;
+                status = "okay";
+
+                spi-nor@0x0 {
+                        compatible = "jedec,spi-nor";
+                        reg = <0>;
+                        partitions {
+                                compatible = "fixed-partitions";
+                                #address-cells = <1>;
+                                #size-cells = <1>;
+                                partition@0x0 {
+                                        label = "boot-spl";
+                                        reg = <0 0x8000>;
+                                };
+                                partition@0x8000 {
+                                        label = "boot-uboot";
+                                        reg = <0x8000 0xf8000>;
+                                };
+                                partition@0x100000 {
+                                        label = "kernel";
+                                        reg = <0x100000 0x700000>;
+                                };
+                                partition@0x800000 {
+                                        label = "user";
+                                        reg = <0x800000 0x800000>;
+                                };
+                        };
+                };
+        };
+
+	spi_nfc: spi_nfc@0x26400000 {
+		compatible = "mc, spi-nand-controller";
+		reg = <0x26400000 0x4000>;
+		reg-names = "control";
+		spi-max-frequency = <480000000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+
+		spi_nfc@0 {
+			compatible = "mc-spi-nfc";
+			reg = <1>;
+		};
+	};
+
+	gpio0: gpio@0b000000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&topsys_gate CKG_APB_GPIO_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b000000 0x100>;
+		interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio1: gpio@0b010000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b010000 0x100>;
+		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio2: gpio@0b020000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b020000 0x100>;
+		interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio3: gpio@0b030000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b030000 0x100>;
+		interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio4: gpio@0b040000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b040000 0x100>;
+		interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio5: gpio@0b050000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b050000 0x100>;
+		interrupts = <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio6: gpio@0b060000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b060000 0x100>;
+		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	gpio7: gpio@0b070000 {
+		/*clock-names = "gpio_clk";
+		clocks = <&cpusys_gatemux CKG_APB_GPIO_CLK_EN>;*/
+		#gpio-cells = <2>;
+		compatible = "molchip,gpio";
+		group-number = <8>;
+		gpio-controller;
+		reg = <0x0b070000 0x100>;
+		interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
+		status = "okay";
+	};
+
+	efuse: efuse@0A700000 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "mc,efuse";
+		reg = <0x0A700000 0x1000>;
+		mc,efuse-size = <64>;
+		bypass-init-clock;
+		/*
+		clocks = <&cpusys_gatemux CKG_EFUSE_EN>,
+				<&cpusys_gatemux CKG_APB_EFUSE_EN>;
+		clock-names = "clk_efuse",
+				"clk_apb_efuse";
+		*/
+		status = "okay";
+		usb_vendor: id_vendor@32 {
+				reg = <0x32 0x2>;
+			};
+		ephy_vgb_trim: ephy_vgbtrim@36 {
+				reg = <0x36 0x2>;
+			};
+	};
+
+	i2c0: i2c@08d00000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "molchip,i2c";
+		reg = <0x08d00000 0x100>;
+		id = <0>;
+		init-switch = <1>;
+		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
+		clock-frequency = <100000>;
+		status = "okay";
+	};
+
+	i2c1: i2c@08e00000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "molchip,i2c";
+		reg = <0x08e00000 0x100>;
+		id = <1>;
+		init-switch = <1>;
+		interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
+		clock-frequency = <400000>;
+		status = "okay";
+	};
+
+
+	dwc2: dwc2@0ca00000 {
+		/*clock-names = "otg";*/
+		/*clocks = <&apahb_gate CKG_USB1>;*/
+		compatible = "molchip,usb", "snps,dwc2";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x0ca00000 0x40000>;
+		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+		/*g-rx-fifo-size = <1024>;*/
+		/*g-np-tx-fifo-size = <64>;*/
+		/*g-tx-fifo-size = <256 16 16 16 16 16 16 16 16 16 16>;*/
+		/*dr_mode = "peripheral";*/
+		dr_mode = "host";
+		ctrl_id = <1>;
+		phys = <&usb2_phy>;
+		phy-names = "usb2-phy";
+		status = "okay";
+	};
+
+	usb2_phy: usb2-phy {
+		compatible = "snps,usb2-phy";
+		#phy-cells = <0>;
+		status = "okay";
+	};
+
+        i2s0: i2s@0x08900000 {
+                compatible = "molchip,i2s";
+                i2s_id = <0>;
+                i2s_dev_base = <0>;
+                #i2s_num = <1>;
+                i2s_mode = <0>;/*default:0*/
+                reg = <0x08900000  0x100>, /*i2s0: base*/
+                      <0x0C000000  0x200>; /*ap_sys_ahb_base*/
+                /*interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;*/
+                molchip,softreset-reg = <0xb4>;
+                molchip,softreset-bit = <13>;
+                molchip,dma-rx-id = <17>;
+                molchip,dma-tx-id = <16>;
+                molchip,i2sworkclk_mclk_same_clksource_en = <0x0>; /* when i2s as slave there should equal 0 */
+                molchip,i2stransprotocol_leftjustified_en = <0x0>;
+		/*
+                pinctrl-names = "default";
+                pinctrl-0 = <&i2s0_pins>;
+                molchip,syscon-sys-veu = <&veu1_ahb_sys>;
+		*/
+                status = "okay";
+        };
+
+
+	pinctrl: pinctrl@10200000 {
+		compatible = "molchip,lt00-pinctrl";
+		reg = <0x10200000 0x1000>;
+		status = "okay";
+		molchip,pctl-regmap = <&syscfg_pctl &syscfg_pctl_a &syscfg_pctl_b>;
+		pins-are-numbered;
+       		can_pins:can_pins {
+                	pins1 {
+                        	pinmux = <MCLT00_PIN_18_PAD18_G1_FUNC_CAN_RX>, <MCLT00_PIN_17_PAD17_G1_FUNC_CAN_TX>;
+                	};
+        	};
+
+		eth_pins_mii_defaults:mii_pins {
+			pins1 {
+				pinmux = <MCLT00_PIN_7_PAD8_G1__FUNC_EPHY_LED_DAT>, <MCLT00_PIN_8_PAD9_G1__FUNC_EPHY_LED_LINK>;
+			};
+		};
+
+		eth_pins_rmii_defaults:rmii_pins {
+			pins1 {
+				pinmux = <MCLT00_PIN_19_PAD0_G2__FUNC_MDCK>, <MCLT00_PIN_20_PAD1_G2__FUNC_EPHY_RSTN>,
+					<MCLT00_PIN_21_PAD2_G2__FUNC_MDIO>, <MCLT00_PIN_22_PAD3_G2__FUNC_EPHY_CLK>,
+					<MCLT00_PIN_23_PAD4_G2__FUNC_RMII_TXD1>, <MCLT00_PIN_24_PAD5_G2__FUNC_RMII_TXD0>,
+					<MCLT00_PIN_25_PAD6_G2__FUNC_RMII_TXEN>, <MCLT00_PIN_26_PAD8_G2__FUNC_RMII_RXD1>,
+					<MCLT00_PIN_27_PAD7_G2__FUNC_RMII_CLK>, <MCLT00_PIN_28_PAD9_G2__FUNC_RMII_RXD0>,
+					<MCLT00_PIN_30_PAD10_G2_FUNC_RMII_CRSDV>;
+			};
+		};
+	};
+
+	spi0: spi@08B00000 {
+	        compatible = "molchip,spi";
+	        #address-cells = <1>;
+	        #size-cells = <0>;
+	        interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+	        reg = <0x08B00000 0x100>;
+	        reg-names = "control";
+	        num-cs = <1>;
+	        reg-io-width = <4>;
+	        id = <0>;
+	        cs-gpios = <&gpio1 2 0>;
+	        status = "okay";
+
+	        dev@0 {
+	                compatible = "spi,dev";
+	                reg = <0>;
+	                spi-max-frequency = <36000000>;
+	        };
+	};
+
+	spi1: spi@08A00000 {
+	        compatible = "molchip,spi";
+	        #address-cells = <1>;
+	        #size-cells = <0>;
+	        interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
+	        reg = <0x08A00000 0x100>;
+	        reg-names = "control";
+	        num-cs = <1>;
+	        reg-io-width = <4>;
+	        id = <1>;
+	        cs-gpios = <&gpio5 1 0>;
+	        status = "okay";
+
+	        dev@0 {
+	                compatible = "spi,dev";
+	                reg = <0>;
+	                spi-max-frequency = <36000000>;
+	                rx-sample-delay = <0>;
+	        };
+	};
+
+	spi2: spi@09900000 {
+	        compatible = "molchip,spi-slave";
+	        #address-cells = <1>;
+	        #size-cells = <0>;
+	        interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+	        reg = <0x09900000 0x100>;
+	        reg-names = "control";
+	        num-cs = <1>;
+	        reg-io-width = <4>;
+	        id = <2>;
+	        spi-slave-mode;
+	        status = "okay";
+
+	        dev@0 {
+	                compatible = "spi,dev";
+	                reg = <0>;
+	                spi-max-frequency = <36000000>;
+	                rx-sample-delay = <0>;
+	        };
+	};
+
+	dmc_sys_apb: syscon@24000000 {
+		compatible = "syscon";
+		reg = <0x24000000 0x1000>;
+	};
+
+	perfmon@24800000{
+		compatible = "mc,perfmon";
+		reg = <0x24800000  0x400>;
+		molchip,syscon =<&dmc_sys_apb>;
+		dfimon-time-ctrl-offset-reg = <0x00>;
+		dfimon-time-high-ctrl-offset-reg = <0x04>;
+		dfimon-time-low-ctrl-offset-reg = <0x08>;
+		perfmon,channel-num = <3>;
+		status = "okay";
+	};
+
+	top_sys_gate: syscon@10000000 {
+			compatible = "syscon";
+			reg = <0x10000000 0x1000>;
+	};
+
+	sysreg: sysreg {
+		compatible = "arm,molchip-sysreg";
+		molchip,syscon = <&top_sys_gate>;
+		sw-rst-offset-reg = <0x100>;
+		sw-rst-offset-bit = <0>;
+		iram-base = <0x27000000>;
+		molchip,dmc-syscon =<&dmc_sys_apb>;
+		vou-mem-ctrl-reg = <0x310>;
+		cpu-access-share-ram-bit = <0>;
+		/* addr val mask flag(0:poll,1:set) */
+		reg-data = <0x24100490 0 1 1 \
+		            0x24100540 0 1 1 \
+		            0x241005f0 0 1 1 \
+		            0x241003fc 0 0xffffffff 0 \
+		            0x24100030 0x20 0x20 1 \
+		            0x24100004 0x20 0x30 0 \
+		            0x10000100 1 1 1 \
+		            0 0 0 0>;
+	};
+
+	can: can@26500000 {
+		compatible = "molchip,can";
+		reg = <0x26500000 0x1000>;
+		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
+		clock-freq = <24000000>;  /*sys clk default*/
+	        pinctrl-names = "default";
+       		pinctrl-0 = <&can_pins>;
+		status = "okay";
+	};
+
+	sdmmc0: dwmmc0@0c900000 {
+		compatible = "molchip,dw-mshc";
+		reg = <0x0c900000 0x400>;
+		//mc,peripheral-syscon = <&veu_sys_apb>;
+		interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&sdmmc0_pins>;
+		//mc,hsif = <&veu_sys_clk>;
+		clock-frequency = <50000000>;
+		cd-detect-level = <0>;
+		id = <0>;
+		waitting-time-suspend = <100>;
+		force-suspend = <1>;
+		/*clock-names = "biu",
+			"ciu",
+			"dllref",
+			"sdioclk";
+		clocks = <&veusys CKG_AHB_SDIO0_EN>,
+				 <&veusys CKG_SDIO0_EN>,
+				 <&veusys CKG_SDIO0_DLLREF_EN>,
+				<&veusys CKG_MUX_SDIO0>;*/
+		cap-sd-highspeed;
+		//sd-uhs-ddr50;
+		//sd-uhs-sdr25;
+		//sd-uhs-sdr12;
+		bus-width = <4>;
+		status = "disabled";
+	};
+
+	sdmmc1: dwmmc1@25e00000 {
+		compatible = "molchip,dw-mshc";
+		//non-removable;
+		reg = <0x25e00000 0x400>;
+		//mc,peripheral-syscon = <&veu_sys_apb>;
+		interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&sdmmc1_pins>;
+		//mc,hsif = <&veu_sys_clk>;
+		clock-frequency = <50000000>;
+		cd-detect-level = <0>;
+		id = <1>;
+		waitting-time-suspend = <100>;
+		force-suspend = <1>;
+		/*clock-names = "biu",
+			"ciu",
+			"dllref",
+			"sdioclk";
+		clocks = <&veusys CKG_AHB_SDIO1_EN>,
+				 <&veusys CKG_SDIO1_EN>,
+				 <&veusys CKG_SDIO1_DLLREF_EN>,
+				<&veusys CKG_MUX_SDIO1>;*/
+		cap-sd-highspeed;
+		//sd-uhs-ddr50;
+		//sd-uhs-sdr25;
+		//sd-uhs-sdr12;
+		bus-width = <4>;
+		status = "okay";
+	};
+
+	acw: acw@0x26100000 {
+        compatible = "molchip,acw";
+        reg = <0x26100000 0x1000>;
+        molchip,acw-id = <0>;
+        molchip,dma-rx-id = <15>;
+        molchip,dma-tx-id = <14>;
+        status = "okay";
+    };
+};

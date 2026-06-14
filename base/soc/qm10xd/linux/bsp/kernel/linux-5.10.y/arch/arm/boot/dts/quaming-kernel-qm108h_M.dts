@@ -1,0 +1,53 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+/dts-v1/;
+#include "quaming-kernel-qm108h.dtsi"
+
+/ {
+	pre_rolling {
+		compatible = "molchip,pre_rolling";
+		share_ram_level = <3>;
+		sys_params = <0x3003F000 0x1000>;
+		share_mem = <0x47500000 0x400000>;
+		spl_image_info = <0x0 0x30000000 0x10000>;
+		prg_image_info = <0x10000 0x30020000 0x1E000>;
+		enc_buf_ctrl = <0x1CB00000 0x1000>;
+		//veu_sys_apb_reg = <&veu_sys_clk>;
+		image_load_type = <0>;
+		//mc,syscon = <&top_sys_gate>;
+		status = "disabled";
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x2000000>;
+	};
+	vdu {
+		compatible = "molchip,mc-vdu";
+		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b300000 0x10000>;
+	};
+	g2d {
+		compatible = "molchip,mc-g2d";
+		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x27000000 0x1000>;
+	};
+	vou {
+		compatible = "molchip,mc-vou";
+		interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x26000000 0x2000>;
+	};
+	jpeg {
+		compatible = "molchip,mc-jpeg";
+		interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b310000 0x1000>;
+	};
+};

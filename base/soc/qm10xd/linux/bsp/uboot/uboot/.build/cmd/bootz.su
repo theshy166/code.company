@@ -1,0 +1,3 @@
+../cmd/bootz.c:14:12:bootz_setup	8	static
+../cmd/bootz.c:66:5:do_bootz	56	static
+../cmd/bootz.c:61:6:jump_to_rtt_address	0	static

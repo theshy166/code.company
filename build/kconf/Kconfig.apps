@@ -1,0 +1,408 @@
+#
+# For a description of the syntax of this configuration file,
+# apps configuration.
+#
+
+if !XOS_USE_NO_QUAUI
+
+menu "Apps Package"
+
+config XOS_USE_APP_AIBOX
+	bool "Aibox"
+	default n
+	help
+		Select the app aibox.
+
+config XOS_USE_APP_AICAMERA
+	bool "Aicamera"
+	default n
+	help
+		Select the app aicamera.
+
+config XOS_USE_APP_SITTINGPC
+	bool "Sitting PC"
+	default n
+	help 
+		Select the app sittingpc
+
+config XOS_USE_APP_ALARM
+	bool "Alarm"
+	default n
+	help
+		Select the app alarm.
+
+config XOS_USE_APP_ANALOG_CLOCK
+	bool "Analog Clock"
+	default n
+	help
+		Select the app analog alock.
+
+config XOS_USE_APP_AUDIO_PLAYER
+	bool "Audio Player"
+	default n
+	help
+		Select the app audio player.
+
+config XOS_APP_XIAOMING
+	bool "Xiaoming"
+	default n
+	help
+		Select the app xiaoming.
+
+config XOS_USE_APP_BOOT_ANIMATE
+	bool "Boot Animate"
+	default n
+	help
+		Select the app animate.
+
+config XOS_USE_APP_CALCULATOR
+	bool "Calculator"
+	default n
+	help
+		Select the app calculator.
+
+config XOS_USE_APP_CALENDAR
+	bool "Calendar"
+	default n
+	help
+		Select the app smart home.
+
+config XOS_USE_APP_CAMERA
+	bool "Camera"
+	default n
+	help
+		Select the app camera.
+
+config XOS_USE_CAMERA
+	bool "camera2"
+	default n
+	help
+		Select the xos use camera.
+
+config XOS_USE_APP_COFFEE_MILL
+	bool "Coffee mill"
+	default n
+	help
+		Select the app coffee mill.
+
+config XOS_USE_APP_COOLFLORID
+	bool "Coolflorid"
+	default n
+	help
+		Select the app coolflorid.
+
+config XOS_USE_APP_DEMO
+	bool "Demo"
+	default n
+	help
+		Select the app demo.
+
+config XOS_USE_APP_DEMOAPP
+	bool "Demo app"
+	default n
+	help
+		Select the app demo.
+
+config XOS_USE_APP_DEMOLIST
+	bool "Demo list"
+	default n
+	help
+		Select the app demo list.
+
+config XOS_USE_APP_DIGITAL_CLOCK
+	bool "Digital Clock"
+	default n
+	help
+		Select the app digital alock.
+
+config XOS_USE_APP_FACE_RECOGNIZE
+	bool "Face Recognize"
+	default n
+	help
+		Select the app face recognize.
+
+config XOS_USE_APP_LAUNCHER
+	bool "Launcher"
+	default n
+	help
+		Select the app launcher.
+
+config XOS_USE_APP_LAUNCHER_RES_OVERLAY
+	bool "Launcher res overlay"
+	default n
+	help
+		Select the app launcher res overlay(launcher res in product/xxx).
+
+config XOS_USE_APP_STATUS_BAR
+	bool "Status bar"
+	default n
+	help
+		Select the app status bar.
+
+config XOS_USE_APP_LAYER_DEMO
+	bool "Layer demo"
+	default n
+	help
+		Select the app layer demo.
+
+config XOS_USE_APP_HEALTH
+	bool "Health"
+	default n
+	help
+		Select the app health.
+
+config XOS_USE_APP_VIDEO_CALL
+	bool "Video call"
+	default n
+	help
+		Select the app video call.
+
+config XOS_USE_APP_PETROBOT
+	bool "Petrobot"
+	default n
+	help
+		Select the app petrobot.
+
+config XOS_USE_APP_MOMO_TALK
+	bool "MomoTalk"
+	default n
+	help 
+		Select the app momotalk
+
+config XOS_USE_APP_SMARTHOME_NEW
+	bool "Smarthome"
+	default n
+	help 
+		Select the app smarthome_new.
+		
+config XOS_USE_APP_SCANNER
+	bool "Scanner"
+	default n
+	help
+		Select the app scanner.
+
+config XOS_USE_APP_GALLERY
+	bool "Gallery"
+	default n
+	help
+		Select the app gallery.
+
+config XOS_USE_APP_SETTING
+	bool "Setting"
+	default n
+	help
+		Select the app setting.
+
+config XOS_USE_APP_SMART_DOOR
+	bool "Smart door"
+	default n
+	help
+		Select the app smart door.
+
+config XOS_USE_APP_QETV
+	bool "Qetv"
+	default n
+	help
+		Select the app qetv.
+
+config XOS_USE_APP_H5_ESL
+	bool "H5 ESLs"
+	default n
+	help
+		Select the app H5 Electronic Shelf Label.
+
+config XOS_USE_APP_MOTO
+	bool "Moto DashBoard"
+	default n
+	help
+		Select the app moto.
+
+config XOS_USE_APP_MOTOT
+	bool "Motot"
+	default n
+	help
+		Select the app motot.
+
+config XOS_USE_APP_MOTOX
+	bool "Motox"
+	default n
+	help
+		Select the app motox.
+
+config XOS_USE_APP_MOTOX_RD
+	bool "Motox_rd"
+	default n
+	help
+		Select the app motox_rd.
+
+config XOS_USE_APP_MOTOX102D
+	bool "Motox102d"
+	default n
+	help
+		Select the app motox102d.
+
+config XOS_USE_APP_MOTOX7IN
+	bool "Motox7in"
+	default n
+	help
+		Select the app motox7in.
+
+config XOS_USE_APP_SCANPEN
+	bool "Scanpen"
+	default n
+	help
+		Select the app scanpen.
+
+config XOS_USE_APP_LOTTIEDEMO
+	bool "Lottie"
+	default n
+	help
+		Select the app lottie demo.
+
+config XOS_USE_APP_SMARTHOME
+	bool "Smart Home"
+	default n
+	help
+		Select the app smart home.
+
+config XOS_USE_APP_XHOME
+	bool "Smart Home"
+	default n
+	help
+		Select the app xhome.
+
+config XOS_USE_APP_SPHOTO
+	bool "Smart Photo"
+	default n
+	help
+		Select the app smart photo.
+
+config XOS_USE_APP_AIOBJ
+	bool "Ai Obj"
+	default n
+	help
+		Select the app AI OBJ.
+
+config XOS_USE_APP_AICHAT
+	bool "Ai Chat"
+	default n
+	help
+		Select the app AI Chat.
+
+config XOS_USE_APP_AIOCR
+	bool "Ai Ocr"
+	default n
+	help
+		Select the app AI OCR.
+
+config XOS_USE_APP_PHOTO
+	bool "Photo"
+	default n
+	help
+		Select the app photo.
+
+config XOS_USE_APP_VIDEO
+	bool "Photo"
+	default n
+	help
+		Select the app video.
+
+config XOS_USE_APP_MORESETTING
+	bool "Moresetting"
+	default n
+	help 
+		Select the app moresetting
+
+config XOS_LITE_MODE
+	bool "Lite Mode"
+	default n
+	help
+		Select the lite mode.
+
+config XOS_DARK_MODE
+	bool "Dark Mode"
+	default n
+	help
+		Select the dark mode.
+
+config XOS_USE_APP_FRAMEO
+	bool "Frameo"
+	default n
+	help
+		Select the app frameo.
+
+config XOS_IMAGEVIEWER_ACC
+	bool "iamgeACC"
+	default n
+	help
+		Select the app image acc.
+
+config XOS_USE_APP_NATIVE_ESL
+	bool "native esl"
+	default n
+	help
+		Select the app native esl.
+
+config XOS_APP_ESL2
+	bool "esl2"
+	default n
+	help
+		Select the app native esl.
+
+config XOS_USE_APP_NATIVE_SMARTDOOR
+	bool "native smartdoor"
+	default n
+	help
+		Select the app native smartdoor.
+
+config XOS_APP_SETTING_PAD
+	bool "Setting Pad"
+	default n
+	help
+		Select the app setting pad.
+
+config XOS_USE_APP_SETUPWIZARD
+	bool "SetupWizard"
+	default n
+	help
+		Select the app SetupWizard.
+
+config XOS_USE_APP_WIFIX
+	bool "Wifix"
+	default n
+	help
+		Select the app wifix.
+
+config XOS_APP_MEDIA_PLAYER
+	bool "gallery mixed viewer"
+	default n
+	help
+		Select gallery view mode.
+
+config XOS_USE_PHOTO_FRAME
+	bool "photo frame"
+	default n
+	help
+		Select photo frame.
+
+config XOS_USE_APP_SCREEN_PROTECT
+    bool "screen protect"
+    default n
+	help
+		Select photo frame.
+
+config XOS_USE_APP_STUDYPILOT
+    bool "studypilot protect"
+    default n
+	help
+		Select studypilot.
+
+config XOS_APP_GRID_STYLE
+    bool "grid style"
+    default n
+    help
+        Select grid style.
+
+endmenu
+
+endif # XOS_USE_NO_QUAUI

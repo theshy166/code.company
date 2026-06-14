@@ -1,0 +1,105 @@
+#ifndef __VDEC_DRV_IOC_H__
+#define __VDEC_DRV_IOC_H__
+
+#include "drv_ioc_extension.h"
+
+#define IOC_TYPE_VDEC 'D'
+
+typedef struct iocsendstream_t
+{
+    VDEC_STREAM_S stream;
+    FY_S32 s32MilliSec;
+}VDEC_IOC_SENDSTREAM_S;
+
+typedef struct
+{
+    FY_S32 chan;
+    VDEC_IOC_SENDSTREAM_S stVdecStream;
+}VDEC_SENDSTREAM_INFO_S;
+
+typedef struct iocgetimage_t
+{
+    VIDEO_FRAME_INFO_S fameInfo;
+    FY_S32 s32MilliSec;
+}VDEC_IOC_GETIMAGE_S;
+
+typedef struct
+{
+    FY_S32 chan;
+    VDEC_IOC_GETIMAGE_S stVdecGetImg;
+}VDEC_GETIMAGE_INFO_S;
+
+typedef struct iocoutbufinfo_t
+{
+	FY_U32 			size;
+	FH_VOID 		*virAddr;
+	FH_PHYADDR		u32PhyAddr;
+}VDEC_IOC_OUTBUFINFO_S;
+
+#ifndef CONFIG_FH_SDK
+typedef struct iocgetUsrData_t
+{
+    VDEC_USERDATA_S usrData;
+    FY_S32 s32MilliSec;
+}VDEC_IOC_GETUSERDATA_S;
+#endif
+
+typedef struct _VDEC_EXPORT_FUNC_S
+{
+	FY_U32  (*pfnGetThreadMode)(void);
+    FY_VOID (*pfnReleaseImage) (MOD_ID_E enModId, FY_S32 s32DevId, FY_S32  s32ChnId, VIDEO_FRAME_INFO_S *pstFrameInfo);
+} VDEC_EXPORT_FUNC_S;
+
+
+#define IOC_VDEC_BIND_CHAN                  _IOW(IOC_TYPE_VDEC,10,VDEC_CHN)
+#define IOC_VDEC_UNBIND_CHAN                _IO(IOC_TYPE_VDEC,1)
+#define IOC_VDEC_CREATE_CHAN                _IOW(IOC_TYPE_VDEC,0,VDEC_CHN_ATTR_S)
+#define IOC_VDEC_DESTROY_CHAN               _IO(IOC_TYPE_VDEC,2)
+#define IOC_VDEC_GET_CHAN_ATTR              _IOR(IOC_TYPE_VDEC,3,VDEC_CHN_ATTR_S)
+#define IOC_VDEC_START_RECV_STREAM          _IO(IOC_TYPE_VDEC,7)
+#define IOC_VDEC_STOP_RECV_STREAM           _IO(IOC_TYPE_VDEC,8)
+#define IOC_VDEC_QUERY                      _IOR(IOC_TYPE_VDEC,6,VDEC_CHN_STAT_S)
+#define IOC_VDEC_RESET_CHAN                 _IO(IOC_TYPE_VDEC,9)
+#define IOC_VDEC_SET_CHAN_PARAM             _IOW(IOC_TYPE_VDEC,13,VDEC_CHN_PARAM_S)
+#define IOC_VDEC_GET_CHAN_PARAM             _IOR(IOC_TYPE_VDEC,14,VDEC_CHN_PARAM_S)
+#ifndef CONFIG_FH_SDK
+#define IOC_VDEC_SET_PROTOCOL_PARAM         _IOW(IOC_TYPE_VDEC,15,VDEC_PRTCL_PARAM_S)
+#define IOC_VDEC_GET_PROTOCOL_PARAM         _IOR(IOC_TYPE_VDEC,16,VDEC_PRTCL_PARAM_S)
+#endif
+#define IOC_VDEC_SEND_STREAM                _IOW(IOC_TYPE_VDEC,4,VDEC_SENDSTREAM_INFO_S)
+#define IOC_VDEC_GET_IMAGE                  _IOWR(IOC_TYPE_VDEC,20,VDEC_GETIMAGE_INFO_S)
+#define IOC_VDEC_RELEASE_IMAGE              _IOW(IOC_TYPE_VDEC,21, VIDEO_FRAME_INFO_S)
+#ifndef CONFIG_FH_SDK
+#define IOC_VDEC_GET_USER_DATA              _IOWR(IOC_TYPE_VDEC,17,VDEC_IOC_GETUSERDATA_S)
+#define IOC_VDEC_RELEASE_USER_DATA          _IOW(IOC_TYPE_VDEC,19,VDEC_USERDATA_S)
+#endif
+#define IOC_VDEC_SET_ROTATE                 _IOW(IOC_TYPE_VDEC,29,ROTATE_E)
+#define IOC_VDEC_GET_ROTATE                 _IOR(IOC_TYPE_VDEC,30,ROTATE_E)
+#define IOC_VDEC_GET_CHAN_LUMA              _IOR(IOC_TYPE_VDEC,31,VDEC_CHN_LUM_S)
+#define IOC_VDEC_SET_USER_PIC               _IOW(IOC_TYPE_VDEC,26,VIDEO_FRAME_INFO_S)
+#define IOC_VDEC_ENABLE_USER_PIC            _IOW(IOC_TYPE_VDEC,27, FY_BOOL)
+#define IOC_VDEC_DISABLE_USER_PIC           _IO(IOC_TYPE_VDEC,28)
+#define IOC_VDEC_SET_DISPLAY_MODE           _IOW(IOC_TYPE_VDEC,32,VIDEO_DISPLAY_MODE_E)
+#define IOC_VDEC_GET_DISPLAY_MODE           _IOR(IOC_TYPE_VDEC,33,VIDEO_DISPLAY_MODE_E)
+#define IOC_VDEC_SET_CHAN_VBCNT             _IOW(IOC_TYPE_VDEC,34,FY_U32)
+#define IOC_VDEC_GET_CHAN_VBCNT             _IOR(IOC_TYPE_VDEC,35,FY_U32)
+#define IOC_VDEC_ATTACH_VBPOOL              _IOW(IOC_TYPE_VDEC,36,VDEC_CHN_POOL_S)
+#define IOC_VDEC_DETACH_VBPOOL              _IO(IOC_TYPE_VDEC,37)
+#ifndef CONFIG_FH_SDK
+#define IOC_VDEC_SET_MOD_PARAM              _IOW(IOC_TYPE_VDEC,38,VDEC_MOD_PARAM_S)
+#define IOC_VDEC_GET_MOD_PARAM              _IOR(IOC_TYPE_VDEC,39,VDEC_MOD_PARAM_S)
+#endif
+#define IOC_VDEC_SET_LOG_PARAM              _IOW(IOC_TYPE_VDEC,40,FY_U32)
+#define IOC_VDEC_EXT                         FY_DRV_ADV_IOC(IOC_TYPE_VDEC)
+
+#define IOC_VDEC_GET_OUTBUF_INFO            _IOR(IOC_TYPE_VDEC,50,VDEC_IOC_OUTBUFINFO_S)
+#define IOC_VDEC_SET_OUTBUF_VIR             _IOW(IOC_TYPE_VDEC,51,VDEC_IOC_OUTBUFINFO_S)
+
+
+
+#define IOC_VDEC_SET_FRAMELOSS_ENABLE           _IOW(IOC_TYPE_VDEC,52,FH_BOOL)
+#define IOC_VDEC_SUSPEND              _IO(IOC_TYPE_VDEC,53)
+#define IOC_VDEC_RESUME              _IO(IOC_TYPE_VDEC,54)
+
+
+#endif//__VDEC_DRV_IOC_H__

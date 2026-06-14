@@ -1,0 +1,1 @@
+cmd_sdl/arch/arm/lib/lib.a := rm -f sdl/arch/arm/lib/lib.a; arm-molv2-linux-uclibcgnueabi-ar rcs sdl/arch/arm/lib/lib.a sdl/arch/arm/lib/ashldi3.o sdl/arch/arm/lib/ashrdi3.o sdl/arch/arm/lib/div0.o sdl/arch/arm/lib/div64.o sdl/arch/arm/lib/lib1funcs.o sdl/arch/arm/lib/lshrdi3.o sdl/arch/arm/lib/muldi3.o sdl/arch/arm/lib/uldivmod.o

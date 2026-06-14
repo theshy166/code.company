@@ -1,0 +1,16 @@
+../board/molchip/uart/uart_drv.c:6:6:uart_reset	0	static
+../board/molchip/uart/uart_drv.c:16:6:uart_set_baudrate	8	static
+../board/molchip/uart/uart_drv.c:33:6:uart_select_data_len	0	static
+../board/molchip/uart/uart_drv.c:41:6:uart_pority_enable	0	static
+../board/molchip/uart/uart_drv.c:51:6:uart_select_pority	0	static
+../board/molchip/uart/uart_drv.c:61:6:uart_config_stop	0	static
+../board/molchip/uart/uart_drv.c:71:6:uart_fifo_reset	0	static
+../board/molchip/uart/uart_drv.c:90:6:uart_fifo_enable	0	static
+../board/molchip/uart/uart_drv.c:100:6:uart_init	8	static
+../board/molchip/uart/uart_drv.c:113:6:uart_hw_init	8	static
+../board/molchip/uart/uart_drv.c:123:6:uart_read_rbr	0	static
+../board/molchip/uart/uart_drv.c:135:4:uart_getc	0	static
+../board/molchip/uart/uart_drv.c:148:6:uart_putc	0	static
+../board/molchip/uart/uart_drv.c:183:13:uart_put_int	56	static
+../board/molchip/uart/uart_drv.c:159:6:uart_puts	8	static
+../board/molchip/uart/uart_drv.c:236:6:mc_printf	24	static

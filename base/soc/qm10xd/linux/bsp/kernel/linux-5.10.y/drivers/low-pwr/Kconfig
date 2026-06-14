@@ -1,0 +1,6 @@
+menu "low-pwr"
+	config MC_LOW_POWER
+	tristate "MC low-pwr support"
+
+	source "drivers/low-pwr/scene-mangt/Kconfig"
+endmenu
