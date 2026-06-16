@@ -1,0 +1,19 @@
+# 忽略编译生成的中间目标文件和库文件
+*.o
+*.o.d
+*.so
+*.a
+*.ko
+
+# 忽略固件镜像、打包产物及压缩包
+*.img
+*.ubi
+*.lzma
+*.bin
+*.tar.gz
+
+# 忽略整个编译输出目录
+out/
+output/
+build/
+.DS_Store
