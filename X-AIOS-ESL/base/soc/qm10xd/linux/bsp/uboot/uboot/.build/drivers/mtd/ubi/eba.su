@@ -1,0 +1,13 @@
+../drivers/mtd/ubi/eba.c:1032:12:is_error_sane	0	static
+../drivers/mtd/ubi/eba.c:89:32:ltree_lookup.isra	0	static
+../drivers/mtd/ubi/eba.c:215:13:leb_read_unlock	16	static
+../drivers/mtd/ubi/eba.c:198:12:leb_read_lock	24	static
+../drivers/mtd/ubi/eba.c:53:20:ubi_next_sqnum	4	static
+../drivers/mtd/ubi/eba.c:317:5:ubi_eba_unmap_leb	32	static
+../drivers/mtd/ubi/eba.c:365:5:ubi_eba_read_leb	48	static
+../drivers/mtd/ubi/eba.c:655:5:ubi_eba_write_leb	56	static
+../drivers/mtd/ubi/eba.c:788:5:ubi_eba_write_leb_st	56	static
+../drivers/mtd/ubi/eba.c:905:5:ubi_eba_atomic_leb_change	48	static
+../drivers/mtd/ubi/eba.c:1054:5:ubi_eba_copy_leb	56	static
+../drivers/mtd/ubi/eba.c:1291:5:self_check_eba	48	static
+../drivers/mtd/ubi/eba.c:1385:5:ubi_eba_init	56	static

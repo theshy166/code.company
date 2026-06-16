@@ -1,0 +1,15 @@
+../drivers/mtd/ubi/build.c:484:13:kill_volumes	16	static
+../drivers/mtd/ubi/build.c:183:5:ubi_volume_notify	104	static
+../drivers/mtd/ubi/build.c:215:5:ubi_notify_all	112	static
+../drivers/mtd/ubi/build.c:259:5:ubi_enumerate_volumes	24	static
+../drivers/mtd/ubi/build.c:287:20:ubi_get_device	0	static
+../drivers/mtd/ubi/build.c:307:6:ubi_put_device	0	static
+../drivers/mtd/ubi/build.c:322:20:ubi_get_by_major	0	static
+../drivers/mtd/ubi/build.c:351:5:ubi_major2num	0	static
+../drivers/mtd/ubi/build.c:595:6:ubi_free_internal_volumes	16	static
+../drivers/mtd/ubi/build.c:880:5:ubi_attach_mtd_dev	224	static
+../drivers/mtd/ubi/build.c:1113:5:ubi_detach_mtd_dev	16	static
+../drivers/mtd/ubi/build.c:1252:5:ubi_init	40	static
+../drivers/mtd/ubi/build.c:1373:6:ubi_exit	16	static
+../drivers/mtd/ubi/build.c:1434:5:kstrtoint	8	static
+../drivers/mtd/ubi/build.c:1456:5:ubi_mtd_param_parse	120	static

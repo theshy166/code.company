@@ -1,0 +1,5 @@
+../board/molchip/lib/reset_mc.c:95:6:init_iram_reboot	0	static
+../board/molchip/lib/reset_mc.c:198:5:do_reboot	8	static
+../board/molchip/lib/reset_mc.c:126:14:MC_GetResetType	16	static
+../board/molchip/lib/reset_mc.c:159:5:print_reset_type	8	static
+../board/molchip/lib/reset_mc.c:177:6:MC_ExtResetEnable	0	static

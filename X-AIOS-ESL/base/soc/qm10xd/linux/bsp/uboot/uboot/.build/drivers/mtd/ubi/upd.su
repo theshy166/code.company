@@ -1,0 +1,6 @@
+../drivers/mtd/ubi/upd.c:81:12:clear_update_marker	208	static
+../drivers/mtd/ubi/upd.c:226:12:write_leb	32	static
+../drivers/mtd/ubi/upd.c:121:5:ubi_start_update	208	static
+../drivers/mtd/ubi/upd.c:175:5:ubi_start_leb_change	24	static
+../drivers/mtd/ubi/upd.c:272:5:ubi_more_update_data	48	static
+../drivers/mtd/ubi/upd.c:392:5:ubi_more_leb_change_data	32	static

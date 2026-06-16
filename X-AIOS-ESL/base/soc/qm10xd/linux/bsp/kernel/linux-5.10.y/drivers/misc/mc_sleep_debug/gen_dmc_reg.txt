@@ -1,0 +1,81 @@
+#!/usr/bin/python
+# -*- coding=UTF-8 -*-
+
+import sys
+import xlrd
+import json
+import re
+import struct
+
+sheets = xlrd.open_workbook(sys.argv[1])
+sheetnum = sheets.nsheets
+
+regs=[]
+for i in range(0,sheetnum):
+	sheet = sheets.sheet_by_index(i)
+	for r in range(0,sheet.nrows):
+		r_base_addr_pos = r
+		print("%d %d"%(i,r))
+		if sheet.cell_value(r,0).lower().find('base address') >= 0 :
+			break
+	base_addr = int(sheet.cell_value(r_base_addr_pos,1),16)
+	for r in range(0,sheet.nrows):
+		r_header_pos = r
+		if sheet.cell_value(r,0).lower().find('register name') >= 0 :
+			break
+	for c in range(0,sheet.ncols):
+		if sheet.cell_value(r_header_pos,c) == 'Offset Address':
+			offset_position = c
+		if sheet.cell_value(r_header_pos,c) == 'Bits Pos':
+			bitspos_position = c
+		if sheet.cell_value(r_header_pos,c) == 'Register Value':
+			reg_val_position = c
+		if sheet.cell_value(r_header_pos,c) == 'Register Name':
+			reg_name_position = c
+		if sheet.cell_value(r_header_pos,c) == 'Bits Name':
+			bit_name_position = c
+	for r in range(r_header_pos+1,sheet.nrows):
+		row_arr = sheet.row_values(r)
+		if row_arr[offset_position]:
+			reg_addr = "0x%08X"%(base_addr + int(row_arr[offset_position],16))
+			reg = {"reg_addr" : reg_addr,"reg_name":row_arr[reg_name_position],"bits":[]}
+			regs.append(reg)
+		if row_arr[bitspos_position]:
+			res = re.findall('\[(\d+)\]', row_arr[bitspos_position])
+			if res:
+				start_pos = res[0]
+				end_pos   = res[0]
+			res = re.findall('\[(\d+):(\d+)\]', row_arr[bitspos_position])
+			if res:
+				start_pos = res[0][1]
+				end_pos   = res[0][0]
+			bit = {'s_p':start_pos,'e_p':end_pos,'reg_val':row_arr[reg_val_position],'bit_name':row_arr[bit_name_position]}
+			reg['bits'].append(bit)
+
+file_name = str(sys.argv[1]).split('/')[-1].split('.')[0]
+tmpfile = open(file_name+".h",'w')
+#tmpfile = open("soc_init_reg_list.h",'w')
+tmpfile.write("0x%08x,\n"%(len(regs)))
+
+for reg in regs:
+	mask = 0x0
+	regv = 0x0
+	for bit in reg['bits']:
+		powe = (int(bit['e_p'], 10) - int(bit['s_p'], 10)) + 1
+		mask |= ((2**powe - 1) << int(bit['s_p'], 10))
+		regv |= (int(bit['reg_val'], 16) << int(bit['s_p'], 10))
+	#print("%s 0x%08X 0x%08X"%(reg['reg_addr'], regv, mask))
+	tmpfile.write("%s,\n"%reg['reg_addr'])
+	tmpfile.write("0x%08X,\n"%regv)
+	tmpfile.write("0x%08X,\n"%mask)
+
+#tmpfile = open("ddr_init.cmm",'w')
+#
+#for reg in regs:
+#	tmpfile.write('Write #1 %s " : " format.hex(8,data.long(zsd:%s))\n'%(reg['reg_addr'],reg['reg_addr']))
+#
+tmpfile.close()
+
+#tmpfile = open("cfg.json",'w')
+#tmpfile.write(json.dumps(regs,sort_keys=True,indent=4))
+#tmpfile.close()

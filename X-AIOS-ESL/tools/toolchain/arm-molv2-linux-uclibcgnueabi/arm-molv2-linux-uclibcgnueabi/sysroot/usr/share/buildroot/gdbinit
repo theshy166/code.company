@@ -1,0 +1,2 @@
+add-auto-load-safe-path /data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot
+set sysroot /data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot

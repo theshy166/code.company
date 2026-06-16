@@ -1,0 +1,65 @@
+menu "FLASH FEATURE"
+
+config FLASH_FW_ON_KEY_PRESS
+	bool "Flash device on key press"
+	default n
+	help
+		Flash device when the specified key is pressed.
+
+config LED_INDICATOR_FOR_FLASH
+	bool "Enable LED indicator during flash operations"
+	default n
+	help
+		This option enables an LED indicator during flash operations (e.g., firmware
+		updates). The LED will blink or change state to indicate the progress or status
+		of the flash process.
+
+		If enabled, ensure that the correct GPIO is configured for the LED in the
+		board-specific configuration file.
+
+config LED_INDICATOR_GPIO
+	int "GPIO number for LED indicator during flash operations"
+	depends on LED_INDICATOR_FOR_FLASH
+	help
+		This option specifies the GPIO number used for the LED indicator during
+		flash operations. The LED will blink or change state to indicate the
+		progress or status of the flash process.
+
+		Ensure that the specified GPIO is available and properly configured
+		on your hardware.
+
+config WRITE_MACID
+	bool "Enable MAC ID writing support"
+	default n
+	help
+		This option enables support for writing MAC addresses (MAC ID) to a
+		storage location (e.g., EEPROM or Flash) during device initialization.
+
+config WRITE_SN
+        bool "Enable SN writing support"
+        default n
+        help
+                This option enables support for writing SN to a
+                storage location (e.g., EEPROM or Flash) during device initialization.
+endmenu
+
+menu "Start-up hooks"
+
+config INIT_PINDRIVING
+    bool "Initialize pin driving strength"
+    default n
+    help
+      Initialize pin driving strength settings early in boot process.
+      This is needed for boards that require specific drive strength
+      configurations for proper operation.
+
+config INIT_GPIOS
+    bool "Initialize GPIOs"
+    default n
+    help
+      Initialize GPIO pins early in the boot process.
+      This includes setting up default states for critical GPIOs
+      before main peripherals are initialized.
+
+endmenu
+source "common/quaming/logo/Kconfig"

@@ -1,0 +1,3 @@
+#!/bin/sh
+wifi_start.sh "MAOESL" "a12345678B." 
+pkill -9 adbd

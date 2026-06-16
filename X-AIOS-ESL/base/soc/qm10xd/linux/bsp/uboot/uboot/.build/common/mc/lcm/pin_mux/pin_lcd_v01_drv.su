@@ -1,0 +1,5 @@
+../common/mc/lcm/pin_mux/pin_lcd_v01_drv.c:306:21:_get_lcm_pin_ptr	8	static
+../common/mc/lcm/pin_mux/pin_lcd_v01_drv.c:384:9:lcm_bus_pin_cfg	24	static
+../common/mc/lcm/pin_mux/pin_lcd_v01_drv.c:406:9:lcm_bus_pin_default_cfg	16	static
+../common/mc/lcm/pin_mux/pin_lcd_v01_drv.c:426:9:lcm_gpio_pin_cfg	16	static
+../common/mc/lcm/pin_mux/pin_lcd_v01_drv.c:444:9:lcm_gpio_default_cfg	8	static

@@ -1,0 +1,6 @@
+../board/molchip/sdcard/sd_boot.c:17:5:sdio_init	40	static
+../board/molchip/sdcard/sd_boot.c:48:5:sdio_write	8	static
+../board/molchip/sdcard/sd_boot.c:67:5:sdio_read	8	static
+../board/molchip/sdcard/sd_boot.c:86:5:spl_sdio0_load_image	16	static
+../board/molchip/sdcard/sd_boot.c:104:5:spl_sdio1_load_image	16	static
+../board/molchip/sdcard/sd_boot.c:122:5:sdl_sdio1_program_image	24	static

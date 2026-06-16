@@ -1,0 +1,8 @@
+../drivers/rtc/molchip.c:270:12:mc_rtc_clk_init_fy00	0	static
+../drivers/rtc/molchip.c:307:12:molchip_remove	0	static
+../drivers/rtc/molchip.c:129:12:mc_rtc_poll_reg.constprop	16	static
+../drivers/rtc/molchip.c:219:12:molchip_rtc_get	16	static
+../drivers/rtc/molchip.c:171:12:mc_rtc_core_write	16	static
+../drivers/rtc/molchip.c:189:12:molchip_rtc_set	40	static
+../drivers/rtc/molchip.c:245:12:molchip_rtc_reset	48	static
+../drivers/rtc/molchip.c:284:12:molchip_probe	16	static

@@ -1,0 +1,14 @@
+#
+# DMA engine configuration for molchip
+#
+config MOLCHIP_DMA64
+	tristate "molchip DMA64 driver support"
+	select DMA_ENGINE_RAID
+	help
+	  Support the molchip  DMA64 controlle.
+config MOLCHIP_DMA64_IOCTL_DEMO
+	bool "DMA64 IOCTL DEMO"
+	depends on MOLCHIP_DMA64
+	help
+	  This a test program, just for test lowerlever dmaengine interface.
+

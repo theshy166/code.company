@@ -1,0 +1,1 @@
+cmd_common/quaming/logo/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o common/quaming/logo/built-in.o common/quaming/logo/qua_logo_core.o common/quaming/logo/qua_logo_welcome.o common/quaming/logo/qua_boot_gpio.o common/quaming/logo/qua_boot_args.o common/quaming/logo/resource_img.o common/quaming/logo/qua_logo_mipi_jd9365d.o 

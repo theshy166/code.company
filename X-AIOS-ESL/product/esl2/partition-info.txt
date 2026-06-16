@@ -1,0 +1,9 @@
+uboot,raw,1
+recovery,raw,16
+boot,raw,16
+logo,raw,8
+system,ubi,18874368
+rootfs,ubi,6291456
+data,ubi,80740352
+writeback,raw,12
+::

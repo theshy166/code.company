@@ -1,0 +1,7 @@
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:450:16:qua_lcm_mipi_jd9365d_PowerOff	8	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:464:16:qua_lcm_mipi_jd9365d_deinit	0	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:508:16:qua_lcm_mipi_jd9365d_suspend	0	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:521:16:qua_lcm_mipi_jd9365d_resume	8	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:347:16:qua_lcm_mipi_jd9365d_identify	48	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:276:16:qua_lcm_mipi_jd9365d_PowerOn	16	static
+../common/mc/lcm_module/lcm_mipi_qua_jd9365d_jlm101b021.c:475:16:qua_lcm_mipi_jd9365d_init	16	static

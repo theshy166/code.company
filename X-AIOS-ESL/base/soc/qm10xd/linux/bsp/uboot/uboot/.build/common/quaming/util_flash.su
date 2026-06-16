@@ -1,0 +1,2 @@
+../common/quaming/util_flash.c:36:5:flashing_fw_requested	8	static
+../common/quaming/util_flash.c:56:13:get_board_id	8	static

@@ -1,0 +1,140 @@
+#ifndef XOS_RTT_TASK_CONF_H__
+#define XOS_RTT_TASK_CONF_H__
+
+/* RT-Thread thread Configuration: priority, stacksize */
+
+#define SIZE_1K		1024
+#define SIZE_2K		2048
+#define SIZE_4K		4096
+#define SIZE_8K		8192
+#define SIZE_16K	16384
+
+#undef RT_THREAD_PRIORITY_MAX
+#undef RT_THREAD_PRIORITY_MAX
+#define RT_THREAD_PRIORITY_256
+#define RT_THREAD_PRIORITY_MAX 256
+
+#define RT_THREAD_PRIORITY_COEF     (256/32)
+
+/* timer thread */
+#define	XOS_RTT_TIMER_PRIO				(4*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_TIMER_STACK_SIZE 		SIZE_4K
+
+/* xosui.elf thread */
+#define	XOS_RTT_XOSUI_PRIO				(20*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_XOSUI_STACK_SIZE 		SIZE_16K
+
+/* tshell thread */
+#define	XOS_RTT_FINSH_PRIO				(10*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_FINSH_STACK_SIZE 		SIZE_8K
+
+/* sys_work thread */
+#define	XOS_RTT_SYSWORK_PRIO			(23*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_SYSWORK_STACK_SIZE 		SIZE_2K
+
+/* sdio_irq thread */
+#define	XOS_RTT_SDIOIRQ_PRIO			(12*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_SDIOIRQ_STACK_SIZE 		SIZE_4K
+
+/* mmcsd_detect thread */
+#define	XOS_RTT_SDDECT_PRIO				(22*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_SDDECT_STACK_SIZE 		SIZE_2K
+
+/* idle thread */
+//#define	XOS_RTT_IDLE_PRIO			(31*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_IDLE_STACK_SIZE 		SIZE_4K
+
+/* wlan_job thread */
+#define	XOS_RTT_WLANJOB_PRIO			(20*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_WLANJOB_STACK_SIZE 		SIZE_4K
+
+/* lwip:tcpip thread */
+#define	XOS_RTT_LWIP_TCPIP_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_LWIP_TCPIP_STACK_SIZE 	SIZE_2K
+
+/* lwip:eth(erx) thread */
+#define	XOS_RTT_LWIP_ETH_PRIO			(17*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_LWIP_ETH_STACK_SIZE 	SIZE_4K
+
+/* watchdog thread */
+#define	XOS_RTT_WATCHDOG_PRIO			(28*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_WATCHDOG_STACK_SIZE 	SIZE_4K
+
+/* AIO thread */
+#define	XOS_RTT_AIO_PRIO				(16*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_AIO_STACK_SIZE 			SIZE_2K
+
+/* mm:voud-x thread */
+#define	XOS_RTT_MM_VOUD_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_VOUD_STACK_SIZE 		SIZE_4K
+
+/* mm:lld-voud-x thread */
+#define	XOS_RTT_MM_LLDVOUD_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_LLDVOUD_STACK_SIZE 	SIZE_4K
+
+/* mm:restore_workqueue thread */
+#define	XOS_RTT_MM_RESTORE_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_RESTORE_STACK_SIZE	SIZE_4K
+
+/* mm:vppu thread */
+#define	XOS_RTT_MM_VPPU_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_VPPU_STACK_SIZE 		SIZE_4K
+
+/* mm:jpegdec thread */
+#define	XOS_RTT_MM_JPEGDEC_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_JPEGDEC_STACK_SIZE 	SIZE_4K
+
+/* mm:jpegenc thread */
+#define	XOS_RTT_MM_JPEGENC_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_JPEGENC_STACK_SIZE 	SIZE_4K
+
+/* mm:init thread */
+#define	XOS_RTT_MM_INIT_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MM_INIT_STACK_SIZE 		SIZE_2K
+
+/* lvgl thread */
+#define	XOS_RTT_LVGL_PRIO				(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_LVGL_STACK_SIZE 		SIZE_4K
+
+/* uart_rx thread */
+#define	XOS_RTT_UART_RX_PRIO			(8*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_UART_RX_STACK_SIZE 		(SIZE_4K+SIZE_1K)
+
+/* mcu:pri_proc thread */
+#define	XOS_RTT_PRI_PROC_PRIO			(7*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_PRI_PROC_STACK_SIZE 	(SIZE_2K)
+
+/* mcu:attrid_proc thread */
+#define	XOS_RTT_ATTR_PROC_PRIO			(8*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_ATTR_PROC_STACK_SIZE 	(SIZE_2K)
+
+/* cmd_proc thread */
+#define	XOS_RTT_CMD_PROC_PRIO			(8*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_CMD_PROC_STACK_SIZE 	(SIZE_2K)
+
+/* mcu:ota_check thread */
+#define	XOS_RTT_OTA_CHECK_PRIO			(8*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_OTA_CHECK_STACK_SIZE 	(SIZE_1K)
+
+/* dhcpd thread */
+#define	XOS_RTT_DHCPD_PRIO				(29*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_DHCPD_STACK_SIZE 		SIZE_2K
+
+/* wifi:xmit_thr thread */
+#define	XOS_RTT_XMIT_PRIO				(13*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_XMIT_STACK_SIZE 		(SIZE_2K+SIZE_1K)
+
+/* tsystem thread */
+#define	XOS_RTT_TSYSTEM_PRIO			(30*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_TSYSTEM_STACK_SIZE 		SIZE_4K
+
+/* main thread */
+#define	XOS_RTT_MAIN_PRIO				(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_MAIN_STACK_SIZE 		SIZE_4K
+
+
+/* lvrender thread */
+#define	XOS_RTT_LVRENDER_PRIO			(15*RT_THREAD_PRIORITY_COEF)
+#define XOS_RTT_LVRENDER_STACK_SIZE 	(SIZE_8K)
+
+#endif	/* XOS_RTT_TASK_CONF_H__ */

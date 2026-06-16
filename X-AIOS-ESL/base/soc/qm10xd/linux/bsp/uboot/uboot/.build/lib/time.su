@@ -1,0 +1,10 @@
+../lib/time.c:168:25:tick_to_time	12	static
+../lib/time.c:74:15:get_tbclk	0	static
+../lib/time.c:81:23:timer_read_counter	0	static
+../lib/time.c:90:7:timer_get_boot_us	8	static
+../lib/time.c:154:25:get_ticks	0	static
+../lib/time.c:177:12:timer_init	0	static
+../lib/time.c:183:14:get_timer	8	static
+../lib/time.c:188:30:timer_get_us	8	static
+../lib/time.c:203:13:__udelay	0	static
+../lib/time.c:216:6:udelay	0	static

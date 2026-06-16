@@ -1,0 +1,33 @@
+include $(SDKROOT)/build/config.mk
+
+LIBNAME := $(shell basename `pwd`)
+
+CUR_PATH := $(shell pwd)
+
+LIB_CFLAGS += -I$(SDKROOT)/app/include/dsp
+LIB_CFLAGS += -I$(SDKROOT)/app/include/types
+LIB_CFLAGS += -I$(SDKROOT)/app/mpi/ai/inc
+LIB_CFLAGS += -I$(SDKROOT)/app/include/vicap
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include
+LIB_CFLAGS += -I$(SDKROOT)/app/include/isp_ext
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include/camif
+LIB_CFLAGS += -I$(SDKROOT)/app/include/camif
+LIB_CFLAGS += -I$(SDKROOT)/app/drv_include/crypto
+
+LIB_CFLAGS += -I$(CUR_PATH)/include
+
+CSRCS := \
+    mol_lcm_module.c \
+    mol_lcm_table.c \
+    lcm_mcu_st7796s.c \
+    lcm_mcu_st7796s_16bits.c \
+    lcm_rgb_at070tn94.c \
+    lcm_rgb_at070tn94_18bits.c \
+    lcm_mipi_ek79007.c \
+    lcm_mipi_st7701s.c \
+    lcm_mipi_qfh24004.c \
+    lcm_mipi_sample_1920.c \
+    lcm_rgb_sample_640.c \
+    lcm_mipi_sample_1280.c \
+
+include $(SDKROOT)/build/lib.mk

@@ -1,0 +1,1 @@
+cmd_sdl/board/molchip/flash/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/board/molchip/flash/built-in.o sdl/board/molchip/flash/molchip_nand_spl.o sdl/board/molchip/flash/molchip_nor_spl.o 

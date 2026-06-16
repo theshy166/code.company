@@ -1,0 +1,4 @@
+        README
+
+1、修改产品目录下字符串文件strings.xlsx文件，添加需要显示的文字，格式和工具使用参考说明：
+strings.xlsx文件中添加中英文语言后，执行脚本参考工具（tools\ubuntu\strings\README.md）的说明。

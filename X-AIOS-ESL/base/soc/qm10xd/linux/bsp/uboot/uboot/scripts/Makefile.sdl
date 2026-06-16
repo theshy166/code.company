@@ -1,0 +1,337 @@
+#
+# (C) Copyright 2000-2011
+# Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+#
+# (C) Copyright 2011
+# Daniel Schwierzeck, daniel.schwierzeck@googlemail.com.
+#
+# (C) Copyright 2011
+# Texas Instruments Incorporated - http://www.ti.com/
+# Aneesh V <aneesh@ti.com>
+#
+# SPDX-License-Identifier:	GPL-2.0+
+#
+# Based on top-level Makefile.
+#
+
+src := $(obj)
+
+# Create output directory if not already present
+_dummy := $(shell [ -d $(obj) ] || mkdir -p $(obj))
+
+include $(srctree)/scripts/Kbuild.include
+
+-include include/config/auto.conf
+-include $(obj)/include/autoconf.mk
+
+KBUILD_CPPFLAGS += -DCONFIG_SDL_BUILD
+
+SDL_BIN := u-boot-sdl
+
+
+include $(srctree)/config.mk
+include $(srctree)/arch/$(ARCH)/Makefile
+
+# Enable garbage collection of un-used sections for SDL
+KBUILD_CFLAGS += -ffunction-sections -fdata-sections
+LDFLAGS_FINAL += --gc-sections
+
+# FIX ME
+cpp_flags := $(KBUILD_CPPFLAGS) $(PLATFORM_CPPFLAGS) $(UBOOTINCLUDE) \
+							$(NOSTDINC_FLAGS)
+c_flags := $(KBUILD_CFLAGS) $(cpp_flags)
+
+HAVE_VENDOR_COMMON_LIB = $(if $(wildcard $(srctree)/board/$(VENDOR)/common/Makefile),y,n)
+
+libs-y += $(if $(BOARDDIR),board/$(BOARDDIR)/)
+libs-$(HAVE_VENDOR_COMMON_LIB) += board/$(VENDOR)/common/
+
+ifeq ($(CONFIG_SDL_BUILD),y)
+libs-y += common/
+ifeq ($(CONFIG_SDL_NAND_SUPPORT),y)
+libs-y += drivers/mtd/nand/
+libs-y += drivers/mtd/
+endif
+libs-y += drivers/spi/
+libs-y += lib/
+libs-y += lib/libfdt/
+libs-y += common/init/
+endif
+
+head-y		:= $(addprefix $(obj)/,$(head-y))
+libs-y		:= $(addprefix $(obj)/,$(libs-y))
+u-boot-sdl-dirs	:= $(patsubst %/,%,$(filter %/, $(libs-y)))
+
+libs-y := $(patsubst %/, %/built-in.o, $(libs-y))
+
+# Add GCC lib
+ifeq ($(CONFIG_USE_PRIVATE_LIBGCC),y)
+PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
+PLATFORM_LIBS := $(filter-out %/lib.a, $(filter-out -lgcc, $(PLATFORM_LIBS))) $(PLATFORM_LIBGCC)
+endif
+
+u-boot-sdl-init := $(head-y)
+u-boot-sdl-main := $(libs-y)
+ifdef CONFIG_SDL_OF_PLATDATA
+u-boot-sdl-platdata := $(obj)/dts/dt-platdata.o
+endif
+
+# Linker Script
+# First test whether there is a linker-script for the specific stage defined...
+ifneq ($(CONFIG_SDL_LDSCRIPT),)
+# need to strip off double quotes
+LDSCRIPT := $(addprefix $(srctree)/,$(CONFIG_SDL_LDSCRIPT:"%"=%))
+else
+# ...then fall back to the generic SDL linker-script
+ifneq ($(CONFIG_SDL_LDSCRIPT),)
+# need to strip off double quotes
+LDSCRIPT := $(addprefix $(srctree)/,$(CONFIG_SDL_LDSCRIPT:"%"=%))
+endif
+endif
+
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/board/$(BOARDDIR)/u-boot-sdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/$(CPUDIR)/u-boot-sdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/arch/$(ARCH)/cpu/u-boot-sdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+$(error could not find linker script)
+endif
+
+# Special flags for CPP when processing the linker script.
+# Pass the version down so we can handle backwards compatibility
+# on the fly.
+LDPPFLAGS += \
+	-include $(srctree)/include/u-boot/u-boot.lds.h \
+	-include $(objtree)/include/config.h \
+	-DCPUDIR=$(CPUDIR) \
+	$(shell $(LD) --version | \
+	  sed -ne 's/GNU ld version \([0-9][0-9]*\)\.\([0-9][0-9]*\).*/-DLD_MAJOR=\1 -DLD_MINOR=\2/p')
+
+MKIMAGEOUTPUT ?= /dev/null
+
+quiet_cmd_mkimage = MKIMAGE $@
+cmd_mkimage = $(objtree)/tools/mkimage $(MKIMAGEFLAGS_$(@F)) -d $< $@ \
+	$(if $(KBUILD_VERBOSE:1=), >$(MKIMAGEOUTPUT))
+
+MKIMAGEFLAGS_MLO = -T omapimage -a $(CONFIG_SDL_TEXT_BASE)
+
+MKIMAGEFLAGS_MLO.byteswap = -T omapimage -n byteswap -a $(CONFIG_SDL_TEXT_BASE)
+
+MLO MLO.byteswap: $(obj)/u-boot-sdl.bin FORCE
+	$(call if_changed,mkimage)
+
+ifeq ($(CONFIG_SYS_SOC),"at91")
+MKIMAGEFLAGS_boot.bin = -T atmelimage
+
+ifeq ($(CONFIG_SDL_GENERATE_ATMEL_PMECC_HEADER),y)
+MKIMAGEFLAGS_boot.bin += -n $(shell $(obj)/../tools/atmel_pmecc_params)
+
+boot.bin: $(obj)/../tools/atmel_pmecc_params
+endif
+
+boot.bin: $(obj)/u-boot-sdl.bin FORCE
+	$(call if_changed,mkimage)
+else
+ifdef CONFIG_ARCH_ZYNQ
+MKIMAGEFLAGS_boot.bin = -T zynqimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE)
+endif
+ifdef CONFIG_ARCH_ZYNQMP
+MKIMAGEFLAGS_boot.bin = -T zynqmpimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE)
+endif
+
+sdl/boot.bin: $(obj)/u-boot-sdl.bin FORCE
+	$(call if_changed,mkimage)
+endif
+
+ALL-y	+= $(obj)/$(SDL_BIN).bin
+
+ifdef CONFIG_SAMSUNG
+ALL-y	+= $(obj)/$(BOARD)-sdl.bin
+endif
+
+ifdef CONFIG_ARCH_SOCFPGA
+ALL-y	+= $(obj)/$(SDL_BIN).sfp
+endif
+
+
+ifeq ($(CONFIG_SYS_SOC),"at91")
+ALL-y	+= boot.bin
+endif
+
+ALL-$(CONFIG_SDL_X86_16BIT_INIT) += $(obj)/u-boot-x86-16bit-sdl.bin
+
+ALL-$(CONFIG_ARCH_ZYNQ)		+= $(obj)/boot.bin
+ALL-$(CONFIG_ARCH_ZYNQMP)	+= $(obj)/boot.bin
+
+all:	$(ALL-y)
+
+quiet_cmd_cat = CAT     $@
+cmd_cat = cat $(filter-out $(PHONY), $^) > $@
+
+quiet_cmd_copy = COPY    $@
+      cmd_copy = cp $< $@
+
+ifeq ($(CONFIG_SDL_OF_CONTROL)$(CONFIG_OF_SEPARATE)$(CONFIG_SDL_OF_PLATDATA),yy)
+$(obj)/$(SDL_BIN)-dtb.bin: $(obj)/$(SDL_BIN)-nodtb.bin \
+		$(if $(CONFIG_SDL_SEPARATE_BSS),,$(obj)/$(SDL_BIN)-pad.bin) \
+		$(obj)/$(SDL_BIN).dtb FORCE
+	$(call if_changed,cat)
+
+$(obj)/$(SDL_BIN).bin: $(obj)/$(SDL_BIN)-dtb.bin FORCE
+	$(call if_changed,copy)
+else
+quiet_cmd_mkmolchipboot = MKMOLCHIP $@
+cmd_mkmolchipboot = $(objtree)/tools/mkmolchipboot \
+			$(CONFIG_SDL_TEXT_BASE) $< $@
+$(obj)/$(SDL_BIN).bin: $(obj)/$(SDL_BIN)-nodtb.bin FORCE
+	$(call if_changed,mkmolchipboot)
+endif
+
+# Create a file that pads from the end of u-boot-sdl-nodtb.bin to bss_end
+$(obj)/$(SDL_BIN)-pad.bin: $(obj)/$(SDL_BIN)
+	@bss_size_str=$(shell $(NM) $< | awk 'BEGIN {size = 0} /__bss_size/ {size = $$1} END {print "ibase=16; " toupper(size)}' | bc); \
+	dd if=/dev/zero of=$@ bs=1 count=$${bss_size_str} 2>/dev/null;
+
+# Pass the original device tree file through fdtgrep twice. The first pass
+# removes any unwanted nodes (i.e. those which don't have the
+# 'u-boot,dm-pre-reloc' property and thus are not needed by SDL. The second
+# pass removes various unused properties from the remaining nodes.
+# The output is typically a much smaller device tree file.
+fdtgrep_props := -b u-boot,dm-pre-reloc -b u-boot,dm-sdl
+
+quiet_cmd_fdtgrep = FDTGREP $@
+      cmd_fdtgrep = $(objtree)/tools/fdtgrep $(fdtgrep_props) -RT $< \
+		-n /chosen -n /config -O dtb | \
+	$(objtree)/tools/fdtgrep -r -O dtb - -o $@ \
+		$(addprefix -P ,$(subst $\",,$(CONFIG_OF_SDL_REMOVE_PROPS)))
+
+$(obj)/$(SDL_BIN).dtb: dts/dt.dtb $(objtree)/tools/fdtgrep FORCE
+	$(call if_changed,fdtgrep)
+
+pythonpath = PYTHONPATH=tools
+
+quiet_cmd_dtocc = DTOC C  $@
+cmd_dtocc = $(pythonpath) $(srctree)/tools/dtoc/dtoc -d $(obj)/$(SDL_BIN).dtb -o $@ platdata
+
+quiet_cmd_dtoch = DTOC H  $@
+cmd_dtoch = $(pythonpath) $(srctree)/tools/dtoc/dtoc -d $(obj)/$(SDL_BIN).dtb -o $@ struct
+
+quiet_cmd_plat = PLAT    $@
+cmd_plat = $(CC) $(c_flags) -c $< -o $@
+
+$(obj)/dts/dt-platdata.o: $(obj)/dts/dt-platdata.c include/generated/dt-structs.h
+	$(call if_changed,plat)
+
+PHONY += dts_dir
+dts_dir:
+	$(shell [ -d $(obj)/dts ] || mkdir -p $(obj)/dts)
+
+include/generated/dt-structs.h: $(obj)/$(SDL_BIN).dtb dts_dir checkdtoc
+	$(call if_changed,dtoch)
+
+$(obj)/dts/dt-platdata.c: $(obj)/$(SDL_BIN).dtb dts_dir checkdtoc
+	$(call if_changed,dtocc)
+
+ifdef CONFIG_SAMSUNG
+ifdef CONFIG_VAR_SIZE_SDL
+VAR_SIZE_PARAM = --vs
+else
+VAR_SIZE_PARAM =
+endif
+$(obj)/$(BOARD)-sdl.bin: $(obj)/u-boot-sdl.bin
+	$(if $(wildcard $(objtree)/sdl/board/samsung/$(BOARD)/tools/mk$(BOARD)sdl),\
+	$(objtree)/sdl/board/samsung/$(BOARD)/tools/mk$(BOARD)sdl,\
+	$(objtree)/tools/mkexynossdl) $(VAR_SIZE_PARAM) $< $@
+endif
+
+quiet_cmd_objcopy = OBJCOPY $@
+cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+
+OBJCOPYFLAGS_$(SDL_BIN)-nodtb.bin = $(SDL_OBJCFLAGS) -O binary \
+		$(if $(CONFIG_SDL_X86_16BIT_INIT),-R .start16 -R .resetvec)
+
+$(obj)/$(SDL_BIN)-nodtb.bin: $(obj)/$(SDL_BIN) FORCE
+	$(call if_changed,objcopy)
+
+OBJCOPYFLAGS_u-boot-x86-16bit-sdl.bin := -O binary -j .start16 -j .resetvec
+$(obj)/u-boot-x86-16bit-sdl.bin: $(obj)/u-boot-sdl FORCE
+	$(call if_changed,objcopy)
+
+LDFLAGS_$(SDL_BIN) += -T u-boot-sdl.lds $(LDFLAGS_FINAL)
+
+# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
+LDFLAGS_$(SDL_BIN) += $(call ld-option, --no-dynamic-linker)
+
+# First try the best-match (i.e. SDL_TEXT_BASE for SDL)
+ifneq ($(CONFIG_SDL_TEXT_BASE),)
+LDFLAGS_$(SDL_BIN) += -Ttext $(CONFIG_SDL_TEXT_BASE)
+else
+# And then fall back to just testing for SDL_TEXT_BASE, even if in TPL mode
+ifneq ($(CONFIG_SDL_TEXT_BASE),)
+LDFLAGS_$(SDL_BIN) += -Ttext $(CONFIG_SDL_TEXT_BASE)
+endif
+endif
+
+MKIMAGEFLAGS_$(SDL_BIN).sfp = -T socfpgaimage
+$(obj)/$(SDL_BIN).sfp: $(obj)/$(SDL_BIN).bin FORCE
+	$(call if_changed,mkimage)
+
+# Rule to link u-boot-sdl
+# May be overridden by arch/$(ARCH)/config.mk
+quiet_cmd_u-boot-sdl ?= LD      $@
+      cmd_u-boot-sdl ?= (cd $(obj) && $(LD) $(LDFLAGS) $(LDFLAGS_$(@F)) \
+		       $(patsubst $(obj)/%,%,$(u-boot-sdl-init)) --start-group \
+		       $(patsubst $(obj)/%,%,$(u-boot-sdl-main))  \
+		       $(patsubst $(obj)/%,%,$(u-boot-sdl-platdata)) \
+		       --end-group \
+		       $(PLATFORM_LIBS) -Map $(SDL_BIN).map -o $(SDL_BIN))
+
+$(obj)/$(SDL_BIN): $(u-boot-sdl-platdata) $(u-boot-sdl-init) \
+		$(u-boot-sdl-main) $(obj)/u-boot-sdl.lds FORCE
+	$(call if_changed,u-boot-sdl)
+
+$(sort $(u-boot-sdl-init) $(u-boot-sdl-main)): $(u-boot-sdl-dirs) ;
+
+PHONY += $(u-boot-sdl-dirs)
+$(u-boot-sdl-dirs): $(u-boot-sdl-platdata)
+	$(Q)$(MAKE) $(build)=$@
+
+quiet_cmd_cpp_lds = LDS     $@
+cmd_cpp_lds = $(CPP) -Wp,-MD,$(depfile) $(cpp_flags) $(LDPPFLAGS) -ansi \
+		-D__ASSEMBLY__ -x assembler-with-cpp -P -o $@ $<
+
+$(obj)/u-boot-sdl.lds: $(LDSCRIPT) FORCE
+	$(call if_changed_dep,cpp_lds)
+
+# read all saved command lines
+
+targets := $(wildcard $(sort $(targets)))
+cmd_files := $(wildcard $(obj)/.*.cmd $(foreach f,$(targets),$(dir $(f)).$(notdir $(f)).cmd))
+
+ifneq ($(cmd_files),)
+  $(cmd_files): ;	# Do not try to update included dependency files
+  include $(cmd_files)
+endif
+
+checkdtoc: tools
+	@if ! ( echo 'import libfdt' | ( PYTHONPATH=tools $(PYTHON) )); then \
+		echo '*** dtoc needs the Python libfdt library. Either '; \
+		echo '*** install it on your system, or try:'; \
+		echo '***'; \
+		echo '*** sudo apt-get install swig libpython-dev'; \
+		echo '***'; \
+		echo '*** to have U-Boot build its own version.'; \
+		false; \
+	fi
+
+PHONY += FORCE
+FORCE:
+
+# Declare the contents of the .PHONY variable as phony.  We keep that
+# information in a variable so we can use it in if_changed and friends.
+.PHONY: $(PHONY)

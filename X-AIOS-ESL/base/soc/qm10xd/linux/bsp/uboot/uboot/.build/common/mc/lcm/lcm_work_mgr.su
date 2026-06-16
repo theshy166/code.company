@@ -1,0 +1,5 @@
+../common/mc/lcm/lcm_work_mgr.c:38:18:get_lcm_work_mode_context	0	static
+../common/mc/lcm/lcm_work_mgr.c:43:7:get_lcm_work_mode_str	0	static
+../common/mc/lcm/lcm_work_mgr.c:54:17:get_lcm_work_mode	8	static
+../common/mc/lcm/lcm_work_mgr.c:140:9:set_lcm_work_mode	0	static
+../common/mc/lcm/lcm_work_mgr.c:151:9:check_lcm_work_mode	16	static

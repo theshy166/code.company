@@ -1,0 +1,13 @@
+../common/mc/lcm/os.c:43:6:delayUs	0	static
+../common/mc/lcm/os.c:48:6:delayMs	8	static
+../common/mc/lcm/os.c:53:6:sleepMs	0	static
+../common/mc/lcm/os.c:58:5:os_mutex_init	0	static
+../common/mc/lcm/os.c:63:6:os_mutex_deinit	0	static
+../common/mc/lcm/os.c:68:6:os_mutex_lock	0	static
+../common/mc/lcm/os.c:73:6:os_mutex_unlock	0	static
+../common/mc/lcm/os.c:78:7:os_k_malloc	0	static
+../common/mc/lcm/os.c:83:9:os_strcmp	0	static
+../common/mc/lcm/os.c:88:8:os_strcpy	0	static
+../common/mc/lcm/os.c:93:7:os_memcpy	0	static
+../common/mc/lcm/os.c:98:7:os_memset	0	static
+../common/mc/lcm/os.c:103:10:do_div64_u64	0	static

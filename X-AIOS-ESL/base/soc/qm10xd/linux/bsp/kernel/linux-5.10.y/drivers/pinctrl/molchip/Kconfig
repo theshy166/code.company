@@ -1,0 +1,19 @@
+if ARCH_MOLCHIP || COMPILE_TEST
+
+config PINCTRL_MC
+	bool
+	depends on OF
+	select PINMUX
+	select GENERIC_PINCONF
+	select GPIOLIB
+	select OF_GPIO
+
+# For ARMv7 SoCs
+
+config PINCTRL_MOLCHIP
+	bool "MOCHIP pin control"
+	depends on OF
+	default ARCH_MOLCHIP
+	select PINCTRL_MC
+
+endif

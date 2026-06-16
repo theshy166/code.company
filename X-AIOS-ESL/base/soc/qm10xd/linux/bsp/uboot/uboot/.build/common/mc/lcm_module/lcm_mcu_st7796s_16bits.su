@@ -1,0 +1,8 @@
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:140:16:_lcm_mcu16_st7796s_PowerOff	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:326:16:_lcm_mcu16_st7796s_deinit	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:306:16:_lcm_mcu16_st7796s_resume	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:286:16:_lcm_mcu16_st7796s_suspend	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:185:16:_lcm_mcu16_st7796s_identify	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:163:16:_lcm_mcu16_st7796s_PowerOn	8	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:206:9:lcm_mcu16_st7796s_clear	40	static
+../common/mc/lcm_module/lcm_mcu_st7796s_16bits.c:238:16:_lcm_mcu16_st7796s_init	16	static

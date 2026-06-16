@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ ! -e $partition ];then
+  echo "   $partition does not exist !"
+  exit 1
+fi
+
+mount -t ubifs -o ro ubi1:system /system
+mount -o remount,rw /var
+mount -o remount,rw /tmp
+mount -t ubifs ubi3:data /data
+rm -f /data/*.lzma
+rm -f /data/script-ota.ini

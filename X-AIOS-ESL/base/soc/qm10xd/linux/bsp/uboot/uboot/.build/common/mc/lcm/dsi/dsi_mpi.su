@@ -1,0 +1,12 @@
+../common/mc/lcm/dsi/dsi_mpi.c:99:20:dsi_mipi_context_get	0	static
+../common/mc/lcm/dsi/dsi_mpi.c:105:6:dsi_mipi_set_err_code	0	static
+../common/mc/lcm/dsi/dsi_mpi.c:111:10:dsi_mipi_get_err_code	0	static
+../common/mc/lcm/dsi/dsi_mpi.c:316:9:dsi_generic_write	8	static
+../common/mc/lcm/dsi/dsi_mpi.c:329:9:dsi_generic_read	16	static
+../common/mc/lcm/dsi/dsi_mpi.c:342:9:dsi_dcs_write	8	static
+../common/mc/lcm/dsi/dsi_mpi.c:355:9:dsi_dcs_read	16	static
+../common/mc/lcm/dsi/dsi_mpi.c:369:9:dsi_push_table	24	static
+../common/mc/lcm/dsi/dsi_mpi.c:484:9:dsi_init	32	static
+../common/mc/lcm/dsi/dsi_mpi.c:528:9:dsi_deinit	24	static
+../common/mc/lcm/dsi/dsi_mpi.c:570:9:dsi_lp_mode	8	static
+../common/mc/lcm/dsi/dsi_mpi.c:590:9:dsi_hs_mode	8	static

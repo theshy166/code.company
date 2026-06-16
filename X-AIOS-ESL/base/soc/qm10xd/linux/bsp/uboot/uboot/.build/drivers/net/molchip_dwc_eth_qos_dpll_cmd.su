@@ -1,0 +1,5 @@
+../drivers/net/molchip_dwc_eth_qos_dpll_cmd.c:255:12:init_gmac	16	static
+../drivers/net/molchip_dwc_eth_qos_dpll_cmd.c:415:12:bit_check_and_modify.isra	4	static
+../drivers/net/molchip_dwc_eth_qos_dpll_cmd.c:537:12:scan_function.isra	80	static
+../drivers/net/molchip_dwc_eth_qos_dpll_cmd.c:750:12:do_dpll_scan	24	static
+../drivers/net/molchip_dwc_eth_qos_dpll_cmd.c:675:5:gmac_loopback_autoscan	40	static

@@ -1,0 +1,7 @@
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:13:16:_lcm_rgb18_at070tn94_power_off	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:142:16:_lcm_rgb18_at070tn94_resume	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:121:16:_lcm_rgb18_at070tn94_suspend	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:77:16:_lcm_rgb18_at070tn94_init	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:58:16:_lcm_rgb18_at070tn94_identify	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:98:16:_lcm_rgb18_at070tn94_deinit	8	static
+../common/mc/lcm_module/lcm_rgb_at070tn94_18bits.c:36:16:_lcm_rgb18_at070tn94_power_on	8	static

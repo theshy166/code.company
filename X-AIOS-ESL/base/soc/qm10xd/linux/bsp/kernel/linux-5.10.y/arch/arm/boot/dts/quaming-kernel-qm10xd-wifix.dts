@@ -1,0 +1,91 @@
+/*
+ * molchip
+ *
+ * Cortex-A7
+ *
+ * HBI-0225B
+ */
+
+/dts-v1/;
+#include "quaming-kernel-qm10xd-wifix.dtsi"
+#include "quaming-kernel-qm10xd-wifix-pinctrl.dtsi"
+/ {
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x04000000>;
+	};
+	vdu {
+		compatible = "molchip,mc-vdu";
+		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b300000 0x10000>;
+	};
+	g2d {
+		compatible = "molchip,mc-g2d";
+		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x27000000 0x1000>;
+	};
+	vou {
+		compatible = "molchip,mc-vou";
+		interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>,
+					<GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x26000000 0x2000>;
+	};
+	jpeg {
+		compatible = "molchip,mc-jpeg";
+		interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+		reg = <0x0b310000 0x1000>;
+	};
+	seekwcn_boot:seekwcn_boot {
+		compatible = "seekwave,sv6160";
+		dma_type = <1>;/*1:ADMA,2:SDMA*/
+		skw_iram_path = "/lib/firmware";
+		skw_dram_path = "/lib/firmware";
+		/*seekwave_nv_name = "SEEKWAVE_NV_SWT6652.bin";*/
+	//	gpio_chip_en = <&gpio3 5 1>;
+		status = "okay";
+
+	};
+};
+
+&ethernet_a {
+
+/* For mphy */
+	/*
+	phy-mode = "rmii";
+	snps,en-rmii-inv;
+	snps,inv-sel = <0x1F8>,<0>,<0x1>;
+	phy-type = <EXTERNAL_PHY>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&eth_pins_rmii_defaults>;
+
+	status = "okay";
+
+	mdio {
+		phy0: phy@0 {
+			reg = <0x1>;
+		};
+	};
+	*/
+
+};
+
+&pinctrl{
+	wake_pins:wake_pins {
+		pins1 {
+           		pinmux = <MC_PIN_35_PAD16_G2_FUNC_GPIO5_3>;
+                	bias-pull-up = <MC_PUPD_SET_R2_1>;
+		};
+	};
+};
+
+&wakeup_source {
+//	gpio-wakeup-en = <43>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&wake_pins>;
+
+	saradc-wakeup-en;
+	ethernet-wakeup-en = <INTERNAL_PHY>;
+	systimer-wakeup-en;
+};
+

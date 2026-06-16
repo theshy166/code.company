@@ -1,0 +1,610 @@
+/*
+ * Copyright (c) 2019 Molchip Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#ifndef __PINCTRL_MC_H
+#define __PINCTRL_MC_H
+
+#include <linux/pinctrl/pinctrl.h>
+#include "pinctrl-mc-common.h"
+
+static const struct mc_desc_pin mc_pins[] = {
+	MC_PIN(
+			PINCTRL_PIN(0, "PAD1_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "UART0_RXD"),
+			MC_FUNCTION(1, "GPIO0_7")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(1, "PAD2_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "UART0_TXD"),
+			MC_FUNCTION(1, "GPIO1_0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(2, "PAD3_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_CD"),
+			MC_FUNCTION(1, "GPIO1_1")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(3, "PAD4_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_D1"),
+			MC_FUNCTION(1, "GPIO1_2"),
+			MC_FUNCTION(2, "SPI0_CSN0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(4, "PAD5_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_D0"),
+			MC_FUNCTION(1, "GPIO1_3"),
+			MC_FUNCTION(2, "SPI0_DI")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(5, "PAD6_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_CLK"),
+			MC_FUNCTION(1, "GPIO1_4"),
+			MC_FUNCTION(2, "SPI0_CLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(6, "PAD7_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_CMD"),
+			MC_FUNCTION(1, "GPIO1_5"),
+			MC_FUNCTION(2, "SPI0_DO")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(7, "PAD8_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_D3"),
+			MC_FUNCTION(1, "GPIO1_6"),
+			MC_FUNCTION(2, "UART1_TXD"),
+			MC_FUNCTION(3, "I2C1_SCL"),
+			MC_FUNCTION(4, "EPHY_LED_DAT")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(8, "PAD9_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SD1_D2"),
+			MC_FUNCTION(1, "GPIO1_7"),
+			MC_FUNCTION(2, "UART1_RXD"),
+			MC_FUNCTION(3, "I2C1_SDA"),
+			MC_FUNCTION(4, "EPHY_LED_LINK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(9, "PAD15_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_HOLD_IO3"),
+			MC_FUNCTION(1, "GPIO2_5"),
+			MC_FUNCTION(2, "UART1_RXD"),
+			MC_FUNCTION(3, "I2C1_SDA"),
+			MC_FUNCTION(4, "EPHY_LED_LINK"),
+			MC_FUNCTION(5, "CAN_STBY")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(10, "PAD14_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_WP_IO2"),
+			MC_FUNCTION(1, "GPIO2_4"),
+			MC_FUNCTION(2, "UART1_TXD"),
+			MC_FUNCTION(3, "I2C1_SCL"),
+			MC_FUNCTION(4, "EPHY_LED_DAT")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(11, "PAD13_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_MISO_IO1"),
+			MC_FUNCTION(1, "GPIO2_3")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(12, "PAD10_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_CLK"),
+			MC_FUNCTION(1, "GPIO2_0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(13, "PAD12_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_MOSI_IO0"),
+			MC_FUNCTION(1, "GPIO2_2")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(14, "PAD16_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_CS1N"),
+			MC_FUNCTION(1, "GPIO2_6")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(15, "PAD11_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "SFC_CS0N"),
+			MC_FUNCTION(1, "GPIO2_1")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(16, "PAD0_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "TEST_MODE")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(17, "PAD17_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "JTAG_TCK"),
+			MC_FUNCTION(1, "GPIO3_1"),
+			MC_FUNCTION(2, "I2C0_SCL"),
+			MC_FUNCTION(3, "PWM_OUT3"),
+			MC_FUNCTION(4, "CAN_TX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(18, "PAD18_G1"),
+			NULL, "mc",
+			MC_FUNCTION(0, "JTAG_TMS"),
+			MC_FUNCTION(1, "GPIO3_2"),
+			MC_FUNCTION(2, "I2C0_SDA"),
+			MC_FUNCTION(3, "PWM_OUT2"),
+			MC_FUNCTION(4, "CAN_RX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(19, "PAD0_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_DE"),
+			MC_FUNCTION(1, "GPIO3_3"),
+			MC_FUNCTION(2, "LCD_TE"),
+			MC_FUNCTION(3, "MDCK"),
+			MC_FUNCTION(4, "I2S_DI")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(20, "PAD1_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_HSYNC"),
+			MC_FUNCTION(1, "GPIO3_4"),
+			MC_FUNCTION(2, "LCD_CSN"),
+			MC_FUNCTION(3, "EPHY_RSTN"),
+			MC_FUNCTION(4, "I2S_DO")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(21, "PAD2_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_VSYNC"),
+			MC_FUNCTION(1, "GPIO3_5"),
+			MC_FUNCTION(2, "LCD_RS"),
+			MC_FUNCTION(3, "MDIO"),
+			MC_FUNCTION(4, "I2S_BCLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(22, "PAD3_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_CLK"),
+			MC_FUNCTION(1, "GPIO3_6"),
+			MC_FUNCTION(2, "LCD_WRN"),
+			MC_FUNCTION(3, "EPHY_CLK"),
+			MC_FUNCTION(4, "I2S_MCLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(23, "PAD4_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D0"),
+			MC_FUNCTION(1, "GPIO3_7"),
+			MC_FUNCTION(2, "PWM_OUT0"),
+			MC_FUNCTION(3, "RMII_TXD1"),
+			MC_FUNCTION(4, "I2S_WS")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(24, "PAD5_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D1"),
+			MC_FUNCTION(1, "GPIO4_0"),
+			MC_FUNCTION(2, "PWM_OUT1"),
+			MC_FUNCTION(3, "RMII_TXD0"),
+			MC_FUNCTION(4, "UART3_TXD")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(25, "PAD6_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D2"),
+			MC_FUNCTION(1, "GPIO4_1"),
+			MC_FUNCTION(2, "PWM_OUT2"),
+			MC_FUNCTION(3, "RMII_TXEN"),
+			MC_FUNCTION(4, "UART3_RXD")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(26, "PAD8_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D4"),
+			MC_FUNCTION(1, "GPIO4_3"),
+			MC_FUNCTION(2, "I2C1_SCL"),
+			MC_FUNCTION(3, "RMII_RXD1"),
+			MC_FUNCTION(4, "EPHY_LED_DAT")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(27, "PAD7_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D3"),
+			MC_FUNCTION(1, "GPIO4_2"),
+			MC_FUNCTION(2, "PWM_OUT3"),
+			MC_FUNCTION(3, "RMII_CLK"),
+			MC_FUNCTION(4, "AUX_CLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(28, "PAD9_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D5"),
+			MC_FUNCTION(1, "GPIO4_4"),
+			MC_FUNCTION(2, "I2C1_SDA"),
+			MC_FUNCTION(3, "RMII_RXD0"),
+			MC_FUNCTION(4, "EPHY_LED_LINK"),
+			MC_FUNCTION(5, "CAN_STBY")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(29, "PAD11_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D7"),
+			MC_FUNCTION(1, "GPIO4_6"),
+			MC_FUNCTION(2, "I2C0_SDA"),
+			MC_FUNCTION(4, "UART1_RXD"),
+			MC_FUNCTION(5, "CAN_RX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(30, "PAD10_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D6"),
+			MC_FUNCTION(1, "GPIO4_5"),
+			MC_FUNCTION(2, "I2C0_SCL"),
+			MC_FUNCTION(3, "RMII_CRSDV"),
+			MC_FUNCTION(4, "UART1_TXD"),
+			MC_FUNCTION(5, "CAN_TX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(31, "PAD13_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D9"),
+			MC_FUNCTION(1, "GPIO5_0"),
+			MC_FUNCTION(2, "I2C1_SDA"),
+			MC_FUNCTION(3, "CAN_RX"),
+			MC_FUNCTION(4, "SD0_D2")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(32, "PAD12_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D8"),
+			MC_FUNCTION(1, "GPIO4_7"),
+			MC_FUNCTION(2, "I2C1_SCL"),
+			MC_FUNCTION(3, "CAN_TX"),
+			MC_FUNCTION(4, "SD0_D3")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(33, "PAD14_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D10"),
+			MC_FUNCTION(1, "GPIO5_1"),
+			MC_FUNCTION(2, "SPI_SLV_CSN0"),
+			MC_FUNCTION(3, "SPI1_CSN0"),
+			MC_FUNCTION(4, "SD0_D1")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(34, "PAD15_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D11"),
+			MC_FUNCTION(1, "GPIO5_2"),
+			MC_FUNCTION(2, "SPI_SLV_DI"),
+			MC_FUNCTION(3, "SPI1_DI"),
+			MC_FUNCTION(4, "SD0_D0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(35, "PAD16_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D12"),
+			MC_FUNCTION(1, "GPIO5_3"),
+			MC_FUNCTION(2, "SPI_SLV_DO"),
+			MC_FUNCTION(3, "SPI1_DO"),
+			MC_FUNCTION(4, "SD0_CMD")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(36, "PAD17_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D13"),
+			MC_FUNCTION(1, "GPIO5_4"),
+			MC_FUNCTION(2, "SPI_SLV_CLK"),
+			MC_FUNCTION(3, "SPI1_CLK"),
+			MC_FUNCTION(4, "SD0_CLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(37, "PAD18_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D14"),
+			MC_FUNCTION(1, "GPIO5_5"),
+			MC_FUNCTION(2, "PWM_OUT0"),
+			MC_FUNCTION(3, "UART2_RTSN"),
+			MC_FUNCTION(4, "SD0_CD"),
+			MC_FUNCTION(5, "CAN_TX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(38, "PAD19_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D15"),
+			MC_FUNCTION(1, "GPIO5_6"),
+			MC_FUNCTION(2, "PWM_OUT1"),
+			MC_FUNCTION(3, "UART2_CTSN"),
+			MC_FUNCTION(4, "PWM_OUT2"),
+			MC_FUNCTION(5, "CAN_RX")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(39, "PAD20_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D16"),
+			MC_FUNCTION(1, "GPIO2_7"),
+			MC_FUNCTION(2, "I2C0_SCL"),
+			MC_FUNCTION(3, "UART2_TXD"),
+			MC_FUNCTION(4, "PWM_OUT3"),
+			MC_FUNCTION(5, "EPHY_LED_DAT")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(40, "PAD21_G2"),
+			NULL, "mc",
+			MC_FUNCTION(0, "LCD_D17"),
+			MC_FUNCTION(1, "GPIO3_0"),
+			MC_FUNCTION(2, "I2C0_SDA"),
+			MC_FUNCTION(3, "UART2_RXD"),
+			MC_FUNCTION(4, "CAN_STBY"),
+			MC_FUNCTION(5, "EPHY_LED_LINK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(41, "PAD9_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DP3"),
+			MC_FUNCTION(1, "GPIO6_2"),
+			MC_FUNCTION(2, "LCD_D21"),
+			MC_FUNCTION(3, "I2C1_SDA"),
+			MC_FUNCTION(4, "UART2_CTSN"),
+			MC_FUNCTION(5, "I2S_WS")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(42, "PAD8_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DN3"),
+			MC_FUNCTION(1, "GPIO6_1"),
+			MC_FUNCTION(2, "LCD_D20"),
+			MC_FUNCTION(3, "I2C1_SCL"),
+			MC_FUNCTION(4, "UART2_RTSN"),
+			MC_FUNCTION(5, "I2S_BCLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(43, "PAD6_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DP2"),
+			MC_FUNCTION(1, "GPIO6_4"),
+			MC_FUNCTION(2, "LCD_D23"),
+			MC_FUNCTION(3, "PWM_OUT1"),
+			MC_FUNCTION(4, "UART2_RXD"),
+			MC_FUNCTION(5, "SD0_CD")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(44, "PAD7_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DN2"),
+			MC_FUNCTION(1, "GPIO6_3"),
+			MC_FUNCTION(2, "LCD_D22"),
+			MC_FUNCTION(3, "PWM_OUT0"),
+			MC_FUNCTION(4, "UART2_TXD"),
+			MC_FUNCTION(5, "I2S_MCLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(45, "PAD10_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_CKP1"),
+			MC_FUNCTION(1, "GPIO6_0"),
+			MC_FUNCTION(2, "LCD_D19"),
+			MC_FUNCTION(3, "LCD_RDN"),
+			MC_FUNCTION(4, "I2C0_SDA"),
+			MC_FUNCTION(5, "I2S_DI")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(46, "PAD11_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_CKN1"),
+			MC_FUNCTION(1, "GPIO5_7"),
+			MC_FUNCTION(2, "LCD_D18"),
+			MC_FUNCTION(3, "PWM_OUT2"),
+			MC_FUNCTION(4, "I2C0_SCL"),
+			MC_FUNCTION(5, "I2S_DO")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(47, "PAD5_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_CKN0"),
+			MC_FUNCTION(1, "GPIO6_5"),
+			MC_FUNCTION(2, "UART3_TXD"),
+			MC_FUNCTION(3, "PWM_OUT2"),
+			MC_FUNCTION(4, "I2C0_SCL"),
+			MC_FUNCTION(5, "SD0_D3")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(48, "PAD4_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_CKP0"),
+			MC_FUNCTION(1, "GPIO6_6"),
+			MC_FUNCTION(2, "UART3_RXD"),
+			MC_FUNCTION(3, "PWM_OUT3"),
+			MC_FUNCTION(4, "I2C0_SDA"),
+			MC_FUNCTION(5, "SD0_D2")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(49, "PAD2_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DN1"),
+			MC_FUNCTION(1, "GPIO6_7"),
+			MC_FUNCTION(2, "I2S_DO"),
+			MC_FUNCTION(3, "SPI_SLV_CSN0"),
+			MC_FUNCTION(4, "SPI1_CSN0"),
+			MC_FUNCTION(5, "SD0_D1")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(50, "PAD3_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DP1"),
+			MC_FUNCTION(1, "GPIO7_0"),
+			MC_FUNCTION(2, "I2S_DI"),
+			MC_FUNCTION(3, "SPI_SLV_DI"),
+			MC_FUNCTION(4, "SPI1_DI"),
+			MC_FUNCTION(5, "SD0_D0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(51, "PAD1_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DN0"),
+			MC_FUNCTION(1, "GPIO7_1"),
+			MC_FUNCTION(2, "I2S_BCLK"),
+			MC_FUNCTION(3, "SPI_SLV_DO"),
+			MC_FUNCTION(4, "SPI1_DO"),
+			MC_FUNCTION(5, "SD0_CMD")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(52, "PAD0_G3"),
+			NULL, "mc",
+			MC_FUNCTION(0, "DSI_DP0"),
+			MC_FUNCTION(1, "GPIO7_2"),
+			MC_FUNCTION(2, "I2S_WS"),
+			MC_FUNCTION(3, "SPI_SLV_CLK"),
+			MC_FUNCTION(4, "SPI1_CLK"),
+			MC_FUNCTION(5, "SD0_CLK")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(53, "PAD0_G4"),
+			NULL, "mc",
+			MC_FUNCTION(0, "XAIN0_SADC"),
+			MC_FUNCTION(1, "GPIO0_5"),
+			MC_FUNCTION(2, "I2C1_SCL"),
+			MC_FUNCTION(3, "UART1_TXD"),
+			MC_FUNCTION(4, "PWM_OUT0")
+		),
+	
+	
+		MC_PIN(
+			PINCTRL_PIN(54, "PAD1_G4"),
+			NULL, "mc",
+			MC_FUNCTION(0, "XAIN1_SADC"),
+			MC_FUNCTION(1, "GPIO0_6"),
+			MC_FUNCTION(2, "I2C1_SDA"),
+			MC_FUNCTION(3, "UART1_RXD"),
+			MC_FUNCTION(4, "PWM_OUT1"),
+			MC_FUNCTION(5, "CAN_STBY")
+		)
+};
+
+#endif /* __PINCTRL_MC_H */

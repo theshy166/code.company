@@ -1,0 +1,74 @@
+#include <dt-bindings/pinctrl/mc-pinfunc.h>
+#include <dt-bindings/pinctrl/mcxcxx.h>
+
+&pinctrl {
+               can_pins:can_pins {
+                        pins1 {
+                                pinmux = <MC_PIN_18_PAD18_G1_FUNC_CAN_RX>, <MC_PIN_17_PAD17_G1_FUNC_CAN_TX>;
+				bias-pull-up = <MC_PUPD_SET_R1R0_10>;	
+                        };
+                };
+
+                can_pins_sleep:can_pins_sleep {
+                        pins1 {
+                                pinmux = <MC_PIN_18_PAD18_G1_FUNC_GPIO3_2>, <MC_PIN_17_PAD17_G1_FUNC_GPIO3_1>;
+				bias-pull-up = <MC_PUPD_SET_R1R0_00>;	
+                        };
+                };
+
+                eth_pins_mii_defaults:mii_pins {
+                        pins1 {
+                                pinmux = <MC_PIN_7_PAD8_G1__FUNC_EPHY_LED_DAT>, <MC_PIN_8_PAD9_G1__FUNC_EPHY_LED_LINK>;
+                        };
+                };
+
+               eth_pins_rmii_defaults:rmii_pins {
+                        pins1 {
+                                pinmux = <MC_PIN_19_PAD0_G2__FUNC_MDCK>, <MC_PIN_20_PAD1_G2__FUNC_EPHY_RSTN>,
+                                        <MC_PIN_21_PAD2_G2__FUNC_MDIO>, <MC_PIN_22_PAD3_G2__FUNC_EPHY_CLK>,
+                                        <MC_PIN_23_PAD4_G2__FUNC_RMII_TXD1>, <MC_PIN_24_PAD5_G2__FUNC_RMII_TXD0>,
+                                        <MC_PIN_25_PAD6_G2__FUNC_RMII_TXEN>, <MC_PIN_26_PAD8_G2__FUNC_RMII_RXD1>,
+                                        <MC_PIN_27_PAD7_G2__FUNC_RMII_CLK>, <MC_PIN_28_PAD9_G2__FUNC_RMII_RXD0>,
+                                        <MC_PIN_30_PAD10_G2_FUNC_RMII_CRSDV>;
+                        };
+                };
+
+                sdmmc0_pins:sdmmc0_pins {
+                        pins0 {
+                                pinmux = <MC_PIN_31_PAD13_G2_FUNC_SD0_D2>, <MC_PIN_32_PAD12_G2_FUNC_SD0_D3>,
+                                <MC_PIN_33_PAD14_G2_FUNC_SD0_D1>, <MC_PIN_34_PAD15_G2_FUNC_SD0_D0>,
+                                <MC_PIN_35_PAD16_G2_FUNC_SD0_CMD>, <MC_PIN_36_PAD17_G2_FUNC_SD0_CLK>,
+                                <MC_PIN_37_PAD18_G2_FUNC_SD0_CD>;
+                        };
+                };
+
+                sdmmc1_pins:sdmmc1_pins {
+                        pins1 {
+                                pinmux = <MC_PIN_2_PAD3_G1__FUNC_SD1_CD>, <MC_PIN_3_PAD4_G1__FUNC_SD1_D1>,
+                                <MC_PIN_4_PAD5_G1__FUNC_SD1_D0>, <MC_PIN_5_PAD6_G1__FUNC_SD1_CLK>,
+                                <MC_PIN_6_PAD7_G1__FUNC_SD1_CMD>, <MC_PIN_7_PAD8_G1__FUNC_SD1_D3>,
+                                <MC_PIN_8_PAD9_G1__FUNC_SD1_D2>;
+                        };
+                };
+
+		spi_pins:spi_pins {
+                        pins0 {
+                                pinmux = <MC_PIN_47_PAD5_G3__FUNC_GPIO6_5>,<MC_PIN_49_PAD2_G3__FUNC_GPIO6_7>
+				,<MC_PIN_50_PAD3_G3__FUNC_GPIO7_0>,<MC_PIN_51_PAD1_G3__FUNC_SPI1_DO>
+				,<MC_PIN_52_PAD0_G3__FUNC_SPI1_CLK>;
+                        };
+                };
+
+		sensor_pins:sensor_pins {
+                        pins0 {
+                                pinmux = <MC_PIN_17_PAD17_G1_FUNC_I2C0_SCL>,<MC_PIN_18_PAD18_G1_FUNC_I2C0_SDA>;
+                        };
+                };
+
+                sfc_pins:sfc_pins {
+                        pins1 {
+                                pinmux = <MC_PIN_12_PAD10_G1_FUNC_SFC_CLK>;
+                                drive-strength = <MC_DRIVE_6mA>;
+                        };
+                };
+};

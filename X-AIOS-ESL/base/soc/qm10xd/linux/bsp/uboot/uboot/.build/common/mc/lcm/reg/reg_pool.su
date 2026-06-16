@@ -1,0 +1,5 @@
+../common/mc/lcm/reg/reg_pool.c:38:9:regDefaultChecker	24	static
+../common/mc/lcm/reg/reg_pool.c:67:9:regDefaultGet	16	static
+../common/mc/lcm/reg/reg_pool.c:96:7:getRegValuePtr	16	static
+../common/mc/lcm/reg/reg_pool.c:129:8:getRegPtr	16	static
+../common/mc/lcm/reg/reg_pool.c:161:9:showRegValuePtr	16	static

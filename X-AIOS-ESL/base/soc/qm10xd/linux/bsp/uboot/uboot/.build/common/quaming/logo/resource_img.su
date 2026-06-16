@@ -1,0 +1,2 @@
+../common/quaming/logo/resource_img.c:120:5:resource_image_check_header	16	static
+../common/quaming/logo/resource_img.c:325:5:mc_read_resource_file	168	static

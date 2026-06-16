@@ -1,0 +1,1 @@
+cmd_sdl/arch/arm/cpu/armv7/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/arch/arm/cpu/armv7/built-in.o sdl/arch/arm/cpu/armv7/cache_v7.o sdl/arch/arm/cpu/armv7/cache_v7_asm.o sdl/arch/arm/cpu/armv7/cpu.o sdl/arch/arm/cpu/armv7/cp15.o sdl/arch/arm/cpu/armv7/syslib.o sdl/arch/arm/cpu/armv7/lowlevel_init.o 

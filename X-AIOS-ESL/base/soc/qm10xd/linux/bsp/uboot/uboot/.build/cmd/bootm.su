@@ -1,0 +1,4 @@
+../cmd/bootm.c:92:5:do_bootm	48	static
+../cmd/bootm.c:263:12:image_info	16	static
+../cmd/bootm.c:245:12:do_iminfo	24	static
+../cmd/bootm.c:156:5:bootm_maybe_autostart	24	static

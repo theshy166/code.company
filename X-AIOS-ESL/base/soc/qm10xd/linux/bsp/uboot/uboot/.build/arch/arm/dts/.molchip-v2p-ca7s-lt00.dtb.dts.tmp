@@ -1,0 +1,219 @@
+# 1 "<stdin>"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "./../include/linux/kconfig.h" 1
+
+
+
+# 1 "include/generated/autoconf.h" 1
+# 5 "./../include/linux/kconfig.h" 2
+# 1 "<command-line>" 2
+# 1 "<stdin>"
+# 10 "<stdin>"
+# 1 "../arch/arm/dts/include/dt-bindings/interrupt-controller/arm-gic.h" 1
+
+
+
+
+
+
+
+# 1 "../arch/arm/dts/include/dt-bindings/interrupt-controller/irq.h" 1
+# 9 "../arch/arm/dts/include/dt-bindings/interrupt-controller/arm-gic.h" 2
+# 11 "<stdin>" 2
+# 1 "../arch/arm/dts/include/dt-bindings/net/mc_ephy.h" 1
+# 12 "<stdin>" 2
+# 1 "../arch/arm/dts/include/dt-bindings/gpio/gpio.h" 1
+# 13 "<stdin>" 2
+
+
+/dts-v1/;
+
+/ {
+ model = "LT00";
+ compatible = "arm,molchip,lt00", "arm,molchip";
+ interrupt-parent = <&gic>;
+ #address-cells = <1>;
+ #size-cells = <1>;
+
+ aliases {
+  serial0 = &uart0;
+ };
+
+ chosen {
+  stdout-path = "serial0:115200n8";
+ };
+
+ config {
+
+
+
+  bootdelay = <0>;
+
+ };
+
+ cpus {
+  #address-cells = <1>;
+  #size-cells = <0>;
+
+  cpu@0 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a7";
+   reg = <0xf00>;
+   clock-frequency = <960000000>;
+  };
+
+ };
+
+ memory@40000000 {
+  device_type = "memory";
+  reg = <0x40000000 0x04000000>;
+ };
+
+ sysreg: sysreg@10000000 {
+  compatible = "arm,molchip-sysreg";
+  reg = <0x10000000 0x1000>;
+ };
+
+ scu: scu@00200000 {
+  compatible = "arm,cortex-a7-scu";
+  reg = <0x00200000 0x100>;
+ };
+
+ timer {
+  compatible = "arm,armv7-timer";
+  interrupts = <1 13 0xf08>,
+   <1 14 0xf08>,
+   <1 11 0xf08>,
+   <1 10 0xf08>;
+  clock-frequency = <24000000>;
+ };
+
+ gic: interrupt-controller@00200000 {
+  compatible = "arm,cortex-a7-gic", "arm,cortex-a9-gic";
+  #interrupt-cells = <3>;
+  #address-cells = <0>;
+  interrupt-controller;
+  reg = <0x00201000 0x1000>,
+   <0x00202000 0x1000>;
+ };
+
+ uart0: uart@0x8f00000 {
+  compatible = "molchip,serial";
+  reg = <0x8f00000 0x100>;
+  interrupts = <0 20 4>;
+ };
+
+ ethernet: ethernet@0B400000 {
+  compatible = "molchip,dwc-qos-ethernet-4.10";
+  reg = <0x0B400000 0x4000>;
+  phy-mode = "mii";
+  phy-addr = <0x0>;
+  ctrl_id = <0x0>;
+  phy-type = <0>;
+  status = "okay";
+ };
+
+ efuse0: efuse@0A700000 {
+  compatible = "mc,efuse";
+  reg = <0x0A700000 0x1000>;
+  status = "okay";
+ };
+
+ pwm: pwm@09500000 {
+  compatible = "molchip,mc-pwm";
+  reg = <0x09500000 0x1000>;
+  molchip,pwm-channel = <0x0>;
+  status = "okay";
+ };
+
+
+ aes: aes@0c600000 {
+  compatible = "mc,aes";
+  reg = <0xc600000 0x1000>;
+  status = "okay";
+ };
+
+ gpio0: gpio0@0B000000 {
+  compatible = "mc,gpio";
+  reg = <0x0B000000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+
+ gpio1: gpio1@0b010000 {
+  compatible = "mc,gpio";
+  reg = <0x0b010000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio2: gpio2@0b020000 {
+  compatible = "mc,gpio";
+  reg = <0x0b020000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio3: gpio3@0b030000 {
+  compatible = "mc,gpio";
+  reg = <0x0b030000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio4: gpio4@0b040000 {
+  compatible = "mc,gpio";
+  reg = <0x0b040000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio5: gpio5@0b050000 {
+  compatible = "mc,gpio";
+  reg = <0x0b050000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio6: gpio6@0b060000 {
+  compatible = "mc,gpio";
+  reg = <0x0b060000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+ gpio7: gpio7@0b070000 {
+  compatible = "mc,gpio";
+  reg = <0x0b070000 0x100>;
+  gpio-controller;
+  #gpio-cells = <2>;
+  status = "okay";
+ };
+
+
+ sdmmc0: dwmmc@0C900000 {
+  compatible = "mc,dw-sdmmc";
+  reg = <0x0C900000 0x400>;
+  status = "disabled";
+  bus-width = <4>;
+  id = <0>;
+ };
+
+ sdmmc1: dwmmc@25E00000 {
+  compatible = "mc,dw-sdmmc";
+  reg = <0x25E00000 0x400>;
+  status = "okay";
+  bus-width = <4>;
+  id = <1>;
+ };
+
+ dwc2: dwc2@0CA00000 {
+  compatible = "molchip,dwc2";
+  reg = <0x0CA00000 0x4000>;
+  dr_mode = "host";
+  status = "okay";
+ };
+
+};

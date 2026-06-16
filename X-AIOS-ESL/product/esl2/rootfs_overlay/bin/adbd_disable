@@ -1,0 +1,3 @@
+#!/bin/sh
+wifi_start.sh "test" "test1234" 
+pkill -9 adbd

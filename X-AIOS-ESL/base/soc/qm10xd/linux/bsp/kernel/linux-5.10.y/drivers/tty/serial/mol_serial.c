@@ -1,0 +1,906 @@
+/*
+ * Copyright (C) 2018-2019 Molchip Communications Inc.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#if defined(CONFIG_SERIAL_MOL_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
+#define SUPPORT_SYSRQ
+#endif
+
+#include <linux/clk.h>
+#include <linux/console.h>
+#include <linux/delay.h>
+#include <linux/io.h>
+#include <linux/ioport.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/of.h>
+#include <linux/platform_device.h>
+#include <linux/serial_core.h>
+#include <linux/serial.h>
+#include <linux/slab.h>
+#include <linux/tty.h>
+#include <linux/tty_flip.h>
+#include "mol_serial.h"
+#include <linux/mini_clock/clock.h>
+#include <linux/gpio.h>
+#include <linux/of_gpio.h>
+
+/* device name */
+#define UART_NR_MAX		4
+#define MOL_TTY_NAME		"ttyS"
+#define MOL_FIFO_SIZE		128
+#define MOL_DEF_RATE		24000000
+#define MOL_BAUD_IO_LIMIT	2000000
+#define MOL_TIMEOUT		2048
+
+/* the offset of serial registers and BITs for them */
+/* data registers */
+#define MOL_RBR		0x0000
+#define MOL_THR		0x0000
+
+#define MOL_DLL		0x0000
+#define MOL_DLH		0x0004
+/* line status register and its BITs  */
+#define MOL_LSR		0x0014
+#define MOL_LSR_OE		BIT(1)
+#define MOL_LSR_FE		BIT(3)
+#define MOL_LSR_PE		BIT(2)
+#define MOL_LSR_BI		BIT(4)
+
+#define MOL_USR 0x007c
+#define MOL_USR_BUSY		BIT(0)
+#define MOL_USR_TFNF		BIT(1)
+
+/* data number in TX and RX fifo */
+#define MOL_TFL		0x0080
+#define MOL_RFL		0x0084
+
+/* interrupt enable register and its BITs */
+#define MOL_IEN		0x0004
+#define MOL_IEN_RX_FULL	BIT(0)
+#define MOL_IEN_TX_EMPTY	BIT(1)
+
+/* line control register */
+#define MOL_LCR		0x000c
+#define MOL_LCR_STOP_BIT	BIT(2)
+#define MOL_LCR_DATA_LEN5	0x0
+#define MOL_LCR_DATA_LEN6	0x1
+#define MOL_LCR_DATA_LEN7	0x2
+#define MOL_LCR_DATA_LEN8	0x3
+#define MOL_LCR_PARITY_EN	BIT(3)
+#define MOL_LCR_EVEN_PAR	BIT(4)
+#define MOL_LCR_STOP_BIT	BIT(2)
+#define MOL_LCR_DLAB	BIT(7)
+
+#define MOL_FCR			0x0008
+#define MOL_RX_THLD_1F4		BIT(6)
+#define MOL_TX_THLD_1F4		BIT(4)
+
+
+
+/* fifo threshold register */
+#define THLD_TX_EMPTY	0x40
+
+/* interrupt mask status register */
+#define MOL_IIR			0x0008
+#define MOL_IIR_RX_FIFO_FULL	0x4
+#define MOL_IIR_TX_FIFO_EMPTY	0x2
+#define MOL_IIR_TIMEOUT		0xc
+#define MOL_IIR_ERROR	0x6
+
+#define CONFIG_SERIAL_MOL_CONSOLE 1
+
+
+static struct mol_uart_port *mol_port[UART_NR_MAX];
+static int mol_ports_num;
+static int mol_uart_clk_disable(struct uart_port *up);
+
+static inline unsigned int serial_in(struct uart_port *port, int offset)
+{
+	return readl_relaxed(port->membase + offset);
+}
+
+static inline void serial_out(struct uart_port *port, int offset, int value)
+{
+	writel_relaxed(value, port->membase + offset);
+}
+
+static unsigned int mol_tx_empty(struct uart_port *port)
+{
+	if (serial_in(port, MOL_TFL) & 0x01ff)
+		return 0;
+	else
+		return TIOCSER_TEMT;
+}
+
+static unsigned int mol_get_mctrl(struct uart_port *port)
+{
+	return TIOCM_DSR | TIOCM_CTS;
+}
+
+static void mol_set_mctrl(struct uart_port *port, unsigned int mctrl)
+{
+	/* nothing to do */
+}
+
+static void mol_stop_tx(struct uart_port *port)
+{
+	unsigned int ien;
+
+	ien = serial_in(port, MOL_IEN);
+
+	ien &= ~MOL_IEN_TX_EMPTY;
+
+	serial_out(port, MOL_IEN, ien);
+}
+
+static void mol_start_tx(struct uart_port *port)
+{
+	unsigned int ien;
+
+	ien = serial_in(port, MOL_IEN);
+	if (!(ien & MOL_IEN_TX_EMPTY)) {
+		ien |= MOL_IEN_TX_EMPTY;
+		serial_out(port, MOL_IEN, ien);
+	}
+}
+
+static void mol_stop_rx(struct uart_port *port)
+{
+	unsigned int ien;
+
+	ien = serial_in(port, MOL_IEN);
+
+	ien &= ~(MOL_IEN_RX_FULL);
+
+	serial_out(port, MOL_IEN, ien);
+}
+
+/* The Sprd serial does not support this function. */
+static void mol_break_ctl(struct uart_port *port, int break_state)
+{
+	/* nothing to do */
+}
+
+static int handle_lsr_errors(struct uart_port *port,
+			     unsigned int *flag,
+			     unsigned int *lsr)
+{
+	int ret = 0;
+
+	/* statistics */
+	if (*lsr & MOL_LSR_BI) {
+		*lsr &= ~(MOL_LSR_FE | MOL_LSR_PE);
+		port->icount.brk++;
+		ret = uart_handle_break(port);
+		if (ret)
+			return ret;
+	} else if (*lsr & MOL_LSR_PE)
+		port->icount.parity++;
+	else if (*lsr & MOL_LSR_FE)
+		port->icount.frame++;
+	if (*lsr & MOL_LSR_OE)
+		port->icount.overrun++;
+
+	/* mask off conditions which should be ignored */
+	*lsr &= port->read_status_mask;
+	if (*lsr & MOL_LSR_BI)
+		*flag = TTY_BREAK;
+	else if (*lsr & MOL_LSR_PE)
+		*flag = TTY_PARITY;
+	else if (*lsr & MOL_LSR_FE)
+		*flag = TTY_FRAME;
+
+	return ret;
+}
+
+static inline void mol_rx(struct uart_port *port)
+{
+	struct tty_port *tty = &port->state->port;
+	unsigned int ch, flag, lsr, max_count = MOL_TIMEOUT;
+	struct mol_uart_port *sp = NULL;
+
+	sp = container_of(port, struct mol_uart_port, port);
+
+	while ((serial_in(port, MOL_RFL) & 0x01ff) && max_count--) {
+		lsr = serial_in(port, MOL_LSR);
+		ch = serial_in(port, MOL_RBR);
+		flag = TTY_NORMAL;
+		port->icount.rx++;
+
+		if (lsr & (MOL_LSR_BI | MOL_LSR_PE |
+			MOL_LSR_FE | MOL_LSR_OE))
+			if (handle_lsr_errors(port, &flag, &lsr))
+				continue;
+		if (uart_handle_sysrq_char(port, ch))
+			continue;
+
+		if (!sp->rs485_en) {
+			uart_insert_char(port, lsr, MOL_LSR_OE, ch, flag);
+		} else {
+			if (sp->ch_drop_flag) {
+				sp->ch_drop_flag = 0;
+			} else {
+				uart_insert_char(port, lsr, MOL_LSR_OE, ch, flag);
+			}
+		}
+	}
+
+	tty_flip_buffer_push(tty);
+}
+
+static inline void mol_tx(struct uart_port *port)
+{
+	struct circ_buf *xmit = &port->state->xmit;
+	int count;
+	struct mol_uart_port *sp = NULL;
+
+	sp = container_of(port, struct mol_uart_port, port);
+
+	if (port->x_char) {
+		serial_out(port, MOL_THR, port->x_char);
+		port->icount.tx++;
+		port->x_char = 0;
+		return;
+	}
+
+	if (uart_circ_empty(xmit) || uart_tx_stopped(port)) {
+		mol_stop_tx(port);
+		return;
+	}
+
+	if (sp->rs485_en) {
+		sp->ch_drop_flag = 1;
+		gpio_set_value(sp->rs485_en_gpio, 1);
+	}
+
+	count = THLD_TX_EMPTY;
+	do {
+		serial_out(port, MOL_THR, xmit->buf[xmit->tail]);
+		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
+		port->icount.tx++;
+		if (uart_circ_empty(xmit))
+			break;
+	} while (--count > 0);
+
+	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+		uart_write_wakeup(port);
+
+	if (uart_circ_empty(xmit)) {
+		mol_stop_tx(port);
+		if (sp->rs485_en) {
+			if (uart_circ_empty(xmit)) {
+				while(!(serial_in(port, MOL_LSR) & 0x40));
+				gpio_set_value(sp->rs485_en_gpio, 0);
+			}
+		}
+	}
+}
+
+/* this handles the interrupt from one port */
+static irqreturn_t mol_handle_irq(int irq, void *dev_id)
+{
+	struct uart_port *port = dev_id;
+	unsigned int ims;
+
+	spin_lock(&port->lock);
+
+	ims = serial_in(port, MOL_IIR);
+	ims &= 0xf;
+
+	if (!ims) {
+		spin_unlock(&port->lock);
+		return IRQ_NONE;
+	}
+
+	if (ims == MOL_IIR_ERROR) {
+		spin_unlock(&port->lock);
+		return IRQ_NONE;
+	}
+
+	if ((ims == MOL_IIR_RX_FIFO_FULL) || (ims == MOL_IIR_TIMEOUT))
+		mol_rx(port);
+
+	if (ims == MOL_IIR_TX_FIFO_EMPTY) {
+		mol_tx(port);
+	}
+	spin_unlock(&port->lock);
+
+	return IRQ_HANDLED;
+}
+
+static int mol_startup(struct uart_port *port)
+{
+	int ret = 0;
+	unsigned int ien, fc;
+	unsigned int timeout;
+	struct mol_uart_port *sp = NULL;
+	unsigned long flags;
+
+	/* clear rx fifo */
+	timeout = MOL_TIMEOUT;
+	while (timeout-- && serial_in(port, MOL_RFL) & 0x1ff)
+		serial_in(port, MOL_RBR);
+
+	/* clear tx fifo */
+	timeout = MOL_TIMEOUT;
+	while (timeout-- && serial_in(port, MOL_TFL) & 0x1ff)
+		cpu_relax();
+
+	/* clear interrupt */
+	serial_out(port, MOL_IEN, 0);
+
+	/* allocate irq */
+	sp = container_of(port, struct mol_uart_port, port);
+	snprintf(sp->name, sizeof(sp->name), "mol_serial%d", port->line);
+	ret = devm_request_irq(port->dev, port->irq, mol_handle_irq,
+				IRQF_SHARED, sp->name, port);
+	if (ret) {
+		dev_err(port->dev, "fail to request serial irq %d, ret=%d\n",
+			port->irq, ret);
+		return ret;
+	}
+
+	fc = MOL_RX_THLD_1F4 | MOL_TX_THLD_1F4 | 0x1;
+	serial_out(port, MOL_FCR, fc);
+
+	/* enable interrupt */
+	spin_lock_irqsave(&port->lock, flags);
+	ien = serial_in(port, MOL_IEN);
+	ien |= MOL_IEN_RX_FULL;
+	serial_out(port, MOL_IEN, ien);
+	spin_unlock_irqrestore(&port->lock, flags);
+
+	return 0;
+}
+
+static void mol_shutdown(struct uart_port *port)
+{
+	serial_out(port, MOL_IEN, 0);
+	devm_free_irq(port->dev, port->irq, port);
+}
+
+static void mol_set_clock_divisor(struct uart_port *port, u32 baudrate)
+{
+	u32 low, high, ret;
+
+	low = baudrate & 0x00ff;
+	high= (baudrate & 0xff00) >> 8;
+
+	ret = serial_in(port, MOL_USR);
+	if (ret & MOL_USR_BUSY) {
+		dev_err(port->dev, "fail to set clk divisor\n");
+		return;
+	}
+
+	ret = serial_in(port, MOL_LCR);
+	// if DLAB not set
+	if (!(ret & MOL_LCR_DLAB)){
+		ret |= MOL_LCR_DLAB;
+		serial_out(port, MOL_LCR, ret);
+	}
+	serial_out(port, MOL_DLL, low);
+	serial_out(port, MOL_DLH, high);
+
+	/* clear DLAB */
+	ret = serial_in(port, MOL_LCR);
+	ret &= ~MOL_LCR_DLAB;
+	serial_out(port, MOL_LCR, ret);
+}
+
+static void mol_set_termios(struct uart_port *port,
+				    struct ktermios *termios,
+				    struct ktermios *old)
+{
+	unsigned int baud, quot;
+	unsigned int lcr = 0, fc;
+	unsigned long flags;
+	struct mol_uart_port *sp = NULL;
+
+	/* ask the core to calculate the divisor for us */
+	baud = uart_get_baud_rate(port, termios, old, 0, port->uartclk/16);
+	quot = uart_get_divisor(port, baud);
+
+	sp = container_of(port, struct mol_uart_port, port);
+	sp->baudrate = baud;
+
+	/* set data length */
+	switch (termios->c_cflag & CSIZE) {
+	case CS5:
+		lcr |= MOL_LCR_DATA_LEN5;
+		break;
+	case CS6:
+		lcr |= MOL_LCR_DATA_LEN6;
+		break;
+	case CS7:
+		lcr |= MOL_LCR_DATA_LEN7;
+		break;
+	case CS8:
+	default:
+		lcr |= MOL_LCR_DATA_LEN8;
+		break;
+	}
+
+	/* calculate stop bits */
+	if (termios->c_cflag & CSTOPB)
+		lcr |= MOL_LCR_STOP_BIT;
+
+	/* calculate parity */
+	termios->c_cflag &= ~CMSPAR;	/* no support mark/space */
+	if (termios->c_cflag & PARENB) {
+		lcr |= MOL_LCR_PARITY_EN;
+		if (!(termios->c_cflag & PARODD))
+			lcr |= MOL_LCR_EVEN_PAR;
+	}
+
+	spin_lock_irqsave(&port->lock, flags);
+
+	/* update the per-port timeout */
+	uart_update_timeout(port, termios->c_cflag, baud);
+
+	port->read_status_mask = MOL_LSR_OE;
+	if (termios->c_iflag & INPCK)
+		port->read_status_mask |= MOL_LSR_FE | MOL_LSR_PE;
+	if (termios->c_iflag & (IGNBRK | BRKINT | PARMRK))
+		port->read_status_mask |= MOL_LSR_BI;
+
+	/* characters to ignore */
+	port->ignore_status_mask = 0;
+	if (termios->c_iflag & IGNPAR)
+		port->ignore_status_mask |= MOL_LSR_PE | MOL_LSR_FE;
+	if (termios->c_iflag & IGNBRK) {
+		port->ignore_status_mask |= MOL_LSR_BI;
+		/*
+		 * If we're ignoring parity and break indicators,
+		 * ignore overruns too (for real raw support).
+		 */
+		if (termios->c_iflag & IGNPAR)
+			port->ignore_status_mask |= MOL_LSR_OE;
+	}
+
+	mol_set_clock_divisor(port, quot);
+
+	/* flow control */
+	fc = MOL_TX_THLD_1F4 | MOL_RX_THLD_1F4 | 0x1;
+	serial_out(port, MOL_FCR, fc);
+	serial_out(port, MOL_LCR, lcr);
+
+	spin_unlock_irqrestore(&port->lock, flags);
+
+	/* Don't rewrite B0 */
+	if (tty_termios_baud_rate(termios))
+		tty_termios_encode_baud_rate(termios, baud, baud);
+}
+
+static const char *mol_type(struct uart_port *port)
+{
+	return "SPX";
+}
+
+static void mol_release_port(struct uart_port *port)
+{
+	/* nothing to do */
+}
+
+static int mol_request_port(struct uart_port *port)
+{
+	return 0;
+}
+
+static void mol_config_port(struct uart_port *port, int flags)
+{
+	if (flags & UART_CONFIG_TYPE)
+		port->type = PORT_MOL;
+}
+
+static int mol_verify_port(struct uart_port *port,
+				   struct serial_struct *ser)
+{
+	if (ser->type != PORT_MOL)
+		return -EINVAL;
+	if (port->irq != ser->irq)
+		return -EINVAL;
+	if (port->iotype != ser->io_type)
+		return -EINVAL;
+	return 0;
+}
+
+static struct uart_ops serial_mol_ops = {
+	.tx_empty = mol_tx_empty,
+	.get_mctrl = mol_get_mctrl,
+	.set_mctrl = mol_set_mctrl,
+	.stop_tx = mol_stop_tx,
+	.start_tx = mol_start_tx,
+	.stop_rx = mol_stop_rx,
+	.break_ctl = mol_break_ctl,
+	.startup = mol_startup,
+	.shutdown = mol_shutdown,
+	.set_termios = mol_set_termios,
+	.type = mol_type,
+	.release_port = mol_release_port,
+	.request_port = mol_request_port,
+	.config_port = mol_config_port,
+	.verify_port = mol_verify_port,
+};
+
+void mol_uart_stop_tx(struct uart_port *port)
+{
+	mol_stop_tx(port);
+}
+
+#ifdef CONFIG_SERIAL_MOL_CONSOLE
+static void wait_for_xmitr(struct uart_port *port)
+{
+	unsigned int status, tmout = 10000;
+
+	/* wait up to 10ms for the character(s) to be sent */
+	do {
+		status = serial_in(port, MOL_TFL);
+		if (--tmout == 0)
+			break;
+		udelay(1);
+	} while (status & 0x1ff);
+}
+
+static void mol_console_putchar(struct uart_port *port, int ch)
+{
+	wait_for_xmitr(port);
+	serial_out(port, MOL_THR, ch);
+}
+
+static void mol_console_write(struct console *co, const char *s,
+				      unsigned int count)
+{
+	struct uart_port *port = &mol_port[co->index]->port;
+	int locked = 1;
+	unsigned long flags;
+
+	if (port->sysrq)
+		locked = 0;
+	else if (oops_in_progress)
+		locked = spin_trylock_irqsave(&port->lock, flags);
+	else
+		spin_lock_irqsave(&port->lock, flags);
+
+	uart_console_write(port, s, count, mol_console_putchar);
+
+	/* wait for transmitter to become empty */
+	wait_for_xmitr(port);
+
+	if (locked)
+		spin_unlock_irqrestore(&port->lock, flags);
+}
+
+static int __init mol_console_setup(struct console *co, char *options)
+{
+	struct uart_port *port = NULL;
+	int baud = 115200;
+	int bits = 8;
+	int parity = 'n';
+	int flow = 'n';
+
+	if (co->index >= UART_NR_MAX || co->index < 0)
+		co->index = 0;
+
+	port = &mol_port[co->index]->port;
+	if (port == NULL) {
+		pr_err("serial port %d not yet initialized\n", co->index);
+		return -ENODEV;
+	}
+	if (options)
+		uart_parse_options(options, &baud, &parity, &bits, &flow);
+
+	return uart_set_options(port, co, baud, parity, bits, flow);
+}
+
+static struct uart_driver mol_uart_driver;
+static struct console mol_console = {
+	.name = MOL_TTY_NAME,
+	.write = mol_console_write,
+	.device = uart_console_device,
+	.setup = mol_console_setup,
+	.flags = CON_PRINTBUFFER,
+	.index = -1,
+	.data = &mol_uart_driver,
+};
+
+#define MOL_CONSOLE	(&mol_console)
+
+/* Support for earlycon */
+static void mol_putc(struct uart_port *port, int c)
+{
+	unsigned int timeout = MOL_TIMEOUT;
+
+	while (timeout-- &&
+		   !(readl(port->membase + MOL_USR) & MOL_USR_TFNF))
+		cpu_relax();
+
+	writeb(c, port->membase + MOL_THR);
+}
+
+static void mol_early_write(struct console *con, const char *s,
+				    unsigned n)
+{
+	struct earlycon_device *dev = con->data;
+
+	uart_console_write(&dev->port, s, n, mol_putc);
+}
+
+static int __init mol_early_console_setup(
+				struct earlycon_device *device,
+				const char *opt)
+{
+	if (!device->port.membase)
+		return -ENODEV;
+
+	device->con->write = mol_early_write;
+	return 0;
+}
+OF_EARLYCON_DECLARE(mol_serial, "mol,uart",
+		    mol_early_console_setup);
+
+#else /* !CONFIG_SERIAL_MOL_CONSOLE */
+#define MOL_CONSOLE		NULL
+#endif
+
+static struct uart_driver mol_uart_driver = {
+	.owner = THIS_MODULE,
+	.driver_name = "mol_serial",
+	.dev_name = MOL_TTY_NAME,
+	.major = 0,
+	.minor = 0,
+	.nr = UART_NR_MAX,
+	.cons = MOL_CONSOLE,
+};
+
+static int mol_probe_dt_alias(int index, struct device *dev)
+{
+	struct device_node *np = NULL;
+	int ret = index;
+
+	if (!IS_ENABLED(CONFIG_OF))
+		return ret;
+
+	np = dev->of_node;
+	if (!np)
+		return ret;
+
+	ret = of_alias_get_id(np, "uart");
+	if (ret < 0)
+		ret = index;
+	else if (ret >= ARRAY_SIZE(mol_port) || mol_port[ret] != NULL) {
+		dev_warn(dev, "requested serial port %d not available.\n", ret);
+		ret = index;
+	}
+
+	return ret;
+}
+
+static int mol_remove(struct platform_device *dev)
+{
+	struct mol_uart_port *sup = platform_get_drvdata(dev);
+
+	if (mol_port[sup->port.line]->rs485_en) {
+		gpio_free(mol_port[sup->port.line]->rs485_en_gpio);
+	}
+
+	if (sup) {
+		uart_remove_one_port(&mol_uart_driver, &sup->port);
+		mol_port[sup->port.line] = NULL;
+		mol_ports_num--;
+	}
+
+	if (!mol_ports_num)
+		uart_unregister_driver(&mol_uart_driver);
+
+	return 0;
+}
+
+static int mol_uart_clk_enable(struct uart_port *up)
+{
+	u32 mux_clk = 0;
+
+	if (up->line == UART_DEV0) {
+		clk_mini_set_rate(CKG_MUX_UART0, up->clk_hz);
+		clk_mini_enable(CKG_UART0_EN);
+		clk_mini_enable(CKG_APB_UART0_EN);
+		mux_clk = CKG_MUX_UART0;
+	} else if (up->line == UART_DEV1) {
+		clk_mini_set_rate(CKG_MUX_UART1, up->clk_hz);
+		clk_mini_enable(CKG_UART1_EN);
+		clk_mini_enable(CKG_APB_UART1_EN);
+		mux_clk = CKG_MUX_UART1;
+	} else if (up->line == UART_DEV2) {
+		clk_mini_set_rate(CKG_MUX_UART2, up->clk_hz);
+		clk_mini_enable(CKG_UART2_EN);
+		clk_mini_enable(CKG_APB_UART2_EN);
+		mux_clk = CKG_MUX_UART2;
+	} else if (up->line == UART_DEV3) {
+		clk_mini_set_rate(CKG_MUX_UART3, up->clk_hz);
+		clk_mini_enable(CKG_UART3_EN);
+		clk_mini_enable(CKG_APB_UART3_EN);
+		mux_clk = CKG_MUX_UART3;
+	} else {
+		printk("Unknown UART Device Id[%d] To Config Clk!\n",up->line);
+		return -ENODEV;
+	}
+
+	up->uartclk = clk_mini_get_rate(mux_clk);
+
+	return 0;
+}
+
+static int mol_uart_clk_disable(struct uart_port *up)
+{
+	if (up->line == UART_DEV0) {
+		clk_mini_disable(CKG_UART0_EN);
+		clk_mini_disable(CKG_APB_UART0_EN);
+	} else if (up->line == UART_DEV1) {
+		clk_mini_disable(CKG_UART1_EN);
+		clk_mini_disable(CKG_APB_UART1_EN);
+	} else if (up->line == UART_DEV2) {
+		clk_mini_disable(CKG_UART2_EN);
+		clk_mini_disable(CKG_APB_UART2_EN);
+	} else if (up->line == UART_DEV3) {
+		clk_mini_disable(CKG_UART3_EN);
+		clk_mini_disable(CKG_APB_UART3_EN);
+	} else {
+		printk("Unknown UART Device Id[%d] To Close Clk!\n",up->line);
+		return -ENODEV;
+	}
+
+	return 0;
+}
+
+static int mol_probe(struct platform_device *pdev)
+{
+	struct resource *res = NULL;
+	struct uart_port *up = NULL;
+	int irq;
+	int index;
+	int ret;
+
+	for (index = 0; index < ARRAY_SIZE(mol_port); index++)
+		if (mol_port[index] == NULL)
+			break;
+
+	if (index == ARRAY_SIZE(mol_port))
+		return -EBUSY;
+
+	index = mol_probe_dt_alias(index, &pdev->dev);
+
+	mol_port[index] = devm_kzalloc(&pdev->dev,
+		sizeof(*mol_port[index]), GFP_KERNEL);
+	if (!mol_port[index])
+		return -ENOMEM;
+
+	up = &mol_port[index]->port;
+	up->dev = &pdev->dev;
+	up->line = index;
+	up->type = PORT_MOL;
+	up->iotype = UPIO_MEM;
+	up->uartclk = MOL_DEF_RATE;
+	up->fifosize = MOL_FIFO_SIZE;
+	up->ops = &serial_mol_ops;
+	up->flags = UPF_BOOT_AUTOCONF;
+	up->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MOL_CONSOLE);
+
+	device_property_read_u32(&pdev->dev, "clock-frequency", &up->clk_hz);
+	/* use new clock interfaces */
+	mol_uart_clk_enable(up);
+
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+	if (!res) {
+		dev_err(&pdev->dev, "not provide mem resource\n");
+		return -ENODEV;
+	}
+	up->mapbase = res->start;
+	up->membase = devm_ioremap_resource(&pdev->dev, res);
+	if (IS_ERR(up->membase))
+		return PTR_ERR(up->membase);
+
+	irq = platform_get_irq(pdev, 0);
+	if (irq < 0) {
+		dev_err(&pdev->dev, "not provide irq resource\n");
+		return -ENODEV;
+	}
+	up->irq = irq;
+
+	if (!mol_ports_num) {
+		ret = uart_register_driver(&mol_uart_driver);
+		if (ret < 0) {
+			pr_err("Failed to register MOL-UART driver\n");
+			return ret;
+		}
+	}
+	mol_ports_num++;
+
+	ret = uart_add_one_port(&mol_uart_driver, up);
+	if (ret) {
+		mol_port[index] = NULL;
+		mol_remove(pdev);
+	}
+
+	mol_port[index]->rs485_en = of_property_read_bool(pdev->dev.of_node,
+			"rs485-gpio-enable");
+
+	if (mol_port[index]->rs485_en) {
+		mol_port[index]->rs485_en_gpio = of_get_named_gpio(pdev->dev.of_node,
+				"rs485-gpio", 0);
+		if (mol_port[index]->rs485_en_gpio < 0) {
+			dev_err(&pdev->dev, "can not get rs485 gpio!\n");
+			return -EINVAL;
+		}
+		gpio_request(mol_port[index]->rs485_en_gpio, NULL);
+		gpio_direction_output(mol_port[index]->rs485_en_gpio, 0);
+		mol_port[index]->ch_drop_flag = 0;
+	}
+
+	platform_set_drvdata(pdev, up);
+
+	return ret;
+}
+
+#ifdef CONFIG_PM_SLEEP
+static int mol_suspend(struct device *dev)
+{
+	struct mol_uart_port *sup = dev_get_drvdata(dev);
+
+	uart_suspend_port(&mol_uart_driver, &sup->port);
+	/* close clk */
+	mol_uart_clk_disable(&sup->port);
+	return 0;
+}
+
+static int mol_resume(struct device *dev)
+{
+	struct mol_uart_port *sup = dev_get_drvdata(dev);
+	struct uart_port *port = &sup->port;
+	unsigned int ien;
+
+	mol_uart_clk_enable(port);
+
+	if (uart_console(port)) {
+		/* enable rx interrupt */
+		ien = serial_in(port, MOL_IEN);
+		ien |= MOL_IEN_RX_FULL;
+		serial_out(port, MOL_IEN, ien);
+	}
+
+	uart_resume_port(&mol_uart_driver, &sup->port);
+
+	return 0;
+}
+#endif
+
+static SIMPLE_DEV_PM_OPS(mol_pm_ops, mol_suspend, mol_resume);
+
+static const struct of_device_id serial_ids[] = {
+	{.compatible = "mol,uart",},
+	{}
+};
+MODULE_DEVICE_TABLE(of, serial_ids);
+
+static struct platform_driver mol_platform_driver = {
+	.probe		= mol_probe,
+	.remove		= mol_remove,
+	.driver		= {
+		.name	= "mol_serial",
+		.of_match_table = of_match_ptr(serial_ids),
+		.pm	= &mol_pm_ops,
+	},
+};
+
+module_platform_driver(mol_platform_driver);
+
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("Molchip SoC serial driver series");

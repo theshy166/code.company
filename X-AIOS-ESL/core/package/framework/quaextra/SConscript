@@ -1,0 +1,19 @@
+from building import *
+
+cwd  = GetCurrentDir()
+src  = Glob('*.c')
+list = os.listdir(cwd)
+CPPPATH = [cwd]
+objs = []
+
+group = DefineGroup('qxos', src, depend = [''], CPPPATH = CPPPATH)
+
+for d in list:
+    path = os.path.join(cwd, d, 'SConscript')
+    if "quampi" in path:
+        continue
+    if os.path.isfile(path):
+        objs = objs + SConscript(path)
+objs = objs + group
+
+Return('objs')

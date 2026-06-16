@@ -1,0 +1,14 @@
+prefix=/home/vboxjyguo/Work/LVGIT/freetype/freetype-2.11.0-ubn/install/ubn
+exec_prefix=/home/vboxjyguo/Work/LVGIT/freetype/freetype-2.11.0-ubn/install/ubn
+libdir=/home/vboxjyguo/Work/LVGIT/freetype/freetype-2.11.0-ubn/install/ubn/lib
+includedir=/home/vboxjyguo/Work/LVGIT/freetype/freetype-2.11.0-ubn/install/ubn/include
+
+Name: FreeType 2
+URL: https://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 24.0.18
+Requires:
+Requires.private: zlib, libpng
+Libs: -L${libdir} -lfreetype
+Libs.private: 
+Cflags: -I${includedir}/freetype2

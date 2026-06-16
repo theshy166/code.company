@@ -1,0 +1,12 @@
+menuconfig ARCH_MOLCHIP
+	bool "MOLCHIP Ltd. family"
+	depends on ARM64
+
+if ARCH_MOLCHIP
+config NO_CACHE_COHERENCE
+	bool "cpu sys bus not support cache coherence"
+	depends on ARCH_MOLCHIP
+endif #if ARCH_MOLCHIP
+menuconfig DDR_PERFMON
+	bool "MOLCHIP DDR PERFMONITOR"
+	depends on ARM64

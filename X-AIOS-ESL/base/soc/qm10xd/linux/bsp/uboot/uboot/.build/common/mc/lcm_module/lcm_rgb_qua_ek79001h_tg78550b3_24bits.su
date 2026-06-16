@@ -1,0 +1,7 @@
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:13:16:qua_lcm_rgb_ek79001h_power_off	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:142:16:qua_lcm_rgb_ek79001h_resume	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:121:16:qua_lcm_rgb_ek79001h_suspend	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:77:16:qua_lcm_rgb_ek79001h_init	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:58:16:qua_lcm_rgb_ek79001h_identify	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:98:16:qua_lcm_rgb_ek79001h_deinit	8	static
+../common/mc/lcm_module/lcm_rgb_qua_ek79001h_tg78550b3_24bits.c:36:16:qua_lcm_rgb_ek79001h_power_on	8	static

@@ -1,0 +1,6 @@
+../common/mc/lcm/bus/mol_lcm_sfc.c:14:9:sfc_read	0	static
+../common/mc/lcm/bus/mol_lcm_sfc.c:28:9:sfc_write	0	static
+../common/mc/lcm/bus/mol_lcm_sfc.c:43:9:sfc_earse	0	static
+../common/mc/lcm/bus/mol_lcm_sfc.c:8:11:_get_register_id_ptr	0	static
+../common/mc/lcm/bus/mol_lcm_sfc.c:55:9:lcm_sfc_init	0	static
+../common/mc/lcm/bus/mol_lcm_sfc.c:70:9:lcm_sfc_deInit	0	static

@@ -1,0 +1,12 @@
+../board/molchip/sdcard/sd_host.c:6:6:mci_selection	8	static
+../board/molchip/sdcard/sd_host.c:14:5:dw_mci_start_command	16	static
+../board/molchip/sdcard/sd_host.c:39:5:dw_mci_prepare_command	0	static
+../board/molchip/sdcard/sd_host.c:72:6:dw_mci_prepare_desc32	16	static
+../board/molchip/sdcard/sd_host.c:113:6:dw_mci_idmac_start_dma	8	static
+../board/molchip/sdcard/sd_host.c:133:5:dw_mci_submit_data_dma	16	static
+../board/molchip/sdcard/sd_host.c:146:5:dw_mci_start_request	16	static
+../board/molchip/sdcard/sd_host.c:170:6:dw_mci_setup_bus	24	static
+../board/molchip/sdcard/sd_host.c:204:6:dw_mci_set_ios	16	static
+../board/molchip/sdcard/sd_host.c:226:6:dw_mci_hw_reset	8	static
+../board/molchip/sdcard/sd_host.c:245:5:dw_mci_init_dma	8	static
+../board/molchip/sdcard/sd_host.c:273:5:dw_mci_init	8	static

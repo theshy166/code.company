@@ -1,0 +1,8 @@
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1031:16:_dsi_phy_v0_pll_lock_checker	16	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:300:24:dsi_phy_mipi_context_get	0	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1401:9:dsi_phy_v0_init	128	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1439:9:dsi_phy_v0_deinit	16	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1473:9:dsi_phy_power_on	16	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1507:9:dsi_phy_power_off	16	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1646:9:_dsi_phy_pll_v1_cfg	24	static
+../common/mc/lcm/dsi/dsi_phy_v01_drv_mpi.c:1768:9:dsi_phy_pll_v1_on	24	static

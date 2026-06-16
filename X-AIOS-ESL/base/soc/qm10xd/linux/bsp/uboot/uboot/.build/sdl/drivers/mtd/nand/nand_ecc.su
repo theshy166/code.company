@@ -1,0 +1,2 @@
+../drivers/mtd/nand/nand_ecc.c:71:5:nand_calculate_ecc	16	static
+../drivers/mtd/nand/nand_ecc.c:144:5:nand_correct_data	8	static

@@ -1,0 +1,10 @@
+../fs/ubifs/lpt_commit.c:39:28:first_dirty_cnode	0	static
+../fs/ubifs/lpt_commit.c:157:12:alloc_lpt_leb	32	static
+../fs/ubifs/lpt_commit.c:723:12:need_write_all	20	static
+../fs/ubifs/lpt_commit.c:750:13:lpt_tgc_start	24	static
+../fs/ubifs/lpt_commit.c:627:28:pnode_lookup	24	static
+../fs/ubifs/lpt_commit.c:667:13:do_make_pnode_dirty	16	static
+../fs/ubifs/lpt_commit.c:1194:12:lpt_gc	56	static
+../fs/ubifs/lpt_commit.c:1225:5:ubifs_lpt_start_commit	40	static
+../fs/ubifs/lpt_commit.c:1352:5:ubifs_lpt_post_commit	24	static
+../fs/ubifs/lpt_commit.c:1458:6:ubifs_lpt_free	32	static

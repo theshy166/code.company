@@ -1,0 +1,3 @@
+../env/nand.c:65:12:env_nand_init	0	static
+../env/nand.c:371:12:env_nand_load	32896	static
+../env/nand.c:186:12:env_nand_save	32888	static

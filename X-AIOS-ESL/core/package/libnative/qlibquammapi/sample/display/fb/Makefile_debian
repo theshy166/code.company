@@ -1,0 +1,20 @@
+SRC := debian_display_init.c
+
+OBJ = $(patsubst %.c,$(OUT_DIR)%.o,$(SRC))
+
+QUAMMAPI_BIN = debian_display_init
+QUAMMAPI_CFLAGS := -I./include -I$(COMMON_INC)
+QUAMMAPI_CFLAGS += -Wall
+QUAMMAPI_LDFLAGS := -L$(LINK_COMMON_LIB_INC) -lquamm_common
+
+TARGET := $(OUT_DIR)$(QUAMMAPI_BIN)
+
+.PHONY : clean all
+all: $(TARGET)
+
+$(TARGET):$(SRC)
+	$(CC) $(QUAMMAPI_CFLAGS) $(SRC) -o $(OUT_DIR)$(QUAMMAPI_BIN) $(QUAMMAPI_LDFLAGS)
+
+clean:
+	@rm -f $(TARGET)
+	@rm -f $(OBJ)

@@ -1,0 +1,72 @@
+                               mc-image-builder打包工具使用说明
+一 . ./mc-image-builder -h 提示帮助信息
+
+Usage: mc-image-builder [OPTIONS] source-image output-image
+
+Creates a raw NAND image that can be read by the molchip NAND controller.
+
+-h               --help               Display this help and exit
+-c <str>/<step>  --ecc=<str>/<step>   ECC config (strength/step-size)
+-p <size>             --page=<size>        Page size
+-o <size>             --oob=<size>         OOB size
+-e <size>              --erase=<size>       erase size ：一个block的大小
+-n <number>      --pages=<number>     pages per block
+-d <number>      -duplication-=<number>     duplication spl  ：量产的时候，可以指定SPL备份的数量，每个备份占用一个block
+-w                         --spl with uboot     spl with uboot    ：  对spl，uboot 合并在一起的image进行处理，包括spl的block对齐和备份
+-s                         --spl                generate spl header ecc ：对spl header 计算ECC ,并填充头部信息
+-f                         --spl                generate spl header ecc ：对spl header 计算ECC ,并填充头部信息，与-s配合使用
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+二. 量产用image 生成方法
+
+1. 文件的ECC生成方法(可以处理zImage,dtb文件)
+ 例1 NAND颗粒： PAGE_SIZE : 2048 bytes    OOB_SIZE: 64    BLOCK SIZE : 64*PAGE_SIZE
+
+       8bit ECC
+      ./mc-image-builder -c  8/1024   -p 2048  -o 64  -e 0x20000  -n 64   ./file  ./file_ecc
+
+ 例2 NAND颗粒： PAGE_SIZE : 2048 bytes    OOB_SIZE: 128    BLOCK SIZE : 64*PAGE_SIZE
+
+    8bit ECC
+       ./mc-image-builder -c  8/1024   -p 2048  -o 128  -e 0x20000  -n 64  ./file  ./file_ecc
+     24bit ECC
+     ./mc-image-builder -c  24/1024   -p 2048  -o 128  -e 0x20000  -n 64   ./file  ./file-ecc
+
+三. 生成带ECC数据的SPL、UBOOT合并文件
+
+ 例1 NAND颗粒： PAGE_SIZE : 2048 bytes    OOB_SIZE: 64    BLOCK SIZE : 64*PAGE_SIZE
+
+      8bit ECC
+
+               步骤1：./mc-image-builder -c  8/1024   -p 2048  -o 64  -e 0x20000  -n 64 -s -f u-boot-spl_nand_header.bin u-boot-spl_nand_header_out.bin（在spl头中生成nandinfo和ecc数据）
+               步骤2：objcopy -I binary -O binary --pad-to=0x40000 --gap-fill=0xff u-boot-spl_nand_header_out.bin u-boot-spl_nand_header_padto.bin（对填充spl 0xff至nand 颗粒一个block大小）
+               步骤3：cat u-boot-spl_nand_header_padto.bin uboot_nand_header.bin > uboot_with_spl.bin（合并spl和uboot）
+               步骤4：./mc-image-builder -c  8/1024   -p 2048  -o 64  -e 0x20000  -n 64 uboot_with_spl.bin uboot_with_spl_ecc.bin（对合并后的镜像生成ecc数据）
+               步骤5：uboot_with_spl_ecc.bin通过烧录器烧录到颗粒
+
+ 例2 NAND颗粒： PAGE_SIZE : 2048 bytes    OOB_SIZE: 128    BLOCK SIZE : 64*PAGE_SIZE
+
+     8bit ECC
+
+               步骤1：./mc-image-builder -c  8/1024   -p 2048  -o 128  -e 0x20000  -n 64 -s -f u-boot-spl_nand_header.bin u-boot-spl_nand_header_out.bin
+               步骤2：objcopy -I binary -O binary --pad-to=0x40000 --gap-fill=0xff u-boot-spl_nand_header_out.bin u-boot-spl_nand_header_padto.bin
+               步骤3：cat u-boot-spl_nand_header_padto.bin uboot_nand_header.bin > uboot_with_spl.bin
+               步骤4：./mc-image-builder -c  8/1024   -p 2048  -o 128  -e 0x20000  -n 64 uboot_with_spl.bin uboot_with_spl_ecc.bin
+               步骤5：uboot_with_spl_ecc.bin通过烧录器烧录到颗粒
+
+     24bit ECC
+
+               步骤1：./mc-image-builder -c  24/1024   -p 2048  -o 128  -e 0x20000  -n 64 -s -f u-boot-spl_nand_header.bin u-boot-spl_nand_header_out.bin
+               步骤2：objcopy -I binary -O binary --pad-to=0x40000 --gap-fill=0xff u-boot-spl_nand_header_out.bin u-boot-spl_nand_header_padto.bin
+               步骤3：cat u-boot-spl_nand_header_padto.bin uboot_nand_header.bin > uboot_with_spl.bin
+               步骤4：./mc-image-builder -c  24/1024   -p 2048  -o 128  -e 0x20000  -n 64 uboot_with_spl.bin uboot_with_spl_ecc.bin
+               步骤5：uboot_with_spl_ecc.bin通过烧录器烧录到颗粒
+
+               步骤1：./mc-image-builder -c  24/1024   -p 2048  -o 256  -e 0x20000  -n 64 -s -f u-boot-spl_nand_header.bin u-boot-spl_nand_header_out.bin
+               步骤2：objcopy -I binary -O binary --pad-to=0x40000 --gap-fill=0xff u-boot-spl_nand_header_out.bin u-boot-spl_nand_header_padto.bin
+               步骤3：cat u-boot-spl_nand_header_padto.bin uboot_nand_header.bin > uboot_with_spl.bin
+               步骤4：./mc-image-builder -c  24/1024   -p 2048  -o 256  -e 0x20000  -n 64 uboot_with_spl.bin uboot_with_spl_ecc.bin
+               步骤5：uboot_with_spl_ecc.bin通过烧录器烧录到颗粒
+
+
+

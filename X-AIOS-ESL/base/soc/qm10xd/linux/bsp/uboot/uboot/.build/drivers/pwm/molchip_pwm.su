@@ -1,0 +1,5 @@
+../drivers/pwm/molchip_pwm.c:190:12:molchip_pwm_set_enable	16	static
+../drivers/pwm/molchip_pwm.c:57:12:molchip_pwm_open	8	static
+../drivers/pwm/molchip_pwm.c:104:12:molchip_pwm_set_config	32	static
+../drivers/pwm/molchip_pwm.c:213:12:molchip_pwm_probe	24	static
+../drivers/pwm/molchip_pwm.c:266:12:pwm_test	24	static

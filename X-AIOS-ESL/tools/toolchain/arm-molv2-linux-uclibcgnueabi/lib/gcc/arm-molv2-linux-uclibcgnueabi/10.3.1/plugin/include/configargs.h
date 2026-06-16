@@ -1,0 +1,7 @@
+/* Generated automatically. */
+static const char configuration_arguments[] = "./configure --prefix=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi --sysconfdir=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi/etc --enable-static --target=arm-molv2-linux-uclibcgnueabi --with-sysroot=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/sysroot --enable-__cxa_atexit --with-gnu-ld --disable-multilib --disable-decimal-float --with-gmp=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi --with-mpc=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi --with-mpfr=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi --with-pkgversion='Molchip 2022.02-git' --with-bugurl=http://www.molchip.com/ --without-zstd --disable-libquadmath --disable-libquadmath-support --disable-libsanitizer --enable-tls --enable-threads --without-isl --without-cloog --with-float=soft --with-abi=aapcs-linux --with-cpu=cortex-a7 --with-float=soft --with-mode=arm --enable-languages=c,c++,fortran --with-build-time-tools=/data/jenkins/bin/toolchain/arm-molv2-linux-uclibcgnueabi/arm-molv2-linux-uclibcgnueabi/bin --enable-shared --enable-libgomp";
+static const char thread_model[] = "posix";
+
+static const struct {
+  const char *name, *value;
+} configure_default_options[] = { { "abi", "aapcs-linux" }, { "cpu", "cortex-a7" }, { "float", "soft" }, { "mode", "arm" }, { "tls", "gnu" } };

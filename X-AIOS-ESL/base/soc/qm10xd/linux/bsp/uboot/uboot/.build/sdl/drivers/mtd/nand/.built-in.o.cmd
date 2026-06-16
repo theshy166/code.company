@@ -1,0 +1,1 @@
+cmd_sdl/drivers/mtd/nand/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/drivers/mtd/nand/built-in.o sdl/drivers/mtd/nand/mc_spi_nfc.o sdl/drivers/mtd/nand/nand.o sdl/drivers/mtd/nand/nand_bbt.o sdl/drivers/mtd/nand/nand_ids.o sdl/drivers/mtd/nand/nand_util.o sdl/drivers/mtd/nand/nand_ecc.o sdl/drivers/mtd/nand/nand_base.o sdl/drivers/mtd/nand/nand_timings.o 

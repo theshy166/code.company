@@ -1,0 +1,2 @@
+../board/molchip/timer/systimer_drv.c:8:5:get_sys_ticks	0	static
+../board/molchip/timer/systimer_drv.c:17:6:delayms	0	static

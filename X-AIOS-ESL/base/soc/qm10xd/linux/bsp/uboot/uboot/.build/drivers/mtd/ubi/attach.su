@@ -1,0 +1,9 @@
+../drivers/mtd/ubi/attach.c:115:12:add_to_list	32	static
+../drivers/mtd/ubi/attach.c:1163:13:destroy_ai	24	static
+../drivers/mtd/ubi/attach.c:188:12:validate_vid_hdr.constprop	8	static
+../drivers/mtd/ubi/attach.c:320:5:ubi_compare_lebs	56	static
+../drivers/mtd/ubi/attach.c:445:5:ubi_add_to_av	80	static
+../drivers/mtd/ubi/attach.c:601:25:ubi_find_av	0	static
+../drivers/mtd/ubi/attach.c:627:6:ubi_remove_av	24	static
+../drivers/mtd/ubi/attach.c:705:22:ubi_early_get_peb	40	static
+../drivers/mtd/ubi/attach.c:1398:5:ubi_attach	80	static

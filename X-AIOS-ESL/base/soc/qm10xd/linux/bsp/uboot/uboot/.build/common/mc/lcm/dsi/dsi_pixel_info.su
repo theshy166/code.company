@@ -1,0 +1,2 @@
+../common/mc/lcm/dsi/dsi_pixel_info.c:35:9:dsi_pixel_clk_get	4	static
+../common/mc/lcm/dsi/dsi_pixel_info.c:63:9:dsi_bits_per_pixel_get	88	static

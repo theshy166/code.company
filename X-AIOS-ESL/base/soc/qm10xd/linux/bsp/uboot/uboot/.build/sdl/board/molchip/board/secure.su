@@ -1,0 +1,6 @@
+../board/molchip/board/secure.c:32:5:sha256_ctx_continue	0	static
+../board/molchip/board/secure.c:37:6:rsa_decrypte	200	static
+../board/molchip/board/secure.c:64:6:aes_iv_valid	0	static
+../board/molchip/board/secure.c:76:6:public_key_verify	40	static
+../board/molchip/board/secure.c:106:6:signature_verify	16	static
+../board/molchip/board/secure.c:124:6:secure_verify	48	static

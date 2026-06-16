@@ -1,0 +1,4 @@
+../common/mc/lcm/reg/reg.c:33:6:regRead32	8	static
+../common/mc/lcm/reg/reg.c:46:6:regWrite32	0	static
+../common/mc/lcm/reg/reg.c:55:6:regWriteBits32	24	static
+../common/mc/lcm/reg/reg.c:71:6:reg_log_enable	0	static

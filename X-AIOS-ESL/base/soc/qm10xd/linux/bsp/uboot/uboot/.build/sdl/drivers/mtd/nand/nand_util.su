@@ -1,0 +1,9 @@
+../drivers/mtd/nand/nand_util.c:411:12:check_skip_len	32	static
+../drivers/mtd/nand/nand_util.c:54:5:nand_erase_opts	192	static
+../drivers/mtd/nand/nand_util.c:480:5:nand_verify_page_oob	72	static
+../drivers/mtd/nand/nand_util.c:521:5:nand_verify	64	static
+../drivers/mtd/nand/nand_util.c:574:5:nand_write_skip_bad	72	static
+../drivers/mtd/nand/nand_util.c:708:5:nand_read_skip_bad	64	static
+../drivers/mtd/nand/nand_util.c:801:5:nand_write_yaffs_skip_bad	104	static
+../drivers/mtd/nand/nand_util.c:931:6:nand_fill_ecc	16	static
+../drivers/mtd/nand/nand_util.c:963:5:nand_read_yaffs_skip_bad	88	static

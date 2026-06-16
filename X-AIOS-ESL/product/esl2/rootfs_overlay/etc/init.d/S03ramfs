@@ -1,0 +1,29 @@
+#!/bin/sh
+
+mount -t tmpfs none /tmp
+cp -rf /etc /tmp/
+mount -t tmpfs none /etc
+cp -rf /tmp/etc/* /etc
+rm -rf /tmp/etc
+
+#echo zstd > /sys/devices/virtual/block/zram0/comp_algorithm
+#mkswap /dev/mtdblock10
+#about 10M bytes 
+#echo 2500 > /sys/block/zram0/writeback_limit
+#echo 1 > /sys/block/zram0/writeback_limit_enable
+#echo "/dev/mtdblock10" > /sys/block/zram0/backing_dev
+echo 14M  > /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon /dev/zram0
+#echo 100 > /proc/sys/vm/swappiness
+echo 512 > /proc/sys/vm/min_free_kbytes
+echo 0 >  /proc/sys/vm/watermark_boost_factor
+echo 10 > /proc/sys/vm/watermark_scale_factor
+#Aggressively reclaim the cache.
+echo 10000 >/proc/sys/vm/vfs_cache_pressure
+echo 5 > /proc/sys/vm/dirty_background_ratio
+echo 10 > /proc/sys/vm/dirty_ratio
+echo 0  > /proc/sys/kernel/printk_ratelimit
+echo 500 | tee /proc/sys/kernel/printk_ratelimit_burst
+echo on > /proc/sys/kernel/printk_devkmsg
+

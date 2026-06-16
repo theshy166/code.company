@@ -1,0 +1,6 @@
+../drivers/mtd/ubi/vtbl.c:70:12:ubi_update_layout_vol	24	static
+../drivers/mtd/ubi/vtbl.c:164:12:vtbl_check	48	static
+../drivers/mtd/ubi/vtbl.c:296:12:create_vtbl	48	static
+../drivers/mtd/ubi/vtbl.c:97:5:ubi_change_vtbl_record	16	static
+../drivers/mtd/ubi/vtbl.c:128:5:ubi_vtbl_rename_volumes	40	static
+../drivers/mtd/ubi/vtbl.c:774:5:ubi_read_volume_table	48	static

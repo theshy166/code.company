@@ -1,0 +1,55 @@
+menu "SDL"
+
+
+config SUPPORT_SDL
+        bool
+
+config SDL
+        bool
+        depends on SUPPORT_SDL
+        prompt "Enable SDL"
+        help
+          If you want to build SDL as well as the normal image, say Y.
+if SDL
+
+config SDL_LDSCRIPT
+	string "Linker script for the PDL stage"
+	default "arch/$(ARCH)/cpu/u-boot-sdl.lds"
+	depends on SDL
+	help
+	  The SDL stage will usually require a different linker-script
+	  (as it runs from a different memory region) than the regular
+	  U-Boot stage.	 Set this to the path of the linker-script to
+	  be used for SDL.
+
+
+config SDL_TEXT_BASE
+        hex "Base address for the .text section of the SDL stage"
+	help
+	  The base address for the .text section of the SDL stage.
+
+config SDL_STACK
+        hex "Base address for SDL sp"
+
+config SDL_NAND_SUPPORT
+        bool "Support NAND flash"
+        help
+          Enable support for NAND (Negative AND) flash in SDL. 
+          This enables the drivers in drivers/mtd/nand as part of an SDL
+          build.
+
+config SDL_SPI_FLASH_SUPPORT	
+	bool "Support NOR flash"
+        help
+          Enable support for Nor NAND (Negative AND) flash in SDL.
+          This enables the drivers in drivers/mtd/spi as part of an SDL
+          build.
+
+config SDL_MMC_SUPPORT
+	bool "Support MMC."
+	help
+	  Enable support fot mmc/sdio/sdcard in SDL.
+
+
+endif # SDL
+endmenu

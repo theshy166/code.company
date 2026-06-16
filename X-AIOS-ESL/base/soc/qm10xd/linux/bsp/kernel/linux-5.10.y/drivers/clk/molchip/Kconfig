@@ -1,0 +1,69 @@
+config COMMON_CLK_MC_TS01
+	tristate "MOLCHIP TS01 Clock Driver"
+	depends on ARCH_MOLCHIP || COMPILE_TEST
+	select REGMAP_MMIO
+	help
+	  Support for the global clock controller on MOLCHIP devices.
+	  Say Y if you want to use devices such as UART, SPI i2c, USB,
+	  display, graphics, camera etc.
+config COMMON_CLK_MC_FY01
+	tristate "MOLCHIP FY01 Clock Driver"
+	depends on ARCH_MOLCHIP || COMPILE_TEST
+	select REGMAP_MMIO
+	help
+	  Support for the global clock controller on MOLCHIP devices.
+	  Say Y if you want to use devices such as UART, SPI i2c, USB,
+	  display, graphics, camera etc.
+
+config COMMON_CLK_MC_FY00
+	tristate "MOLCHIP FY00 Clock Driver"
+	depends on ARCH_MOLCHIP || COMPILE_TEST
+	select REGMAP_MMIO
+	help
+	  Support for the global clock controller on MOLCHIP devices.
+	  Say Y if you want to use devices such as UART, SPI i2c, USB,
+	  display, graphics, camera etc.
+
+config COMMON_CLK_MC_FY12
+	tristate "MOLCHIP FY12 Clock Driver"
+	depends on ARCH_MOLCHIP || COMPILE_TEST
+	select REGMAP_MMIO
+	help
+	  Support for the global clock controller on MOLCHIP devices.
+	  Say Y if you want to use devices such as UART, SPI i2c, USB,
+	  display, graphics, camera etc.
+config COMMON_CLK_MC_FY13
+	tristate "MOLCHIP FY13 Clock Driver"
+	depends on ARCH_MOLCHIP || COMPILE_TEST
+	select REGMAP_MMIO
+	help
+	  Support for the global clock controller on MOLCHIP devices.
+	  Say Y if you want to use devices such as UART, SPI i2c, USB,
+	  display, graphics, camera etc.
+
+config COMMON_CLK_MC_FY03
+        tristate "MOLCHIP FY03 Clock Driver"
+        depends on ARCH_MOLCHIP || COMPILE_TEST
+        select REGMAP_MMIO
+        help
+          Support for the global clock controller on MOLCHIP devices.
+          Say Y if you want to use devices such as UART, SPI i2c, USB,
+          display, graphics, camera etc.
+
+config COMMON_CLK_MC_XC
+        tristate "MOLCHIP XC Clock Driver"
+        depends on ARCH_MOLCHIP || COMPILE_TEST
+        select REGMAP_MMIO
+        help
+          Support for the global clock controller on MOLCHIP devices.
+          Say Y if you want to use devices such as UART, SPI i2c, USB,
+          display, graphics, camera etc.
+
+config MINI_CLK
+        tristate "MOLCHIP Mini Clock Driver"
+        depends on ARCH_MOLCHIP || COMPILE_TEST
+        select REGMAP_MMIO
+        help
+          Support for the global clock controller on MOLCHIP devices.
+          Say Y if you want to use devices such as UART, SPI i2c, USB,
+          display, graphics, camera etc.

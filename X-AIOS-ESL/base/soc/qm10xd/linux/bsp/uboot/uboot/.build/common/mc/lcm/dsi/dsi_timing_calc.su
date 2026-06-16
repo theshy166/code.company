@@ -1,0 +1,2 @@
+../common/mc/lcm/dsi/dsi_timing_calc.c:75:16:_ui_time_to_reg_carry.constprop.isra	16	static
+../common/mc/lcm/dsi/dsi_timing_calc.c:764:9:dsi_phy_timing_calc	32	static

@@ -1,0 +1,13 @@
+nvm_type	item	value
+nor	page_size	0x1
+nor	erase_size	0x40
+nand	page_size	0x3
+nand	erase_size	0x1000
+nand	nand_main_size	0x800
+nand	nand_oob_size	0x40
+nand	nand_ecc_mode	0x0
+nand	nand_ecc_pos	0x12
+nand	nand_sector_num	0x2
+nand	nand_info_size	0x12
+nand	nand_block_page	0x40
+emmc	block_size	0x1

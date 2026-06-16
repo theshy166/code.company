@@ -1,0 +1,7 @@
+image_name	type	load_mode	signature	lzma	crypt	header_crypt	memory_base	nvm_offset	up_limit	path
+pre-rolling.bin	image:0	image	0	0	0	0	0x30010000	0x10000	0x30000	bsp/pre_rolling/
+rtthread_arc0.bin:rtthread_arc1.bin	image:0	image	0	0	0	0	0x50000000:0x50300000	0x40000	0x180000	bsp/kernel/
+uboot.bin	image:0	image	0	0	0	0	0x41600000	0x500000	0x80000	bsp/boot/
+Image:molchip-kernel-xc01.dtb	image:1	image	0	0	0	0	0x40008000:0x41000000	0x400000	0xc00000	bsp/kernel/
+u-boot-spl.bin	image:0	image	0	0	0	0	0x30000800	0x0	0x10000	bsp/spl/
+u-boot-pdl.bin	image:0	image	0	0	0	0	0x30000800	0x0	0x10000	bsp/pdl/

@@ -1,0 +1,5 @@
+../common/mc/mc_vou_osal.c:3:10:readl	0	static
+../common/mc/mc_vou_osal.c:9:6:writel	0	static
+../common/mc/mc_vou_osal.c:14:6:writels	0	static
+../common/mc/mc_vou_osal.c:21:6:writelc	0	static
+../common/mc/mc_vou_osal.c:28:6:writelr	8	static

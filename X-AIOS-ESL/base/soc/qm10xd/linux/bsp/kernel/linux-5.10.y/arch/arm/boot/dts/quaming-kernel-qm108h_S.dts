@@ -1,0 +1,32 @@
+/*
+ * molchip
+ *
+ * Cortex-A7 MPCore
+ *
+ * HBI-0225B
+ */
+
+/dts-v1/;
+#include "quaming-kernel-qm108h.dtsi"
+
+/ {
+	pre_rolling {
+		compatible = "molchip,pre_rolling";
+		share_ram_level = <3>;
+		sys_params = <0x3003F000 0x1000>;
+		share_mem = <0x4F500000 0x400000>;
+		spl_image_info = <0x0 0x30000000 0x10000>;
+		prg_image_info = <0x10000 0x30020000 0x1E000>;
+		enc_buf_ctrl = <0x1CB00000 0x1000>;
+		//veu_sys_apb_reg = <&veu_sys_clk>;
+		image_load_type = <0>;
+		//mc,syscon = <&top_sys_gate>;
+		status = "disabled";
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x3000000>;
+	};
+};
+	

@@ -1,0 +1,5 @@
+../drivers/misc/mc_aes.c:529:12:mc_aes_ofdata_to_platdata	16	static
+../drivers/misc/mc_aes.c:47:6:mc_aes_enable	0	static
+../drivers/misc/mc_aes.c:473:5:mc_aes_call	40	static
+../drivers/misc/mc_aes.c:513:6:aes_enable	0	static
+../drivers/misc/mc_aes.c:555:12:aes_test	24	static

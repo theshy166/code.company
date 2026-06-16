@@ -1,0 +1,14 @@
+        README
+
+修改产品目录下配置菜单 settings.json文件，添加需要显示的文字，格式和工具使用参考说明：
+json文件中需要显示的文字部分，用ID_XXX填写，xos_menu_text_map.c文件：
+static const text_id_mapping text_id_str_mapping_table[] = {
+    {STRID_CAMERA_SCREEN_LUMA, "ID_CAMERA_SCREEN_LUMA"},
+    {STRID_CAMERA_HIGH, "ID_CAMERA_HIGH"},
+    {STRID_CAMERA_MID, "ID_CAMERA_MID"},
+    {STRID_CAMERA_LOW, "ID_CAMERA_LOW"},
+    ...
+    {0, NULL}
+};
+如：ID_CAMERA_SCREEN_LUMA为json中设置的文字对应的字符串映射
+    STRID_CAMERA_SCREEN_LUMA为strings.xlsx文件生成的文字对应的ID

@@ -1,0 +1,475 @@
+#
+# (C) Copyright 2000-2011
+# Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+#
+# (C) Copyright 2011
+# Daniel Schwierzeck, daniel.schwierzeck@googlemail.com.
+#
+# (C) Copyright 2011
+# Texas Instruments Incorporated - http://www.ti.com/
+# Aneesh V <aneesh@ti.com>
+#
+# SPDX-License-Identifier:	GPL-2.0+
+#
+# Based on top-level Makefile.
+#
+
+src := $(obj)
+
+# Create output directory if not already present
+_dummy := $(shell [ -d $(obj) ] || mkdir -p $(obj))
+
+include $(srctree)/scripts/Kbuild.include
+
+-include include/config/auto.conf
+-include $(obj)/include/autoconf.mk
+
+KBUILD_CPPFLAGS += -DCONFIG_PDL_BUILD
+
+PDL_BIN := u-boot-pdl
+
+
+include $(srctree)/config.mk
+include $(srctree)/arch/$(ARCH)/Makefile
+
+# Enable garbage collection of un-used sections for PDL
+KBUILD_CFLAGS += -ffunction-sections -fdata-sections
+LDFLAGS_FINAL += --gc-sections
+
+# FIX ME
+cpp_flags := $(KBUILD_CPPFLAGS) $(PLATFORM_CPPFLAGS) $(UBOOTINCLUDE) \
+							$(NOSTDINC_FLAGS)
+c_flags := $(KBUILD_CFLAGS) $(cpp_flags)
+
+HAVE_VENDOR_COMMON_LIB = $(if $(wildcard $(srctree)/board/$(VENDOR)/common/Makefile),y,n)
+
+libs-y += $(if $(BOARDDIR),board/$(BOARDDIR)/)
+libs-$(HAVE_VENDOR_COMMON_LIB) += board/$(VENDOR)/common/
+
+
+libs-y += common/pdl/
+
+head-y		:= $(addprefix $(obj)/,$(head-y))
+libs-y		:= $(addprefix $(obj)/,$(libs-y))
+u-boot-pdl-dirs	:= $(patsubst %/,%,$(filter %/, $(libs-y)))
+
+libs-y := $(patsubst %/, %/built-in.o, $(libs-y))
+
+# Add GCC lib
+ifeq ($(CONFIG_USE_PRIVATE_LIBGCC),y)
+PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
+PLATFORM_LIBS := $(filter-out %/lib.a, $(filter-out -lgcc, $(PLATFORM_LIBS))) $(PLATFORM_LIBGCC)
+endif
+
+u-boot-pdl-init := $(head-y)
+u-boot-pdl-main := $(libs-y)
+ifdef CONFIG_PDL_OF_PLATDATA
+u-boot-pdl-platdata := $(obj)/dts/dt-platdata.o
+endif
+
+# Linker Script
+# First test whether there's a linker-script for the specific stage defined...
+ifneq ($(CONFIG_PDL_LDSCRIPT),)
+# need to strip off double quotes
+LDSCRIPT := $(addprefix $(srctree)/,$(CONFIG_PDL_LDSCRIPT:"%"=%))
+else
+# ...then fall back to the generic PDL linker-script
+ifneq ($(CONFIG_PDL_LDSCRIPT),)
+# need to strip off double quotes
+LDSCRIPT := $(addprefix $(srctree)/,$(CONFIG_PDL_LDSCRIPT:"%"=%))
+endif
+endif
+
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/board/$(BOARDDIR)/u-boot-pdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/$(CPUDIR)/u-boot-pdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+	LDSCRIPT := $(srctree)/arch/$(ARCH)/cpu/u-boot-pdl.lds
+endif
+ifeq ($(wildcard $(LDSCRIPT)),)
+$(error could not find linker script)
+endif
+
+# Special flags for CPP when processing the linker script.
+# Pass the version down so we can handle backwards compatibility
+# on the fly.
+LDPPFLAGS += \
+	-include $(srctree)/include/u-boot/u-boot.lds.h \
+	-include $(objtree)/include/config.h \
+	-DCPUDIR=$(CPUDIR) \
+	$(shell $(LD) --version | \
+	  sed -ne 's/GNU ld version \([0-9][0-9]*\)\.\([0-9][0-9]*\).*/-DLD_MAJOR=\1 -DLD_MINOR=\2/p')
+
+MKIMAGEOUTPUT ?= /dev/null
+
+quiet_cmd_mkimage = MKIMAGE $@
+cmd_mkimage = $(objtree)/tools/mkimage $(MKIMAGEFLAGS_$(@F)) -d $< $@ \
+	$(if $(KBUILD_VERBOSE:1=), >$(MKIMAGEOUTPUT))
+
+MKIMAGEFLAGS_MLO = -T omapimage -a $(CONFIG_PDL_TEXT_BASE)
+
+MKIMAGEFLAGS_MLO.byteswap = -T omapimage -n byteswap -a $(CONFIG_PDL_TEXT_BASE)
+
+MLO MLO.byteswap: $(obj)/u-boot-pdl.bin FORCE
+	$(call if_changed,mkimage)
+
+ifeq ($(CONFIG_SYS_SOC),"at91")
+MKIMAGEFLAGS_boot.bin = -T atmelimage
+
+ifeq ($(CONFIG_PDL_GENERATE_ATMEL_PMECC_HEADER),y)
+MKIMAGEFLAGS_boot.bin += -n $(shell $(obj)/../tools/atmel_pmecc_params)
+
+boot.bin: $(obj)/../tools/atmel_pmecc_params
+endif
+
+boot.bin: $(obj)/u-boot-pdl.bin FORCE
+	$(call if_changed,mkimage)
+else
+ifdef CONFIG_ARCH_ZYNQ
+MKIMAGEFLAGS_boot.bin = -T zynqimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE)
+endif
+ifdef CONFIG_ARCH_ZYNQMP
+MKIMAGEFLAGS_boot.bin = -T zynqmpimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE)
+endif
+
+pdl/boot.bin: $(obj)/u-boot-pdl.bin FORCE
+	$(call if_changed,mkimage)
+endif
+
+ALL-y	+= $(obj)/$(PDL_BIN).bin
+
+ifdef CONFIG_SAMSUNG
+ALL-y	+= $(obj)/$(BOARD)-pdl.bin
+endif
+
+ifdef CONFIG_ARCH_MOLCHIP
+ALL-y   += $(obj)/u-boot-pdl-header.img
+endif
+
+ifdef CONFIG_ARCH_SOCFPGA
+ALL-y	+= $(obj)/$(PDL_BIN).sfp
+endif
+
+
+ifeq ($(CONFIG_SYS_SOC),"at91")
+ALL-y	+= boot.bin
+endif
+
+ALL-$(CONFIG_PDL_X86_16BIT_INIT) += $(obj)/u-boot-x86-16bit-pdl.bin
+
+ALL-$(CONFIG_ARCH_ZYNQ)		+= $(obj)/boot.bin
+ALL-$(CONFIG_ARCH_ZYNQMP)	+= $(obj)/boot.bin
+
+all:	$(ALL-y)
+
+quiet_cmd_cat = CAT     $@
+cmd_cat = cat $(filter-out $(PHONY), $^) > $@
+
+quiet_cmd_copy = COPY    $@
+      cmd_copy = cp $< $@
+
+ifeq ($(CONFIG_PDL_OF_CONTROL)$(CONFIG_OF_SEPARATE)$(CONFIG_PDL_OF_PLATDATA),yy)
+$(obj)/$(PDL_BIN)-dtb.bin: $(obj)/$(PDL_BIN)-nodtb.bin \
+		$(if $(CONFIG_PDL_SEPARATE_BSS),,$(obj)/$(PDL_BIN)-pad.bin) \
+		$(obj)/$(PDL_BIN).dtb FORCE
+	$(call if_changed,cat)
+
+$(obj)/$(PDL_BIN).bin: $(obj)/$(PDL_BIN)-dtb.bin FORCE
+	$(call if_changed,copy)
+
+else
+$(obj)/$(PDL_BIN).bin: $(obj)/$(PDL_BIN)-nodtb.bin FORCE
+	$(call if_changed,copy)
+
+endif
+
+# Create a file that pads from the end of u-boot-pdl-nodtb.bin to bss_end
+$(obj)/$(PDL_BIN)-pad.bin: $(obj)/$(PDL_BIN)
+	@bss_size_str=$(shell $(NM) $< | awk 'BEGIN {size = 0} /__bss_size/ {size = $$1} END {print "ibase=16; " toupper(size)}' | bc); \
+	dd if=/dev/zero of=$@ bs=1 count=$${bss_size_str} 2>/dev/null;
+
+# Pass the original device tree file through fdtgrep twice. The first pass
+# removes any unwanted nodes (i.e. those which don't have the
+# 'u-boot,dm-pre-reloc' property and thus are not needed by PDL. The second
+# pass removes various unused properties from the remaining nodes.
+# The output is typically a much smaller device tree file.
+fdtgrep_props := -b u-boot,dm-pre-reloc -b u-boot,dm-pdl
+
+quiet_cmd_fdtgrep = FDTGREP $@
+      cmd_fdtgrep = $(objtree)/tools/fdtgrep $(fdtgrep_props) -RT $< \
+		-n /chosen -n /config -O dtb | \
+	$(objtree)/tools/fdtgrep -r -O dtb - -o $@ \
+		$(addprefix -P ,$(subst $\",,$(CONFIG_OF_PDL_REMOVE_PROPS)))
+
+$(obj)/$(PDL_BIN).dtb: dts/dt.dtb $(objtree)/tools/fdtgrep FORCE
+	$(call if_changed,fdtgrep)
+
+pythonpath = PYTHONPATH=tools
+
+quiet_cmd_dtocc = DTOC C  $@
+cmd_dtocc = $(pythonpath) $(srctree)/tools/dtoc/dtoc -d $(obj)/$(PDL_BIN).dtb -o $@ platdata
+
+quiet_cmd_dtoch = DTOC H  $@
+cmd_dtoch = $(pythonpath) $(srctree)/tools/dtoc/dtoc -d $(obj)/$(PDL_BIN).dtb -o $@ struct
+
+quiet_cmd_plat = PLAT    $@
+cmd_plat = $(CC) $(c_flags) -c $< -o $@
+
+$(obj)/dts/dt-platdata.o: $(obj)/dts/dt-platdata.c include/generated/dt-structs.h
+	$(call if_changed,plat)
+
+PHONY += dts_dir
+dts_dir:
+	$(shell [ -d $(obj)/dts ] || mkdir -p $(obj)/dts)
+
+include/generated/dt-structs.h: $(obj)/$(PDL_BIN).dtb dts_dir checkdtoc
+	$(call if_changed,dtoch)
+
+$(obj)/dts/dt-platdata.c: $(obj)/$(PDL_BIN).dtb dts_dir checkdtoc
+	$(call if_changed,dtocc)
+
+ifdef CONFIG_SAMSUNG
+ifdef CONFIG_VAR_SIZE_PDL
+VAR_SIZE_PARAM = --vs
+else
+VAR_SIZE_PARAM =
+endif
+$(obj)/$(BOARD)-pdl.bin: $(obj)/u-boot-pdl.bin
+	$(if $(wildcard $(objtree)/pdl/board/samsung/$(BOARD)/tools/mk$(BOARD)pdl),\
+	$(objtree)/pdl/board/samsung/$(BOARD)/tools/mk$(BOARD)pdl,\
+	$(objtree)/tools/mkexynospdl) $(VAR_SIZE_PARAM) $< $@
+endif
+
+quiet_cmd_objcopy = OBJCOPY $@
+cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+
+OBJCOPYFLAGS_$(PDL_BIN)-nodtb.bin = $(PDL_OBJCFLAGS) -O binary \
+		$(if $(CONFIG_PDL_X86_16BIT_INIT),-R .start16 -R .resetvec)
+
+$(obj)/$(PDL_BIN)-nodtb.bin: $(obj)/$(PDL_BIN) FORCE
+	$(call if_changed,objcopy)
+
+OBJCOPYFLAGS_u-boot-x86-16bit-pdl.bin := -O binary -j .start16 -j .resetvec
+$(obj)/u-boot-x86-16bit-pdl.bin: $(obj)/u-boot-pdl FORCE
+	$(call if_changed,objcopy)
+
+LDFLAGS_$(PDL_BIN) += -T u-boot-pdl.lds $(LDFLAGS_FINAL)
+
+# Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
+LDFLAGS_$(PDL_BIN) += $(call ld-option, --no-dynamic-linker)
+
+# First try the best-match (i.e. PDL_TEXT_BASE for SPL, TPL_TEXT_BASE for TPL)
+ifneq ($(CONFIG_PDL_TEXT_BASE),)
+LDFLAGS_$(PDL_BIN) += -Ttext $(CONFIG_PDL_TEXT_BASE)
+else
+# And then fall back to just testing for PDL_TEXT_BASE, even if in TPL mode
+ifneq ($(CONFIG_PDL_TEXT_BASE),)
+LDFLAGS_$(PDL_BIN) += -Ttext $(CONFIG_PDL_TEXT_BASE)
+endif
+endif
+
+MKIMAGEFLAGS_$(PDL_BIN).sfp = -T socfpgaimage
+$(obj)/$(PDL_BIN).sfp: $(obj)/$(PDL_BIN).bin FORCE
+	$(call if_changed,mkimage)
+
+# Rule to link u-boot-pdl
+# May be overridden by arch/$(ARCH)/config.mk
+quiet_cmd_u-boot-pdl ?= LD      $@
+      cmd_u-boot-pdl ?= (cd $(obj) && $(LD) $(LDFLAGS) $(LDFLAGS_$(@F)) \
+		       $(patsubst $(obj)/%,%,$(u-boot-pdl-init)) --start-group \
+		       $(patsubst $(obj)/%,%,$(u-boot-pdl-main))  \
+		       $(patsubst $(obj)/%,%,$(u-boot-pdl-platdata)) \
+		       --end-group \
+		       $(PLATFORM_LIBS) -Map $(PDL_BIN).map -o $(PDL_BIN))
+
+quiet_cmd_mkmolchipboot = MKMOLCHIP $@
+cmd_mkmolchipboot = $(objtree)/tools/mkmolchipboot \
+			$(CONFIG_PDL_TEXT_BASE) $< $@
+$(obj)/u-boot-pdl-header.bin: $(obj)/$(PDL_BIN).bin FORCE
+	$(call if_changed,mkmolchipboot)
+
+ifeq ($(CONFIG_TARGET_FY01),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy01/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy01/FW-DDR3-1866MHZ
+mc_ddr_umctl = $(objtree)/tools/molchip/fy01/SOC_REG_INIT_DDR_1866MHZ.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $(mc_ddr_firmware) $@ 0x140 0x1140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) $(mc_ddr_firmware) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY00),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy00a/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy00a/FW-DDR3-1866MHZ
+mc_ddr_umctl = $(objtree)/tools/molchip/fy00a/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY02),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy02a/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy02a/FW-DDR3-1866MHZ
+#mc_ddr_umctl = $(objtree)/tools/molchip/fy02a/FY02_SOC_REG_INIT_DDR3_1866MHz.xlsx
+mc_ddr_umctl = $(objtree)/tools/molchip/fy02a/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY02B),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy02b/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy02b/FW-DDR3-1866MHZ
+#mc_ddr_umctl = $(objtree)/tools/molchip/fy02b/FY02_SOC_REG_INIT_DDR3_1866MHz.xlsx
+mc_ddr_umctl = $(objtree)/tools/molchip/fy02b/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY02P),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy02p/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy02p/FW-DDR3-1866MHZ
+#mc_ddr_umctl = $(objtree)/tools/molchip/fy02p/FY02_SOC_REG_INIT_DDR3_1866MHz.xlsx
+mc_ddr_umctl = $(objtree)/tools/molchip/fy02p/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY10P),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy10p/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy10p/FW-DDR3-1866MHZ
+#mc_ddr_umctl = $(objtree)/tools/molchip/fy10p/FY02_SOC_REG_INIT_DDR3_1866MHz.xlsx
+mc_ddr_umctl = $(objtree)/tools/molchip/fy10p/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY10D),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy10d/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy10d/FW-DDR3-1866MHZ
+mc_ddr_umctl = $(objtree)/tools/molchip/fy10d/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+ifeq ($(REG_DDR_COMPATIBLE), y)
+mc_ddr2_1g_umctl = $(objtree)/tools/molchip/fy10d/SOC_REG_DDR2_INIT.xlsx
+cmd_ddr2_merge_bin = $(mc_merge_bin) $< $(mc_ddr2_1g_umctl) $@ 0x1840
+$(obj)/u-boot-pdl-header_0.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header_0.img $(mc_ddr2_1g_umctl) FORCE
+	$(call if_changed,ddr2_merge_bin)
+else
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin):
+endif
+endif
+
+ifeq ($(CONFIG_TARGET_FY10DS),y)
+mc_merge_bin = $(objtree)/tools/molchip/fy10ds/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/fy10ds/FW-DDR3-1866MHZ
+mc_ddr_umctl = $(objtree)/tools/molchip/fy10ds/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_FY12),y)
+mc_merge_bin = $(objtree)/tools/molchip/merge_bin
+mc_ddr_firmware = $(objtree)/tools/molchip/FW-DDR3-1866MHZ
+mc_ddr_umctl = $(objtree)/tools/molchip/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x140
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	@echo "---pdl starting merge---"
+	$(call if_changed,merge_bin):
+	@echo "---pdl ending merge---"
+endif
+
+ifeq ($(CONFIG_TARGET_XC01),y)
+KGDID?=1261
+mc_merge_bin = $(objtree)/tools/molchip/xc01/merge_bin
+mc_ddr_umctl = $(objtree)/board/molchip/ddr/$(KGDID)/SOC_REG_INIT.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_merge_bin = $(mc_merge_bin) $< $(mc_ddr_umctl) $@ 0x840
+$(obj)/u-boot-pdl-header0.img: $(obj)/u-boot-pdl-header.bin $(mc_ddr_umctl) FORCE
+	$(call if_changed,merge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_XC01),y)
+pin_merge_bin = $(objtree)/tools/molchip/xc01/pinmux/merge_bin
+ifeq ($(filter $(KGDID),25AA 25A1),)
+pin_ddr_umctl = $(objtree)/tools/molchip/xc01/pinmux/XC01_PINOUT_CN_11×11.xlsx
+else
+pin_ddr_umctl = $(objtree)/tools/molchip/xc01/pinmux/XC01_PINOUT_CN_13×13.xlsx
+endif
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_pinmerge_bin = $(pin_merge_bin) $< $(pin_ddr_umctl) $@ 0x1C00
+$(obj)/u-boot-pdl-header1.img: $(obj)/u-boot-pdl-header0.img $(pin_ddr_umctl) FORCE
+	$(call if_changed,pinmerge_bin)
+endif
+
+ifeq ($(CONFIG_TARGET_XC01),y)
+clk_merge_bin = $(objtree)/tools/molchip/xc01/clk/merge_bin
+clk_ddr_umctl = $(objtree)/tools/molchip/xc01/clk/xc01_clk_en_sel_cfg_0.8V.xlsx
+quiet_cmd_merge_bin = MKMOLCHIP $@
+cmd_clkmerge_bin = $(clk_merge_bin) $< $(clk_ddr_umctl) $@ 0x2700
+$(obj)/u-boot-pdl-header.img: $(obj)/u-boot-pdl-header1.img $(clk_ddr_umctl) FORCE
+	$(call if_changed,clkmerge_bin)
+endif
+
+
+$(obj)/$(PDL_BIN): $(u-boot-pdl-platdata) $(u-boot-pdl-init) \
+		$(u-boot-pdl-main) $(obj)/u-boot-pdl.lds FORCE
+	$(call if_changed,u-boot-pdl)
+
+$(sort $(u-boot-pdl-init) $(u-boot-pdl-main)): $(u-boot-pdl-dirs) ;
+
+PHONY += $(u-boot-pdl-dirs)
+$(u-boot-pdl-dirs): $(u-boot-pdl-platdata)
+	$(Q)$(MAKE) $(build)=$@
+
+quiet_cmd_cpp_lds = LDS     $@
+cmd_cpp_lds = $(CPP) -Wp,-MD,$(depfile) $(cpp_flags) $(LDPPFLAGS) -ansi \
+		-D__ASSEMBLY__ -x assembler-with-cpp -P -o $@ $<
+
+$(obj)/u-boot-pdl.lds: $(LDSCRIPT) FORCE
+	$(call if_changed_dep,cpp_lds)
+
+# read all saved command lines
+
+targets := $(wildcard $(sort $(targets)))
+cmd_files := $(wildcard $(obj)/.*.cmd $(foreach f,$(targets),$(dir $(f)).$(notdir $(f)).cmd))
+
+ifneq ($(cmd_files),)
+  $(cmd_files): ;	# Do not try to update included dependency files
+  include $(cmd_files)
+endif
+
+checkdtoc: tools
+	@if ! ( echo 'import libfdt' | ( PYTHONPATH=tools $(PYTHON) )); then \
+		echo '*** dtoc needs the Python libfdt library. Either '; \
+		echo '*** install it on your system, or try:'; \
+		echo '***'; \
+		echo '*** sudo apt-get install swig libpython-dev'; \
+		echo '***'; \
+		echo '*** to have U-Boot build its own version.'; \
+		false; \
+	fi
+
+PHONY += FORCE
+FORCE:
+
+# Declare the contents of the .PHONY variable as phony.  We keep that
+# information in a variable so we can use it in if_changed and friends.
+.PHONY: $(PHONY)

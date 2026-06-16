@@ -1,0 +1,16 @@
+from building import *
+
+cwd  = GetCurrentDir()
+src  = Glob('*.c')
+list = os.listdir(cwd)
+CPPPATH = [cwd]
+objs = []
+
+inc = [cwd + "/include"]
+
+LIBS       = ['qm_effects']
+LIBPATH    = [cwd + '/fy00_rtt']
+
+objs = DefineGroup('qxos', src, depend = [''], CPPPATH = inc, LIBPATH = LIBPATH, LIBS = LIBS)
+
+Return('objs')

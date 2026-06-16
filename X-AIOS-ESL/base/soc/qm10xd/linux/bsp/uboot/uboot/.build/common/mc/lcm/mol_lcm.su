@@ -1,0 +1,14 @@
+../common/mc/lcm/mol_lcm.c:288:16:_mol_lcm_bus_deinit	32	static
+../common/mc/lcm/mol_lcm.c:167:16:_mol_lcm_bus_init	232	static
+../common/mc/lcm/mol_lcm.c:365:16:_mol_lcm_ops_cfg	0	static
+../common/mc/lcm/mol_lcm.c:92:16:_mipi_bus_lp_cfg	16	static
+../common/mc/lcm/mol_lcm.c:144:16:_mipi_push_table	8	static
+../common/mc/lcm/mol_lcm.c:118:16:_mipi_bus_hs_cfg	16	static
+../common/mc/lcm/mol_lcm.c:451:9:mol_lcm_init	24	static
+../common/mc/lcm/mol_lcm.c:524:9:read_tab_index	16	static
+../common/mc/lcm/mol_lcm.c:556:9:store_tab_index	24	static
+../common/mc/lcm/mol_lcm.c:593:9:mol_lcm_scan	56	static
+../common/mc/lcm/mol_lcm.c:738:9:mol_lcm_probe	16	static
+../common/mc/lcm/mol_lcm.c:768:9:mol_lcm_deinit	24	static
+../common/mc/lcm/mol_lcm.c:820:9:mol_lcm_suspend	24	static
+../common/mc/lcm/mol_lcm.c:864:9:mol_lcm_resume	24	static

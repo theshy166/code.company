@@ -1,0 +1,2 @@
+../common/malloc_simple.c:16:7:malloc_simple	0	static
+../common/malloc_simple.c:35:7:memalign_simple	0	static

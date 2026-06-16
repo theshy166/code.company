@@ -1,0 +1,12 @@
+../drivers/misc/mc_aes_dma.c:13:6:aes_init_chn_reg	0	static
+../drivers/misc/mc_aes_dma.c:27:6:aes_dma_int_clear	0	static
+../drivers/misc/mc_aes_dma.c:36:6:aes_enable_channel	0	static
+../drivers/misc/mc_aes_dma.c:58:6:aes_dma_chn_src	0	static
+../drivers/misc/mc_aes_dma.c:62:6:aes_dma_chn_dst	0	static
+../drivers/misc/mc_aes_dma.c:67:6:aes_request_cid	0	static
+../drivers/misc/mc_aes_dma.c:125:6:aes_dma_int_enable	0	static
+../drivers/misc/mc_aes_dma.c:135:6:aes_dma_fix_enable	0	static
+../drivers/misc/mc_aes_dma.c:148:6:aes_dma_trsc_len	0	static
+../drivers/misc/mc_aes_dma.c:168:6:aes_dma_trac_init	24	static
+../drivers/misc/mc_aes_dma.c:184:6:aes_dma_trac	24	static
+../drivers/misc/mc_aes_dma.c:193:6:aes_dma_wait_done	8	static

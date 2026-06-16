@@ -1,0 +1,6 @@
+build/
+output/
+.git/
+lvgl/
+*.o
+*.bin

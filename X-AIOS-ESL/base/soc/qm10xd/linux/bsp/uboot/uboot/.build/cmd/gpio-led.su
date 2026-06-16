@@ -1,0 +1,3 @@
+../cmd/gpio-led.c:11:13:gpio_led_init	8	static
+../cmd/gpio-led.c:24:13:led_blink	16	static
+../cmd/gpio-led.c:31:5:do_led_blink	16	static

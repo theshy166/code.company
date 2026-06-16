@@ -1,0 +1,1 @@
+cmd_sdl/board/molchip/download/built-in.o :=  arm-molv2-linux-uclibcgnueabi-ld.bfd   -r -o sdl/board/molchip/download/built-in.o sdl/board/molchip/download/download_drv.o sdl/board/molchip/download/usb_boot.o 

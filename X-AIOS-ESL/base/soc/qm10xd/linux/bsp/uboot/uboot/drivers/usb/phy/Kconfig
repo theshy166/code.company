@@ -1,0 +1,19 @@
+menuconfig USB_PHY
+        bool "USB Physical Layer Drivers"
+        ---help---
+          Say Y here if you would like to enable support for USB Physical
+	  Layer.
+
+if USB_PHY
+
+config MOLCHIP_USB2_PHY
+        bool "Enable Molchip USB 2.0 PHY support"
+        ---help---
+          Say Y here if you would like to support Molchip USB 2.0
+          Physical Layer Devices.
+config MOLCHIP_USB3_PHY
+        bool "Enable Molchip USB 3.0 PHY support"
+        ---help---
+          Say Y here if you would like to support Molchip USB 3.0
+          Physical Layer Devices.	
+endif

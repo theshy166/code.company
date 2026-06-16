@@ -1,0 +1,5 @@
+../drivers/pwm/pwm-uclass.c:16:5:pwm_set_invert	0	static
+../drivers/pwm/pwm-uclass.c:26:5:pwm_set_config	4	static
+../drivers/pwm/pwm-uclass.c:37:5:pwm_set_enable	0	static
+../drivers/pwm/pwm-uclass.c:48:5:pwm_open	0	static
+../drivers/pwm/pwm-uclass.c:58:17:pwm_get_dev_by_name	24	static

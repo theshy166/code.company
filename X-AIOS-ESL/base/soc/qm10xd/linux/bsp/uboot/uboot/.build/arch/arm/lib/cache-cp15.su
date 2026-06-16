@@ -1,0 +1,12 @@
+../arch/arm/lib/cache-cp15.c:20:13:arm_init_before_mmu	0	static
+../arch/arm/lib/cache-cp15.c:24:13:arm_init_domains	0	static
+../arch/arm/lib/cache-cp15.c:28:6:set_section_dcache	0	static
+../arch/arm/lib/cache-cp15.c:49:13:mmu_page_table_flush	0	static
+../arch/arm/lib/cache-cp15.c:54:6:mmu_set_region_dcache_behaviour	16	static
+../arch/arm/lib/cache-cp15.c:90:13:dram_bank_mmu_setup	8	static
+../arch/arm/lib/cache-cp15.c:259:6:icache_enable	0	static
+../arch/arm/lib/cache-cp15.c:264:6:icache_disable	0	static
+../arch/arm/lib/cache-cp15.c:269:5:icache_status	0	static
+../arch/arm/lib/cache-cp15.c:291:6:dcache_enable	8	static
+../arch/arm/lib/cache-cp15.c:296:6:dcache_disable	8	static
+../arch/arm/lib/cache-cp15.c:301:5:dcache_status	0	static

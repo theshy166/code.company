@@ -1,0 +1,2 @@
+../arch/arm/mach-molchip/init.c:12:5:arch_cpu_init	0	static
+../arch/arm/mach-molchip/init.c:19:6:enable_caches	0	static

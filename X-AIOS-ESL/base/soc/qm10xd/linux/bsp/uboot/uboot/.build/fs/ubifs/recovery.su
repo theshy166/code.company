@@ -1,0 +1,15 @@
+../fs/ubifs/recovery.c:55:12:is_empty	0	static
+../fs/ubifs/recovery.c:1297:27:find_ino	0	static
+../fs/ubifs/recovery.c:102:12:get_master_node	56	static
+../fs/ubifs/recovery.c:921:12:recover_head	32	static
+../fs/ubifs/recovery.c:1262:12:add_ino	32	static
+../fs/ubifs/recovery.c:229:5:ubifs_recover_master_node	48	static
+../fs/ubifs/recovery.c:381:5:ubifs_write_rcvrd_mst_node	24	static
+../fs/ubifs/recovery.c:631:24:ubifs_recover_leb	56	static
+../fs/ubifs/recovery.c:865:24:ubifs_recover_log_leb	56	static
+../fs/ubifs/recovery.c:963:5:ubifs_recover_inl_heads	16	static
+../fs/ubifs/recovery.c:1084:5:ubifs_clean_lebs	48	static
+../fs/ubifs/recovery.c:1230:5:ubifs_rcvry_gc_commit	0	static
+../fs/ubifs/recovery.c:1333:6:ubifs_destroy_size_tree	16	static
+../fs/ubifs/recovery.c:1371:5:ubifs_recover_size_accum	48	static
+../fs/ubifs/recovery.c:1481:5:ubifs_recover_size	40	static

@@ -1,0 +1,5 @@
+../common/mc/mc_boot_logo.c:258:5:show_boot_logo	8	static
+../common/mc/mc_boot_logo.c:26:12:sync_info_gen.isra	32	static
+../common/mc/mc_boot_logo.c:90:6:fast_osd	88	static
+../common/mc/mc_boot_logo.c:160:6:fast_osd_by_id	104	static
+../common/mc/mc_boot_logo.c:236:6:boot_logo	0	static

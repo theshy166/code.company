@@ -1,0 +1,15 @@
+../board/molchip/download/usb_boot.c:20:6:usb_complete_info	16	static
+../board/molchip/download/usb_boot.c:175:6:usb_identify	16	static
+../board/molchip/download/usb_boot.c:196:6:usb_rcv_data	8	static
+../board/molchip/download/usb_boot.c:202:6:usb_send_string	32	static
+../board/molchip/download/usb_boot.c:226:6:usb_send_ack	16	static
+../board/molchip/download/usb_boot.c:63:6:usb_down_connect	0	static
+../board/molchip/download/usb_boot.c:71:6:usb_down_start	0	static
+../board/molchip/download/usb_boot.c:95:6:usb_down_continue	16	static
+../board/molchip/download/usb_boot.c:114:6:usb_down_finish	0	static
+../board/molchip/download/usb_boot.c:128:6:usb_down_execute	0	static
+../board/molchip/download/usb_boot.c:149:6:usb_xch_baudrate	0	static
+../board/molchip/download/usb_boot.c:247:6:usb_crc_check	8	static
+../board/molchip/download/usb_boot.c:266:6:usb_lookfor_func	0	static
+../board/molchip/download/usb_boot.c:279:6:usb_preboot	0	static
+../board/molchip/download/usb_boot.c:288:6:usb_boot	24	static

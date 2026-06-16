@@ -1,0 +1,13 @@
+../board/molchip/board/efuse.c:7:6:efuse_enable	0	static
+../board/molchip/board/efuse.c:32:6:efuse_ece_enable	0	static
+../board/molchip/board/efuse.c:44:6:efuse_wait_cmd_complete	12	static
+../board/molchip/board/efuse.c:63:6:efuse_load_user_cmd	0	static
+../board/molchip/board/efuse.c:73:6:efuse_set_match_key	0	static
+../board/molchip/board/efuse.c:78:6:efuse_read_cmd	16	static
+../board/molchip/board/efuse.c:96:6:efuse_wcmd_auto	0	static
+../board/molchip/board/efuse.c:108:6:efuse_write_cmd	16	static
+../board/molchip/board/efuse.c:152:6:efuse_get_lock	16	static
+../board/molchip/board/efuse.c:167:6:efuse_init	8	static
+../board/molchip/board/efuse.c:174:6:efuse_apb_read	24	static
+../board/molchip/board/efuse.c:201:6:efuse_xfer_aes_key	16	static
+../board/molchip/board/efuse.c:262:6:efuse_compare	4	static

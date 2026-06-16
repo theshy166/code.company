@@ -1,0 +1,7 @@
+../common/mc/lcm/lcm_hal.c:9:5:lcm_probe_info_update	0	static
+../common/mc/lcm/lcm_hal.c:134:5:lcm_func_probe	16	static
+../common/mc/lcm/lcm_hal.c:220:5:lcm_func_init	8	static
+../common/mc/lcm/lcm_hal.c:248:5:lcm_func_deinit	8	static
+../common/mc/lcm/lcm_hal.c:275:5:lcm_func_suspend	8	static
+../common/mc/lcm/lcm_hal.c:300:5:lcm_func_resume	8	static
+../common/mc/lcm/lcm_hal.c:325:5:lcm_ioctrl	8	static
