@@ -1617,7 +1617,11 @@ static void _refresh_ui(int index,esl_base_model_t * model){
 
 void* reboot_thread(void* arg) {
     sleep(10);
+    #if defined(BUILD_SIMULATOR) && BUILD_SIMULATOR == 1
+    QM_ESL2_LOG("[SIM] skip reboot request in simulator");
+    #else
     system("reboot");
+    #endif
     return NULL;
 }
 
@@ -1791,7 +1795,11 @@ esl_push_server_data2 * query_push_server2(const char * device_no, const char *w
     }else{
         snprintf(url, sizeof(url),KbaseUrl_CONFIG,http_url,device_no);
         //snprintf(url, sizeof(url),KbaseUrl_CONFIG,"http://8.130.19.30",device_no);
+        #if defined(BUILD_SIMULATOR) && BUILD_SIMULATOR == 1
+        response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 1, 100,CONFIG_PLATFORM_ID);
+        #else
         response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 3, 1000,CONFIG_PLATFORM_ID);
+        #endif
     }
     QM_ESL2_LOG("response_content:%s",response_content);
 
@@ -2074,7 +2082,11 @@ char * get_content_info(const char * device_no, const char *wifi_ssid,const char
     }else{
         snprintf(url, sizeof(url),KbaseUrl_CONTENT,http_url,device_no);
         //snprintf(url, sizeof(url),KbaseUrl_CONTENT,"http://8.130.19.30",device_no);
+        #if defined(BUILD_SIMULATOR) && BUILD_SIMULATOR == 1
+        response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 1, 100,CONFIG_PLATFORM_ID);
+        #else
         response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 3, 1000,CONFIG_PLATFORM_ID);
+        #endif
     }
     QM_ESL2_LOG("response_content:%s",response_content);
 
@@ -2115,7 +2127,11 @@ char * get_version_info(const char * device_no, const char *wifi_ssid,const char
     }else{
         snprintf(url, sizeof(url),KbaseUrl_CONFIG,http_url,device_no);
         //snprintf(url, sizeof(url),KbaseUrl_MSGACK,"http://8.130.19.30",device_no);
+        #if defined(BUILD_SIMULATOR) && BUILD_SIMULATOR == 1
+        response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 1, 100,CONFIG_PLATFORM_ID);
+        #else
         response_content = esl_get_remote_url(url,wifi_ssid,local_ip,version_no, 3, 1000,CONFIG_PLATFORM_ID);
+        #endif
     }
     QM_ESL2_LOG("response_content:%s",response_content);
 

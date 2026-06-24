@@ -1,132 +1,253 @@
+/**
+ * @file main.c
+ * @brief ESL2 模拟器 — 用真实 view 代码渲染 UI，支持 SDL 窗口实时查看
+ *
+ * 架构说明：
+ *   这个 main.c 使用 SDL2 创建 LVGL 显示器和输入设备，然后启动真实的
+ *   esl2 app_manager 流程：
+ *     esl2_init() -> app_manager_start("esl2") -> create_ui()
+ *       -> xos_esl_ui_init() -> page_esl.c -> esl_show_ui()
+ *
+ *   模拟器只负责提供平台桩函数，并可把 ESL2_SIM_MODEL_JSON 指定的
+ *   真实模板 JSON 放到产品代码会读取的本地缓存路径。
+ *
+ * 使用方法：
+ *   1. cd core/apps/esl2/simulator/build && cmake .. && make
+ *   2. ./esl2_sim
+ *   3. SDL 窗口会打开，显示 page_esl.c 真实渲染链路
+ *
+ * 编译依赖：
+ *   cmake, pkg-config, SDL2 开发库, curl 开发库
+ *   sudo apt install cmake pkg-config libsdl2-dev libcurl4-openssl-dev
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/time.h>
 #include "lvgl/lvgl.h"
 
-#define HOR_RES 800
-#define VER_RES 480
+// ── 设 XOS_ROOT 环境变量，供 resolve_font_path 查找字体用 ──
+#define XOS_ROOT_PATH "/home/luoxin/work/X-AIOS-ESL"
 
-static uint8_t fb[HOR_RES * VER_RES * 4];
+// ── LVGL v9 SDL 驱动 ──
+#include "drivers/sdl/lv_sdl_window.h"
+#include "drivers/sdl/lv_sdl_mouse.h"
+#include "drivers/sdl/lv_sdl_mousewheel.h"
+#include "drivers/sdl/lv_sdl_keyboard.h"
 
-static void mem_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
+#include "../conf/conf.h"
+#include "appmanager.h"
+
+// ── 模拟器专用桩声明 ──
+#include "xos_stub.h"
+
+// ======================== 屏幕参数 ========================
+#define SIM_DEFAULT_HOR_RES 800
+#define SIM_DEFAULT_VER_RES 1280
+
+static int sim_hor_res = SIM_DEFAULT_HOR_RES;
+static int sim_ver_res = SIM_DEFAULT_VER_RES;
+
+// ======================== LVGL Tick ========================
+static uint32_t custom_tick_get(void)
 {
-    uint32_t w = lv_area_get_width(area);
-    uint32_t h = lv_area_get_height(area);
-    lv_draw_buf_t *draw_buf = lv_display_get_buf_active(disp);
-    uint32_t stride = draw_buf->header.stride;
-    for (uint32_t y = 0; y < h; y++)
-        memcpy(fb + (area->y1 + y) * HOR_RES * 4 + area->x1 * 4, px_map + y * stride, w * 4);
-    lv_display_flush_ready(disp);
+    static uint64_t start_ms = 0;
+    if (start_ms == 0) {
+        struct timeval tv_start;
+        gettimeofday(&tv_start, NULL);
+        start_ms = (tv_start.tv_sec * 1000000 + tv_start.tv_usec) / 1000;
+    }
+    struct timeval tv_now;
+    gettimeofday(&tv_now, NULL);
+    uint64_t now_ms = (tv_now.tv_sec * 1000000 + tv_now.tv_usec) / 1000;
+    return (uint32_t)(now_ms - start_ms);
 }
 
-static void save_bmp(const char *path)
+// ======================== SDL 初始化 ========================
+static void hal_init_sdl(void)
 {
-    FILE *f = fopen(path, "wb");
-    if (!f) return;
-    uint32_t w = HOR_RES, h = VER_RES, row_size = ((w * 32 + 31) / 32) * 4, img_size = row_size * h;
-    uint8_t hdr[54] = {0};
-    hdr[0]='B'; hdr[1]='M';
-    *(uint32_t*)(hdr+2) = 54 + img_size; *(uint32_t*)(hdr+10) = 54;
-    *(uint32_t*)(hdr+14) = 40; *(uint32_t*)(hdr+18) = w; *(uint32_t*)(hdr+22) = h;
-    *(uint16_t*)(hdr+26) = 1; *(uint16_t*)(hdr+28) = 32;
-    fwrite(hdr, 1, 54, f);
-    for (uint32_t y = 0; y < h; y++) {
-        uint8_t *row = fb + (h - 1 - y) * w * 4;
-        for (uint32_t x = 0; x < w; x++) {
-            uint8_t b = row[x*4+0], g = row[x*4+1], r = row[x*4+2];
-            uint8_t bgra[4] = {b, g, r, 255};
-            fwrite(bgra, 1, 4, f);
+    lv_group_t *g = lv_group_create();
+    lv_group_set_default(g);
+
+    /* 创建 SDL 窗口作为显示器 */
+    lv_display_t *disp = lv_sdl_window_create(sim_hor_res, sim_ver_res);
+    lv_display_set_default(disp);
+    lv_display_set_1st_scr(disp);
+    lv_display_set_2nd_scr(NULL);
+
+    /* 鼠标输入 */
+    lv_indev_t *mouse = lv_sdl_mouse_create();
+    lv_indev_set_group(mouse, g);
+    lv_indev_set_display(mouse, disp);
+
+    /* 滚轮输入 */
+    lv_indev_t *mw = lv_sdl_mousewheel_create();
+    lv_indev_set_group(mw, g);
+    lv_indev_set_display(mw, disp);
+
+    /* 键盘输入（按 ESC 退出） */
+    lv_indev_t *kb = lv_sdl_keyboard_create();
+    lv_indev_set_group(kb, g);
+    lv_indev_set_display(kb, disp);
+}
+
+static int mkdir_p(const char *path)
+{
+    char tmp[512];
+    size_t len;
+
+    if (!path || path[0] == '\0') return -1;
+
+    snprintf(tmp, sizeof(tmp), "%s", path);
+    len = strlen(tmp);
+    if (len == 0) return -1;
+
+    if (tmp[len - 1] == '/') tmp[len - 1] = '\0';
+
+    for (char *p = tmp + 1; *p; p++) {
+        if (*p == '/') {
+            *p = '\0';
+            if (mkdir(tmp, 0775) != 0 && errno != EEXIST) return -1;
+            *p = '/';
         }
     }
-    fclose(f);
-    fprintf(stderr, "[BMP] saved %s (%ux%u)\n", path, w, h);
+    if (mkdir(tmp, 0775) != 0 && errno != EEXIST) return -1;
+    return 0;
 }
 
+static char *read_text_file(const char *path)
+{
+    FILE *fp = fopen(path, "rb");
+    long size;
+    char *buf;
+
+    if (!fp) return NULL;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    if (size < 0) {
+        fclose(fp);
+        return NULL;
+    }
+    buf = malloc((size_t)size + 1);
+    if (!buf) {
+        fclose(fp);
+        return NULL;
+    }
+    if (fread(buf, 1, (size_t)size, fp) != (size_t)size) {
+        free(buf);
+        fclose(fp);
+        return NULL;
+    }
+    buf[size] = '\0';
+    fclose(fp);
+    return buf;
+}
+
+static int write_text_file(const char *path, const char *text)
+{
+    FILE *fp = fopen(path, "wb");
+    if (!fp) return -1;
+    if (text) fwrite(text, 1, strlen(text), fp);
+    fclose(fp);
+    return 0;
+}
+
+static void prepare_local_model_cache(void)
+{
+    char cache_path[512];
+    char cache_dir[] = "./out/simulator/xos/res/json";
+    char device_sn[128];
+    const char *source_path = getenv("ESL2_SIM_MODEL_JSON");
+    char *source_text = NULL;
+    const char *serial = sim_get_device_serial();
+
+    snprintf(device_sn, sizeof(device_sn), "%s_1", serial);
+    snprintf(cache_path, sizeof(cache_path), k_path_json_product_base_model, device_sn);
+
+    if (!source_path || source_path[0] == '\0') {
+        if (access(cache_path, R_OK) == 0) {
+            printf("[SIM] using existing local model cache: %s\n", cache_path);
+        } else {
+            printf("[SIM] no local model cache for %s, product code will show empty UI\n", device_sn);
+        }
+        return;
+    }
+
+    source_text = read_text_file(source_path);
+    if (!source_text) {
+        fprintf(stderr, "[SIM] failed to read ESL2_SIM_MODEL_JSON=%s\n", source_path);
+        return;
+    }
+
+    mkdir_p(cache_dir);
+    if (write_text_file(cache_path, source_text) == 0) {
+        printf("[SIM] copied real model json: %s -> %s\n", source_path, cache_path);
+    } else {
+        fprintf(stderr, "[SIM] failed to copy model json to cache: %s\n", cache_path);
+    }
+
+    free(source_text);
+}
+
+static int env_int(const char *name, int def)
+{
+    const char *value = getenv(name);
+    char *end = NULL;
+    long parsed;
+
+    if (!value || value[0] == '\0') return def;
+    parsed = strtol(value, &end, 10);
+    if (end == value || parsed <= 0 || parsed > 4096) return def;
+    return (int)parsed;
+}
+
+// ======================== 主函数 ========================
 int main(int argc, char **argv)
 {
-    (void)argc; (void)argv;
+    (void)argc;
+    (void)argv;
+
+    printf("=== ESL2 Simulator with Real ESL2 View Flow ===\n");
+
+    sim_hor_res = env_int("ESL2_SIM_WIDTH", SIM_DEFAULT_HOR_RES);
+    sim_ver_res = env_int("ESL2_SIM_HEIGHT", SIM_DEFAULT_VER_RES);
+
+    // ----- 1. LVGL 初始化 -----
     lv_init();
 
-    lv_display_t *disp = lv_display_create(HOR_RES, VER_RES);
-    lv_display_set_flush_cb(disp, mem_flush_cb);
-    static uint8_t buf1[HOR_RES * VER_RES * 4];
-    lv_display_set_buffers(disp, buf1, NULL, sizeof(buf1), LV_DISPLAY_RENDER_MODE_DIRECT);
-    lv_display_set_default(disp);
-    memset(fb, 0xFF, sizeof(fb));
+    // ----- 2. SDL 显示+输入初始化 -----
+    hal_init_sdl();
 
-    lv_obj_t *scr = lv_scr_act();
+    // ----- 3. 设置 Tick 回调（LVGL 需要时间基准）-----
+    lv_tick_set_cb(custom_tick_get);
 
-    /* ?????? */
-    lv_obj_set_style_bg_color(scr, lv_color_hex(0xF0F0F0), 0);
+    // ----- 4. 设置默认背景色 -----
+    lv_obj_set_style_bg_color(lv_scr_act(), lv_color_white(), 0);
 
-    /* ????? */
-    lv_obj_t *topbar = lv_obj_create(scr);
-    lv_obj_set_size(topbar, HOR_RES, 40);
-    lv_obj_set_pos(topbar, 0, 0);
-    lv_obj_set_style_bg_color(topbar, lv_color_hex(0x333333), 0);
-    lv_obj_set_style_radius(topbar, 0, 0);
-    lv_obj_set_style_border_width(topbar, 0, 0);
+    // ----- 4.5. 设置 XOS_ROOT、准备字体和本地模板缓存 -----
+    setenv("XOS_ROOT", XOS_ROOT_PATH, 1);
+    sim_init_fonts();
+    prepare_local_model_cache();
 
-    lv_obj_t *title = lv_label_create(topbar);
-    lv_label_set_text(title, "ESL Price Tag");
-    lv_obj_set_style_text_color(title, lv_color_hex(0xFFFFFF), 0);
-    lv_obj_center(title);
+    // ----- 5. 启动真实 esl2 app_manager 流程 -----
+    extern void esl2_init(void);
+    esl2_init();
+    app_manager_start("esl2", NULL);
 
-    /* ?????? */
-    lv_obj_t *card = lv_obj_create(scr);
-    lv_obj_set_size(card, 760, 420);
-    lv_obj_set_pos(card, 20, 50);
-    lv_obj_set_style_bg_color(card, lv_color_hex(0xFFFFFF), 0);
-    lv_obj_set_style_radius(card, 12, 0);
-    lv_obj_set_style_border_width(card, 1, 0);
-    lv_obj_set_style_border_color(card, lv_color_hex(0xD0D0D0), 0);
-    lv_obj_set_style_pad_all(card, 40, 0);
+    // ----- 6. LVGL 主循环（SDL 窗口持续刷新）-----
+    printf("SDL window opened (%dx%d). Press Ctrl+C to exit.\n", sim_hor_res, sim_ver_res);
+    while (1) {
+        // lv_timer_handler 返回下一次需要刷新的毫秒数
+        uint32_t next_ttl = lv_timer_handler();
+        if (next_ttl < 1) next_ttl = 1;
+        usleep(next_ttl * 1000);
+    }
 
-    /* ??? */
-    lv_obj_t *name = lv_label_create(card);
-    lv_label_set_text(name, "Coca-Cola");
-    lv_obj_set_style_text_color(name, lv_color_hex(0x333333), 0);
-    lv_obj_set_pos(name, 40, 40);
-
-    /* ?? */
-    lv_obj_t *spec = lv_label_create(card);
-    lv_label_set_text(spec, "330ml");
-    lv_obj_set_style_text_color(spec, lv_color_hex(0x999999), 0);
-    lv_obj_set_pos(spec, 40, 80);
-
-    /* ??? */
-    lv_obj_t *line = lv_obj_create(card);
-    lv_obj_set_size(line, 680, 1);
-    lv_obj_set_pos(line, 40, 130);
-    lv_obj_set_style_bg_color(line, lv_color_hex(0xE0E0E0), 0);
-    lv_obj_set_style_radius(line, 0, 0);
-    lv_obj_set_style_border_width(line, 0, 0);
-
-    /* ???? */
-    lv_obj_t *price_label = lv_label_create(card);
-    lv_label_set_text(price_label, "Price");
-    lv_obj_set_style_text_color(price_label, lv_color_hex(0x999999), 0);
-    lv_obj_set_pos(price_label, 40, 160);
-
-    /* ?? - ???? */
-    lv_obj_t *price = lv_label_create(card);
-    lv_label_set_text(price, "$3.50");
-    lv_obj_set_style_text_color(price, lv_color_hex(0xE60012), 0);
-    lv_obj_set_pos(price, 40, 200);
-
-    /* ?? */
-    lv_obj_t *footer = lv_label_create(card);
-    lv_label_set_text(footer, "X-AIOS ESL System");
-    lv_obj_set_style_text_color(footer, lv_color_hex(0xCCCCCC), 0);
-    lv_obj_align(footer, LV_ALIGN_BOTTOM_MID, 0, -20);
-
-    /* ???? */
-    lv_obj_invalidate(scr);
-    lv_timer_handler();
-    lv_timer_handler();
-
-    save_bmp("/tmp/lvgl_screenshot.bmp");
     return 0;
 }

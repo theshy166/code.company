@@ -3,6 +3,7 @@
 
 #include "lvgl/lvgl.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +19,8 @@ extern "C" {
  * @param path      字体文件路径（可为 NULL）
  * @param style     样式选择器（0=正常）
  */
-void qua_xos_ft_init_with_size_path(lv_font_t **font_out, int size, const char *path, int style);
+void qua_xos_ft_init_with_size_path(lv_font_t **font_out, short size, const char *path, short style);
+const char *sim_get_device_serial(void);
 
 /* ========================
    qm_wifi_cfg.h (WiFi)
@@ -42,9 +44,15 @@ void qm_backlight_setbri(int brightness);
    ======================== */
 int xos_lcm_get_screen_num(void);
 int xos_logo_update(const char *path);
-void xos_esl_ui_init(void);
-void xos_esl_ui_init_2(void);
+/* xos_esl_ui_init / xos_esl_ui_init_2 由 page_esl.c 提供，不在此声明 */
 const char *xos_get_sn(void);
+lv_display_t *lv_display_get_1st_scr(void);
+lv_display_t *lv_display_get_2nd_scr(void);
+
+/* ========================
+   模拟器字体初始化（必须在 UI 创建前调用）
+   ======================== */
+void sim_init_fonts(void);
 
 /* ========================
    serial_number.h
@@ -68,33 +76,34 @@ lv_obj_t *qm_image_create(lv_obj_t *parent);
    ======================== */
 int param_get_int(const char *key, int def);
 const char *param_get_string(const char *key, const char *def);
-
-/* ========================
-   LED 状态
-   ======================== */
-void show_green_led_sync(void);
-void clear_green_led_sync(void);
+int param_set_int(const char *key, int val);
+int param_set_string(const char *key, const char *val);
+int param_save(void);
 
 /* ========================
    图片/多媒体
    ======================== */
 int is_jpg(const char *path);
 int is_png(const char *path);
-int decode_jpeg_with_turbo(const char *path, unsigned char **out, int *w, int *h);
+unsigned char *decode_jpeg_with_turbo(const char *path, int *w, int *h, bool use_mmz, unsigned int *mmz_phy_buf);
 int download_image(const char *url, const char *save_path);
 
 /* ========================
    LOS 视频播放器
    ======================== */
-void *los_player_create2(int x, int y, int w, int h, const char *url, int idx);
-void los_set_progress_callback(void *player, void *cb);
-int los_videoplayer_quit(void *player);
+void *los_player_create2(lv_obj_t *parent, const char *path, lv_area_t area,
+                         bool auto_restart, bool auto_center, int display_idx, int rotation);
+void los_set_progress_callback(void (*progress_cb)(void *user, int purpose, int64_t ct));
+void los_player_stop(void *player);
+void los_player_destroy2(void *player, int display_idx);
+void los_videoplayer_quit(int display_id);
 
 /* ========================
    PNG 编码/处理
    ======================== */
-int qm_png2param_create(const char *path, void **out, int *len);
-int qm_png2param_create_v2(const char *path, void **out, int *len, int w, int h);
+int qm_png2param_create(const char *path, uint8_t **out, int *w, int *h, lv_color_format_t *cf,
+                        bool use_mmz, unsigned int *mmz_phy_buf, bool need_reencode);
+int qm_png2param_create_v2(const char *path, uint8_t **out, int scale_width, int scale_height, bool need_reencode);
 void *qm_pngencoder(const unsigned char *data, int w, int h, int bpp, int *len);
 int qm_get_png_size(const char *path, int *w, int *h);
 

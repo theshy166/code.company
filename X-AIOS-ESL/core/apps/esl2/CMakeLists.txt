@@ -3,6 +3,7 @@ set(LIB_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/view/h5esl_native.c
   ${CMAKE_CURRENT_SOURCE_DIR}/view/h5esl_web.c
   ${CMAKE_CURRENT_SOURCE_DIR}/view/page_esl.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/view/page_overlay.c
   ${CMAKE_CURRENT_SOURCE_DIR}/view/page_footer.c
   ${CMAKE_CURRENT_SOURCE_DIR}/view/qm_2_label.c
   ${CMAKE_CURRENT_SOURCE_DIR}/view/qm_3_label.c

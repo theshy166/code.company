@@ -33,6 +33,7 @@
 #define LV_USE_THEME_MONO 1
 #define LV_USE_LABEL 1
 #define LV_USE_FREETYPE 1
-#define LV_USE_SDL 0
+#define LV_USE_SDL 1
+#define LV_USE_QRCODE 1
 #endif
 #endif

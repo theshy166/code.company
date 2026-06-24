@@ -43,6 +43,7 @@
 #include "qm_gpio.h"
 #endif
 #include "page_footer.h"
+#include "page_overlay.h"
 #include "qua_param.h"
 #include "esl_ui_show.h"
 #include "esl_ui_struct.h"
@@ -225,6 +226,9 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
     #endif
     free_esl_base_model(model);
     set_show_green_led(index,0);
+    if (index == 1) {
+        page_overlay_show_demo_video();
+    }
     QM_ESL2_LOG("show_ui EXIT!!");
 }
 
@@ -1224,7 +1228,8 @@ void xos_esl_ui_init(void){
     }
     QM_ESL2_LOG("_disp->act_scr111111111111=%p\n",_disp->act_scr);
     _init_ui(_disp->act_scr,1,1);
-    init_show_page_footer_ui(_disp->sys_layer,1);  
+    init_show_page_footer_ui(_disp->sys_layer,1);
+    page_overlay_raise(1);
 }
 
 void xos_esl_ui_init_2(void){
