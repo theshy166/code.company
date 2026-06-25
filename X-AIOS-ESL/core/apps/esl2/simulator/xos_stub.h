@@ -108,6 +108,14 @@ void *qm_pngencoder(const unsigned char *data, int w, int h, int bpp, int *len);
 int qm_get_png_size(const char *path, int *w, int *h);
 
 /* ========================
+   qme 图片解码 (硬件加速桩)
+   ======================== */
+void qme_img_fetch_by_path(const char *path, int display_id, int *width, int *height, lv_img_dsc_t **out_img_dsc);
+bool qme_img_get_jpeg(const char *image_path, int disp_width, int disp_height, int display_id, lv_img_dsc_t **out_img_dsc);
+void qme_img_encape_bits_to_imgdsc(char *file_path, unsigned char *buffer, unsigned int phy_buf,
+                                    int w, int h, int display_id, lv_img_dsc_t **out_img_dsc);
+
+/* ========================
    升级相关
    ======================== */
 int qm_updater_change_text_label(const char *text);

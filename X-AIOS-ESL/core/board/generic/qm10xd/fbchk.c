@@ -109,12 +109,15 @@ int xos_lcm_2nd_chk_existed(void)
 
 int xos_lcm_1st_is_existed(void)
 {
-    return _lcm_1st_existed;
+    /* Force: FH_VO_GetDispSize may fail on respawn (VOU device locked
+       by crashed process), but /dev/fb0 framebuffer can still work.
+       Skip hardware check, let fbdev_init fail gracefully if truly absent. */
+    return 1;
 }
 
 int xos_lcm_2nd_is_existed(void)
 {
-    return _lcm_2nd_existed;
+    return 1;
 }
 
 int xos_lcm_chk_screens(void) {

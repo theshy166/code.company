@@ -919,6 +919,92 @@ cleanup:
 }
 
 /* ========================
+   qme 图片解码 (硬件加速桩)
+   ======================== */
+
+/* 硬件缓存查询 — 模拟器无硬件缓存，返回 NULL 让调用者走软件解码路径 */
+void qme_img_fetch_by_path(const char *path, int display_id, int *width, int *height, lv_img_dsc_t **out_img_dsc)
+{
+    (void)path;
+    (void)display_id;
+    printf("[STUB] qme_img_fetch_by_path: %s display=%d → not cached\n",
+           path ? path : "NULL", display_id);
+    if (width) *width = 0;
+    if (height) *height = 0;
+    if (out_img_dsc) *out_img_dsc = NULL;
+}
+
+/* JPEG 解码桩 — 用 libjpeg-turbo 模拟硬件解码，生成 BGRA8888 格式（与 qm_png2param_create 一致） */
+bool qme_img_get_jpeg(const char *image_path, int disp_width, int disp_height,
+                      int display_id, lv_img_dsc_t **out_img_dsc)
+{
+    char resolved[512] = {0};
+    const char *real_path = resolve_resource_path(image_path, resolved, sizeof(resolved));
+
+    (void)disp_width;
+    (void)disp_height;
+    (void)display_id;
+
+    printf("[STUB] qme_img_get_jpeg: %s -> %s display=%d\n",
+           image_path ? image_path : "NULL", real_path ? real_path : "NOT_FOUND", display_id);
+
+    if (!real_path || !out_img_dsc) return false;
+
+    int w = 0, h = 0;
+    unsigned char *pixels = decode_jpeg_with_turbo(real_path, &w, &h, false, NULL);
+    if (!pixels || w <= 0 || h <= 0) return false;
+
+    /* decode_jpeg_with_turbo 输出 RGBA → 转成 BGRA 与 PNG 路径一致 */
+    rgba_to_bgra(pixels, (size_t)w * h);
+
+    lv_img_dsc_t *img_dsc = calloc(1, sizeof(lv_img_dsc_t));
+    if (!img_dsc) {
+        free(pixels);
+        return false;
+    }
+
+    img_dsc->header.magic  = LV_IMAGE_HEADER_MAGIC;
+    img_dsc->header.cf     = LV_COLOR_FORMAT_ARGB8888;
+    img_dsc->header.w      = (uint32_t)w;
+    img_dsc->header.h      = (uint32_t)h;
+    img_dsc->header.stride = (uint32_t)(w * 4);
+    img_dsc->data          = pixels;
+    img_dsc->data_size     = (uint32_t)(w * h * 4);
+
+    *out_img_dsc = img_dsc;
+    printf("[STUB] qme_img_get_jpeg: success %dx%d %p\n", w, h, (void *)img_dsc);
+    return true;
+}
+
+/* 将已解码的 ARGB/BGRA 像素缓冲区封装为 lv_img_dsc_t */
+void qme_img_encape_bits_to_imgdsc(char *file_path, unsigned char *buffer, unsigned int phy_buf,
+                                    int w, int h, int display_id, lv_img_dsc_t **out_img_dsc)
+{
+    (void)file_path;
+    (void)display_id;
+    (void)phy_buf;
+
+    printf("[STUB] qme_img_encape_bits_to_imgdsc: %dx%d buf=%p display=%d\n",
+           w, h, (void *)buffer, display_id);
+
+    if (!buffer || !out_img_dsc || w <= 0 || h <= 0) return;
+
+    lv_img_dsc_t *img_dsc = calloc(1, sizeof(lv_img_dsc_t));
+    if (!img_dsc) return;
+
+    img_dsc->header.magic  = LV_IMAGE_HEADER_MAGIC;
+    img_dsc->header.cf     = LV_COLOR_FORMAT_ARGB8888;
+    img_dsc->header.w      = (uint32_t)w;
+    img_dsc->header.h      = (uint32_t)h;
+    img_dsc->header.stride = (uint32_t)(w * 4);
+    img_dsc->data          = buffer;
+    img_dsc->data_size     = (uint32_t)(w * h * 4);
+
+    *out_img_dsc = img_dsc;
+    printf("[STUB] qme_img_encape_bits_to_imgdsc: success %p\n", (void *)img_dsc);
+}
+
+/* ========================
    升级相关
    ======================== */
 int qm_updater_change_text_label(const char *text)

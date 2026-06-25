@@ -1,6 +1,9 @@
 #include <fcntl.h>
 #include "losplayer.h"
 #include <pthread.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #if defined(CONFIG_XOS_FWK_PLAYER) && CONFIG_XOS_FWK_PLAYER != 0
 #if !defined(BUILD_SIMULATOR) || BUILD_SIMULATOR == 0
@@ -60,6 +63,25 @@ static const QUA_CHAR* display_id[] = {
 #endif
 #endif
 //*****
+
+static void xos_player_debug_log(const char *fmt, ...)
+{
+    va_list ap;
+
+    va_start(ap, fmt);
+    vprintf(fmt, ap);
+    va_end(ap);
+
+#if !defined(BUILD_SIMULATOR) || BUILD_SIMULATOR == 0
+    FILE *fp = fopen("/data/overlay_debug.log", "a");
+    if (fp != NULL) {
+        va_start(ap, fmt);
+        vfprintf(fp, fmt, ap);
+        va_end(ap);
+        fclose(fp);
+    }
+#endif
+}
 
 ////////////////////implements//////////////////////////
 #if !defined(BUILD_SIMULATOR) || BUILD_SIMULATOR == 0
@@ -324,23 +346,35 @@ void *los_player_create2(lv_obj_t *parent, const char * videoPath, lv_area_t are
     QUA_BOOL pos_cb = QUA_TRUE;
 
     char *new_videoPath = (char *)videoPath;
-    if (videoPath[0] != '/') {
+    const char *fs_videoPath = videoPath;
+    if (strncmp(videoPath, "H:", 2) == 0) {
+        new_videoPath = (char *)videoPath + 2;
+        fs_videoPath = new_videoPath;
+        printf("new src_filename: %s\n", new_videoPath);
+    } else if (videoPath[0] != '/') {
         while(*new_videoPath != '/' && *new_videoPath!= '\0') {
             new_videoPath++;
         }
+        fs_videoPath = new_videoPath;
 
         printf("new src_filename: %s\n", new_videoPath);
     }
     else {
         printf("start src_filename: %s\n", videoPath);
     }
+    xos_player_debug_log("[XOSPLAYER] create2 raw=%s new=%s display=%d area=(%d,%d,%d,%d) rotation=%d access=%d\n",
+                         videoPath, new_videoPath, display_idx,
+                         area.x1, area.y1, area.x2, area.y2, rotation,
+                         access(fs_videoPath, R_OK));
     player = qua_mm_player_create(new_videoPath);
     if (player == NULL) {
+        xos_player_debug_log("[XOSPLAYER] qua_mm_player_create failed path=%s\n", new_videoPath);
         LV_LOG_ERROR("player: %p\n", player);
         goto fail;
     }
     ret = qua_mm_player_set_data_source(player, new_videoPath);
     if (ret != 0) {
+        xos_player_debug_log("[XOSPLAYER] set_data_source failed ret=%d path=%s\n", ret, new_videoPath);
         printf("player: set_data_source fail\n");
         goto fail;
     }
@@ -358,6 +392,13 @@ void *los_player_create2(lv_obj_t *parent, const char * videoPath, lv_area_t are
     qua_rect_t rect, disp_rect, hole_rect;
     int disp_width, disp_height;
     qua_mm_player_get_parameter(player, KEY_PARAMETER_VIDEO_SIZE, (QUA_VOID_PTR)&size);
+    if (size.width <= 0 || size.height <= 0) {
+        size.width = area.x2 - area.x1 + 1;
+        size.height = area.y2 - area.y1 + 1;
+        xos_player_debug_log("[XOSPLAYER] video_size unavailable, fallback width=%d height=%d\n",
+                             size.width, size.height);
+    }
+    xos_player_debug_log("[XOSPLAYER] video_size width=%d height=%d\n", size.width, size.height);
     #if defined(CONFIG_XOS_USE_APP_NATIVE_ESL) || defined(CONFIG_XOS_APP_ESL2)
     #else
     if( size.width * size.height > 1920 * 1080){
@@ -403,11 +444,13 @@ void *los_player_create2(lv_obj_t *parent, const char * videoPath, lv_area_t are
     // s_qmplayer = player;
     ret = qua_mm_player_prepare(player);
     if (ret != 0) {
+        xos_player_debug_log("[XOSPLAYER] prepare failed ret=%d path=%s\n", ret, new_videoPath);
         LV_LOG_ERROR("player: prepare fail. ret=%d\n", ret);
         goto fail;
     }
     ret = qua_mm_player_set_callback(player, my_call_back, player);
     if (ret != 0) {
+        xos_player_debug_log("[XOSPLAYER] set_callback failed ret=%d\n", ret);
         LV_LOG_ERROR("player: set_callback fail. ret=%d\n", ret);
         goto fail;
     }
@@ -427,8 +470,11 @@ void *los_player_create2(lv_obj_t *parent, const char * videoPath, lv_area_t are
         fbdev2_set_hole(hole_rect.x, hole_rect.y, hole_rect.width, hole_rect.height);
     }
     #endif
+    xos_player_debug_log("[XOSPLAYER] start success player=%p display=%d hole=(%d,%d,%d,%d)\n",
+                         player, display_idx, hole_rect.x, hole_rect.y, hole_rect.width, hole_rect.height);
     return player;
 fail:
+    xos_player_debug_log("[XOSPLAYER] fail cleanup player=%p\n", player);
     qua_mm_player_destroy(player);
     // s_qmplayer = NULL;
     return NULL;
@@ -813,4 +859,3 @@ int xos_player_prepare(void *player){
     #endif
     return 0;
 }
-

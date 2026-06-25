@@ -10,6 +10,8 @@ int page_overlay_show_image(int screen_index, const char *image_path);
 void page_overlay_raise(int screen_index);
 void page_overlay_hide(int screen_index);
 
+void page_overlay_show_demo_video_on_screen(int screen_index);
+void page_overlay_show_demo_image_on_screen(int screen_index);
 void page_overlay_show_demo_video(void);
 
 #ifdef __cplusplus

@@ -62,6 +62,7 @@
 //callback function
 static void app_event_handler(lv_event_t *event);
 static void create_ui(void);
+static void try_start_adbd(void);
 
 
 #ifdef CONFIG_XOS_FWK_APPMANAGER
@@ -88,6 +89,23 @@ shelf_data_t s_shelf_data[] = {
 /*=====================
  *  STATIC functions
  *====================*/
+
+static void try_start_adbd(void)
+{
+#if !defined(BUILD_SIMULATOR) || BUILD_SIMULATOR == 0
+    static const char *const cmds[] = {
+        "pidof adbd >/dev/null 2>&1 || /usr/bin/adbd >/dev/null 2>&1 &",
+        "pidof adbd >/dev/null 2>&1 || adbd >/dev/null 2>&1 &",
+        "pidof adbd >/dev/null 2>&1 || /usr/sbin/adbd >/dev/null 2>&1 &",
+        "pidof adbd >/dev/null 2>&1 || /sbin/adbd >/dev/null 2>&1 &",
+        "pidof adbd >/dev/null 2>&1 || /bin/adbd >/dev/null 2>&1 &",
+    };
+
+    for (size_t i = 0; i < sizeof(cmds) / sizeof(cmds[0]); ++i) {
+        system(cmds[i]);
+    }
+#endif
+}
 
 /**
  * @brief 销毁 ESL 应用 UI 资源
@@ -314,13 +332,15 @@ static void create_ui(void)
     init_group_map();                           // 初始化设备分组哈希表（主设备管理从设备）
     init_push_id_map();                         // 初始化推送消息 ID 去重映射表
 
-    // 仅在真机模式（非模拟器）下启动 WiFi
+    // 仅在真机模式（非模拟器）下启动 WiFi。
+    // 调试部署时写入 /data/.skip_wifi_restart，避免重启 WiFi 导致网络 ADB 掉线。
     #if !defined(BUILD_SIMULATOR) || BUILD_SIMULATOR == 0
         if (access("/data/.skip_wifi_restart", F_OK) == 0) {
             QM_ESL2_LOG("skip wifi restart for adb debug");
         } else {
-            qm_connection_wifi_restart();      // 重启 WiFi 连接 —— 触发 wpa_supplicant
+            qm_connection_wifi_restart();  // 重启 WiFi 连接 —— 触发 wpa_supplicant
         }
+        try_start_adbd();                  // 调试固件上尽量保持网络 ADB 可用
     #endif
 
     QM_ESL2_LOG("============= func:%s ,line:%d ==================当前时间 current_time:%ld\n",__func__, __LINE__,current_time);

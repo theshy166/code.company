@@ -211,9 +211,35 @@ void fbdev_flush(lv_display_t *drv, const lv_area_t *area, uint8_t *color_p)
     fb_surface.crop_h = h;
     trans.conversion = 1;
     ret = qua_gl_transform(&trans, &src_surface, &fb_surface);
-    if (ret == QUA_FALSE)
+    if (ret == QUA_FALSE) {
         printf("%s, transform failed clip_area=[%d,%d,%d,%d] buf_area=[%d,%d,%d,%d]\n", __func__,
             area->x1, area->y1, area->x2, area->y2, buf_area.x1, buf_area.y1, buf_area.x2, buf_area.y2);
+        /* CPU fallback: ARGB8888 → ARGB1555 */
+        uint8_t *src = lvgl_surface.data;
+        uint8_t *dst = fb_surface.data;
+        int src_stride_bytes = lvgl_surface.stride * 4;
+        int dst_stride_bytes = fb_surface.stride * 2;
+        int written_rows = 0;
+        for (int row = 0; row < h; row++) {
+            uint8_t *src_row = src + ((size_t)(src_surface.crop_y + row) * src_stride_bytes);
+            uint8_t *dst_row = dst + ((size_t)(fb_surface.crop_y + row) * dst_stride_bytes);
+            for (int col = 0; col < w; col++) {
+                uint8_t *sp = src_row + ((size_t)(src_surface.crop_x + col) * 4);
+                uint8_t r = sp[2], g = sp[1], b = sp[0];
+                uint16_t *dp = (uint16_t *)(dst_row + ((size_t)(fb_surface.crop_x + col) * 2));
+                *dp = (uint16_t)(((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3));
+            }
+            written_rows++;
+        }
+        /* sample first pixel of first region */
+        if (area->y1 < 160 && area->x1 == 0) {
+            uint8_t *sp0 = src + ((size_t)(src_surface.crop_y) * src_stride_bytes) + ((size_t)(src_surface.crop_x) * 4);
+            uint16_t *dp0 = (uint16_t *)(dst + ((size_t)(fb_surface.crop_y) * dst_stride_bytes) + ((size_t)(fb_surface.crop_x) * 2));
+            printf("%s CPU fallback: pixel0 src_rgba=[%02x,%02x,%02x,%02x] dst_argb1555=%04x rows=%d lvgl=%p fb=%p\n",
+                   __func__, sp0[2], sp0[1], sp0[0], sp0[3], *dp0, written_rows,
+                   (void *)lvgl_surface.data, (void *)fb_surface.data);
+        }
+    }
 
     fb_surface.crop_x = 0;
     fb_surface.crop_y = 0;

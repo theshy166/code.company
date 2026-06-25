@@ -211,6 +211,7 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
             show_empty_ui_2(top);
         }
         set_show_green_led(index,0);
+        page_overlay_show_demo_video_on_screen(index);
         return;
     }
 
@@ -226,9 +227,7 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
     #endif
     free_esl_base_model(model);
     set_show_green_led(index,0);
-    if (index == 1) {
-        page_overlay_show_demo_video();
-    }
+    page_overlay_show_demo_video_on_screen(index);
     QM_ESL2_LOG("show_ui EXIT!!");
 }
 
@@ -536,6 +535,7 @@ static void _show_empty_ui(lv_obj_t * bg,int bg_index){
 
     free(data);
     cJSON_Delete(json);
+    page_overlay_show_demo_video_on_screen(bg_index);
     QM_ESL2_LOG("_show_empty_ui EXIT!! bg_index:%d",bg_index);
 }
 
@@ -572,6 +572,7 @@ static void _query_data_and_show_ui_local(lv_obj_t * act,int bg_index){
         } else if (bg_index == 2) {
             show_empty_ui_2(act);
         }
+        page_overlay_show_demo_video_on_screen(bg_index);
         return;
     }
 
@@ -754,142 +755,165 @@ static void _init_esl_token(int bg_index){
     free_esl_token_model(data);
 }
 
+/**
+ * @brief ★ 初始化 ESL 设备的 MQTT 连接 — 设备启动时的核心初始化流程
+ *
+ * ┌──────────────── 初始化流程图 ────────────────┐
+ * │                                                │
+ * │  1. 收集设备信息（SN、IP、版本、WiFi、token）   │
+ * │      ↓                                         │
+ * │  2. HTTP 请求云平台 → query_push_server2()      │
+ * │      ↓ 返回 esl_push_server_data2               │
+ * │      │  ├─ master: 是否为主设备                  │
+ * │      │  ├─ mqtt:   MQTT的连接参数（host/port/   │
+ * │      │  │         用户名/密码/client_id/topic）  │
+ * │      │  ├─ bootLogo: 开机Logo下载地址            │
+ * │      │  └─ group:  设备分组信息                  │
+ * │      │                                         │
+ * │  3. 检查 query 结果：                           │
+ * │      ├─ data == NULL       → 重启设备          │
+ * │      ├─ query_success == -1 → 返回失败         │
+ * │      └─ 正常 → 下载Logo + 保存分组ID            │
+ * │      ↓                                         │
+ * │  4. 判断设备角色：                              │
+ * │      ├─ master == false → 从设备（暂未处理）    │
+ * │      └─ master == true  → ★ 连接 MQTT          │
+ * │           ├─ 填充 AiDevInfo（MQTT 连接参数）     │
+ * │           ├─ init_mqtt()     → 建立 MQTT 连接   │
+ * │           ├─ register_connect_cb() → 连接回调   │
+ * │           ├─ register_repose_cb() → ★ 消息回调  │
+ * │           └─ _start_check_life_thread() → 探活  │
+ * └────────────────────────────────────────────────┘
+ *
+ * 关键概念：
+ *   - 「主设备」：负责 MQTT 连接的设备（双屏中只有一个）
+ *   - 「从设备」：不直连 MQTT，由主设备通过 Socket 转发消息
+ *   - 本函数只在主设备上执行 MQTT 初始化，从设备走 broadcast 路径
+ *
+ * @param bg        LVGL 背景对象
+ * @param bg_index  屏幕索引（1=屏幕1, 2=屏幕2）
+ * @return 1=成功, 0=将要重启, -1=失败
+ */
 static int _init_esl_mqtt(lv_obj_t * bg,int bg_index){
 
-    char * device_sn = get_device_sn(bg_index);
+    // ===== Step 1: 收集设备信息 =====
+    char * device_sn = get_device_sn(bg_index);          // 设备序列号（如 D1S920H73ODI667_1）
     char ip[NI_MAXHOST] = {0};
-    get_local_ip(ip, NI_MAXHOST);
+    get_local_ip(ip, NI_MAXHOST);                        // 本机 IP 地址
     QM_ESL2_LOG("Local IP address: %s\n", ip);
+
+    // 构造版本号字符串（格式：V2.0.3.000）
     char version[32] = {0};
     #if defined(BUILD_SIMULATOR) && BUILD_SIMULATOR == 1
-        #define CONFIG_BUILD_ID "1112136"
+        #define CONFIG_BUILD_ID "1112136"                // 模拟器的构建ID
         #define CONFIG_QM_VERSION "V1.0.1"
-
     #else
-
         #ifndef CONFIG_BUILD_ID
-        #define CONFIG_BUILD_ID "000"
+        #define CONFIG_BUILD_ID "000"                    // 默认构建ID
         #endif
-
     #endif
     snprintf(version,sizeof(version),"%s.%s",CONFIG_QM_VERSION,CONFIG_BUILD_ID);
-    char * ssid = get_ssid_2();
-    int esl_type = get_esl_type();
-    char * token = get_token();
+
+    char * ssid = get_ssid_2();           // 当前连接的 WiFi SSID
+    int esl_type = get_esl_type();        // ESL 协议类型（1=旧协议, 2/3=新协议）
+    char * token = get_token();           // 设备认证 Token
+
+    // ===== Step 2: ★ HTTP 请求云平台，获取推送服务器配置 =====
+    // 返回的数据包含 MQTT 连接参数、设备角色、分组信息、开机Logo等
     esl_push_server_data2 * data = query_push_server2(device_sn,ssid,ip,version,esl_type,token);
+
+    // ===== Step 3: 处理 query 结果 =====
     if(data == NULL){
+        // ★ 查询失败：无法获取推送服务器配置 → 重启设备重试
         #if 0
+            // 旧方案：走 Socket 广播获取配置（已废弃）
             // 检查线程是否已经创建
-            pthread_mutex_lock(&broadcast_mutex);
-            if (!thread_created) {
-                // 创建参数结构体
-                socket_send_info_t *args = (socket_send_info_t *)malloc(sizeof(socket_send_info_t));
-                if (args == NULL) {
-                    QM_ESL2_ELOG("Failed to allocate memory for thread arguments");
-                    pthread_mutex_unlock(&broadcast_mutex);
-                    return -1;
-                }
-                args->group_id = 0;
-                args->device_sn = device_sn;
-                args->ip = strdup(ip);
-                // 创建线程
-                pthread_t thread_id;
-                if (pthread_create(&thread_id, NULL, timer_thread_function, args) != 0) {
-                    QM_ESL2_ELOG("Failed to create thread");
-                    pthread_mutex_unlock(&broadcast_mutex);
-                    return -1;
-                }
-                // 分离线程，使其在终止时自动释放资源
-                pthread_detach(thread_id);
-                thread_created = 1; // 标记线程已创建
-            }
-            pthread_mutex_unlock(&broadcast_mutex);
+            ...
         #endif
         QM_ESL2_LOG("query_push_server2 is NULL, restarting device!");
         pthread_t thread_id;
-        pthread_create(&thread_id, NULL, reboot_thread, NULL);
+        pthread_create(&thread_id, NULL, reboot_thread, NULL);  // 开线程重启
         pthread_detach(thread_id);
         return 0;
+
     }else if(data->query_success == -1){
+        // ★ 服务器返回失败（-1）：通常是认证/授权问题
         free(data);
         QM_ESL2_LOG("data->query_success is -1!!!!!!!!!!!!!");
         return -1;
+
     }else {
+        // ★ 查询成功：处理返回的数据
         #if 1
+            // 下载开机 Logo 图片（如果服务器配置了的话）
             char * boot_logo_url = data->bootLogo.url;
             if(!is_string_empty(boot_logo_url)){
-                //开启线程下载图片，并且替换原来的图片
-                //boot_logo_url:http://xunmaotemp.oss-cn-hangzhou.aliyuncs.com/uploads/undefined/20241107/a47cf0979e963fd176d5a02b08a2fb97.jpg
+                // 开启线程异步下载Logo图片，不阻塞当前线程
                 pthread_t download_thread;
                 download_image_args_t *download_image_args = malloc(sizeof(download_image_args_t));
                 download_image_args->boot_logo_url = strdup(boot_logo_url);
                 download_image_args->bg_index = bg_index;
                 pthread_create(&download_thread, NULL, _download_image_thread, download_image_args);
-                pthread_detach(download_thread);
+                pthread_detach(download_thread);  // 分离线程，自动回收资源
             }
         #endif
+        // 保存分组 ID（用于后续的广播/子设备管理）
         if(bg_index == 1){
-            _group_id_1 = data->group.id;
+            _group_id_1 = data->group.id;          // 屏幕1的分组ID
         }else if(bg_index == 2){
-            _group_id_2 = data->group.id;
+            _group_id_2 = data->group.id;          // 屏幕2的分组ID
         }
     }
+
+    // ===== Step 4: ★ 判断设备角色 → 初始化 MQTT =====
     if(!data->master){
+        // 从设备：不直连 MQTT，等待主设备通过 Socket 转发消息
+        // （当前版本从设备逻辑被 #if 0 禁用了）
         #if 0
-            pthread_mutex_lock(&broadcast_mutex);
-            // 检查线程是否已经创建
-            if (!thread_created) {
-                // 创建参数结构体
-                socket_send_info_t *args = (socket_send_info_t *)malloc(sizeof(socket_send_info_t));
-                if (args == NULL) {
-                    QM_ESL2_ELOG("Failed to allocate memory for thread arguments");
-                    pthread_mutex_unlock(&broadcast_mutex);
-                    return -1;
-                }
-                args->group_id = data->group_id;
-                args->device_sn = device_sn;
-                args->ip = strdup(ip);
-                // 创建线程
-                pthread_t thread_id;
-                if (pthread_create(&thread_id, NULL, timer_thread_function, args) != 0) {
-                    QM_ESL2_ELOG("Failed to create thread");
-                    pthread_mutex_unlock(&broadcast_mutex);
-                    return -1;
-                }
-                // 分离线程，使其在终止时自动释放资源
-                pthread_detach(thread_id);
-                thread_created = 1; // 标记线程已创建
-            }
-            pthread_mutex_unlock(&broadcast_mutex);
+            // 旧方案：从设备通过广播获取配置
+            ...
         #endif
     }else{
-        _master_device_no = strdup(device_sn);
-        _master_group_id = data->group.id;
-        _is_master = 1;
-        set_master_device_sn(device_sn);
+        // ★★★ 主设备：初始化 MQTT 连接 ★★★
+        _master_device_no = strdup(device_sn);     // 保存主设备SN
+        _master_group_id = data->group.id;          // 保存分组ID
+        _is_master = 1;                             // 标记本机为主设备
+        set_master_device_sn(device_sn);            // 设置全局主设备SN
+
+        // 避免重复初始化：如果 MQTT 已经连接，直接返回
         if(_init_mqtt_status == 1){
             return 1;
         }
-        //连接mqtt
+
+        // ★ 填充 MQTT 连接参数（全部来自服务器返回的配置）
         AiDevInfo dev = {0};
-        dev.server_type = 1;
-        dev.hosturl = data->mqtt.host;
-        dev.port = data->mqtt.port;
-        dev.ac = data->mqtt.username;
-        dev.pw = data->mqtt.password;
-        dev.devsn = device_sn;
-        dev.clientid = data->mqtt.client_id;
-        dev.subscriber_topic = data->mqtt.topic;
-        dev.product_id = 3;
+        dev.server_type = 1;                        // 服务器类型
+        dev.hosturl = data->mqtt.host;             // MQTT Broker 地址
+        dev.port = data->mqtt.port;                // MQTT 端口（1883/8883）
+        dev.ac = data->mqtt.username;              // MQTT 认证用户名
+        dev.pw = data->mqtt.password;              // MQTT 认证密码
+        dev.devsn = device_sn;                     // 设备SN（用作部分标识）
+        dev.clientid = data->mqtt.client_id;       // MQTT Client ID（唯一标识）
+        dev.subscriber_topic = data->mqtt.topic;   // ★ MQTT 订阅主题（服务器推送消息到此 topic）
+        dev.product_id = 3;                         // 产品类型ID
+
+        // ★ 建立 MQTT 连接（见 mqtt_control.c 的 init_mqtt）
         init_mqtt(&dev);
+
+        // ★ 注册连接状态回调：当 MQTT 连接/断开时通知
         register_connect_cb(mqtt_connect_response);
+
+        // ★★★ 注册消息接收回调：MQTT Broker 推送消息 → mqtt_subscriber() ★★★
+        // 这是整个系统最重要的回调注册，所有云端指令都从这里进来
         register_repose_cb(mqtt_subscriber);
 
-        //开启探活线程
+        // 开启探活线程：定期检查 MQTT 连接是否存活，断线自动重连
         _start_check_life_thread();
-        _init_mqtt_status = 1;
+
+        _init_mqtt_status = 1;                      // 标记已初始化，防止重复
     }
-    free_esl_push_server_data2(data);
+
+    free_esl_push_server_data2(data);               // 释放服务器返回的数据
     return 1;
 }
 //网络状态指示灯控制接口函数
@@ -1230,6 +1254,7 @@ void xos_esl_ui_init(void){
     _init_ui(_disp->act_scr,1,1);
     init_show_page_footer_ui(_disp->sys_layer,1);
     page_overlay_raise(1);
+    page_overlay_raise(2);
 }
 
 void xos_esl_ui_init_2(void){
@@ -1243,6 +1268,7 @@ void xos_esl_ui_init_2(void){
     QM_ESL2_LOG("_disp->act_scr2222222222222222=%p\n",_disp->act_scr);
     _init_ui(_disp->act_scr,2,1); 
     init_show_page_footer_ui(_disp->sys_layer,2);
+    page_overlay_raise(2);
     //开启线程
     _start_thread();
 }
