@@ -208,9 +208,10 @@ int fbdev2_pan_disp(void)
 #ifdef CONFIG_XOS_PLAY_BOOTANIMATION
         int status = qua_request_bootanimation(QUA_BOOTANIMAION_CMD_QUERY_STATUS);
         if (status >= QUA_BOOTANIMAION_STATUS_UNKNOWN && status < QUA_BOOTANIMAION_STATUS_BOOT_FINISH) {
-            printf("%s, boot doesn't finish\n", __func__);
+            printf("%s: boot doesn't finish, status=%d\n", __func__, status);
             return -1;
         }
+        printf("%s: boot animation finished, status=%d\n", __func__, status);
 #else
         qua_vo_pub_attr_t dev_attr = {
             .bg_color = 0,
@@ -226,20 +227,33 @@ int fbdev2_pan_disp(void)
 
         QUA_S32 ret = g_vo_device->set_public_attr(vo_num, &dev_attr);
         if (ret != QUA_SUCCESS) {
-            printf("Error: set_public_attr return %d\n", ret);
+            printf("%s set_public_attr return %d\n", __func__, ret);
             return ret;
         }
 
         ret = g_vo_device->enable(vo_num);
         if (ret != QUA_SUCCESS) {
-            printf("Error: enable return %d\n", ret);
+            printf("%s enable return %d\n", __func__, ret);
             return ret;
         }
+        printf("%s VO enable ok, vo_num=%d\n", __func__, vo_num);
 #endif
         if (fb_dev->show(fb_dev, QUA_TRUE) != QUA_SUCCESS) {
-            printf("show failed\n");
+            printf("%s show failed\n", __func__);
             return -1;
         }
+        printf("%s show ok\n", __func__);
+
+        /* Re-apply alpha after VO enable (may have been reset) */
+        qua_fb_alpha_t alpha;
+        alpha.alpha_enable = QUA_TRUE;
+        alpha.alpha_channel = QUA_FALSE;
+        alpha.alpha0 = 0;
+        alpha.alpha1 = 255;
+        alpha.global_alpha = 255;
+        alpha.reserved = 0;
+        fb_dev->put_alpha(fb_dev, &alpha);
+        printf("%s alpha set to 255\n", __func__);
 
         is_first_frame = 0;
     }

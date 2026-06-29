@@ -43,7 +43,7 @@
 #include "qm_gpio.h"
 #endif
 #include "page_footer.h"
-#include "page_overlay.h"
+/* #include "page_overlay.h" -- replaced with native MQTT-path demo overlay */
 #include "qua_param.h"
 #include "esl_ui_show.h"
 #include "esl_ui_struct.h"
@@ -58,6 +58,18 @@ extern esl_ui_struct_t g_ui_struct_2;
 
 extern void draw_border_for_debug(lv_obj_t *obj);
 extern void qme_set_render_status(int index, bool status);
+
+/* -- demo override: reuse the MQTT-template image/video component path when enabled -- */
+#define DEMO_VIDEO_SOURCE "13ad34351bdf701e9db0a1c53f2838ef_h264_800x640.mp4"
+#define DEMO_VIDEO_RAW_PATH "/data/res/img/" DEMO_VIDEO_SOURCE
+#define DEMO_VIDEO_MARKER "/data/.enable_video_overlay"
+#define DEMO_IMAGE_MARKER "/data/.enable_image_overlay"
+
+extern void *los_player_create2(lv_obj_t *parent, const char *path, lv_area_t area,
+                                bool auto_restart, bool auto_center, int display_idx, int rotation);
+extern void los_player_stop(void *player);
+extern void los_player_destroy2(void *player, int display_idx);
+extern void los_videoplayer_quit(int display_id);
 
 static lv_obj_t * tip_bg_1;
 static lv_obj_t * tip_bg_2;
@@ -201,6 +213,180 @@ static int compare_product_info_asc(void *a, void *b) {
     return (sort_a - sort_b);
 }
 
+/* ================================================================
+ * Demo override helpers.
+ *
+ * The demo is intentionally attached to the same bg object that normal
+ * MQTT templates use. If marker/resource is missing, these helpers do
+ * nothing and the normal UI remains visible.
+ * ================================================================ */
+
+typedef struct {
+    const char *fs_path;
+    const char *lvgl_path;
+} demo_image_candidate_t;
+
+static const demo_image_candidate_t s_demo_images[] = {
+    {"/data/res/img/video_frames/frame_001.png", "H:/data/res/img/video_frames/frame_001.png"},
+    {"/data/res/img/video_frames/frame_001.jpg", "H:/data/res/img/video_frames/frame_001.jpg"},
+};
+
+static void *s_demo_player[2] = {NULL, NULL};
+
+static int _demo_display_id(int screen_index)
+{
+    if (screen_index <= 1) {
+        return 0;
+    }
+    return 1;
+}
+
+static bool _demo_file_readable(const char *path)
+{
+    return path != NULL && access(path, R_OK) == 0;
+}
+
+static void _demo_native_video_path(int display_id, char *path, size_t size)
+{
+    snprintf(path, size, "/data/res/img/13ad34351bdf701e9db0a1c53f2838ef_h264_800x640_%d.mp4", display_id);
+}
+
+static const char *_find_demo_image_path(void)
+{
+    size_t count = sizeof(s_demo_images) / sizeof(s_demo_images[0]);
+    for (size_t i = 0; i < count; i++) {
+        if (_demo_file_readable(s_demo_images[i].fs_path)) {
+            return s_demo_images[i].lvgl_path;
+        }
+    }
+    return NULL;
+}
+
+static void _stop_demo_player_only(int screen_index)
+{
+    int display_id = _demo_display_id(screen_index);
+    void **player = &s_demo_player[display_id];
+    if (*player != NULL) {
+        los_player_stop(*player);
+        los_player_destroy2(*player, display_id);
+        *player = NULL;
+        printf("[DEMO] stopped direct player: screen=%d\n", screen_index);
+    }
+}
+
+static void _quit_demo_override(int screen_index)
+{
+    _stop_demo_player_only(screen_index);
+    los_videoplayer_quit(_demo_display_id(screen_index));
+}
+
+static bool _show_demo_video(lv_obj_t *bg, int screen_index)
+{
+    int display_id = _demo_display_id(screen_index);
+    char native_path[256] = {0};
+    _demo_native_video_path(display_id, native_path, sizeof(native_path));
+
+    if (_demo_file_readable(native_path)) {
+        esl_base_model_child_t item;
+        esl_base_model_t model;
+        char *video_urls[1] = {(char *)DEMO_VIDEO_SOURCE};
+
+        memset(&item, 0, sizeof(item));
+        memset(&model, 0, sizeof(model));
+        item.type = EslCompentTypeVIDEO;
+        item.content = (char *)DEMO_VIDEO_SOURCE;
+        item.x = 0;
+        item.y = 0;
+        item.w = 800;
+        item.h = 1280;
+
+        model.width = 800;
+        model.height = 1280;
+        model.video_urls = video_urls;
+        model.video_count = 1;
+
+        _quit_demo_override(screen_index);
+        handle_video_extension2(bg, &model, &item, display_id);
+        printf("[DEMO] native video override: screen=%d path=%s\n", screen_index, native_path);
+        return true;
+    }
+
+    if (!_demo_file_readable(DEMO_VIDEO_RAW_PATH)) {
+        printf("[DEMO] video marker set but file missing: %s or %s\n",
+               native_path, DEMO_VIDEO_RAW_PATH);
+        return false;
+    }
+
+    lv_area_t area = {.x1 = 0, .y1 = 0, .x2 = 799, .y2 = 1279};
+    _quit_demo_override(screen_index);
+    s_demo_player[display_id] = los_player_create2(bg, DEMO_VIDEO_RAW_PATH, area,
+                                                    true, false, display_id, 0);
+    if (s_demo_player[display_id] == NULL) {
+        printf("[DEMO] direct video player create failed: screen=%d path=%s\n",
+               screen_index, DEMO_VIDEO_RAW_PATH);
+        return false;
+    }
+
+    printf("[DEMO] direct video override: screen=%d player=%p path=%s\n",
+           screen_index, s_demo_player[display_id], DEMO_VIDEO_RAW_PATH);
+    return true;
+}
+
+static bool _show_demo_image(lv_obj_t *bg, int screen_index)
+{
+    int display_id = _demo_display_id(screen_index);
+    const char *image_path = _find_demo_image_path();
+
+    if (image_path == NULL) {
+        printf("[DEMO] image marker set but no demo image found\n");
+        return false;
+    }
+
+    esl_base_model_child_t item;
+    memset(&item, 0, sizeof(item));
+    item.type = EslCompentTypeIMAGE;
+    item.content = (char *)image_path;
+    item.x = 0;
+    item.y = 0;
+    item.w = 800;
+    item.h = 1280;
+
+    _quit_demo_override(screen_index);
+    handle_image_extension2(bg, &item, display_id);
+    printf("[DEMO] image override: screen=%d path=%s\n", screen_index, image_path);
+    return true;
+}
+
+/**
+ * Check demo marker files and show demo override if enabled.
+ * Priority:
+ *   1. video marker + readable video resource
+ *   2. image marker + readable image resource
+ *   3. no marker/resource: keep normal UI untouched
+ */
+static bool _maybe_show_demo_override(lv_obj_t *bg, int screen_index)
+{
+    if (bg == NULL || !lv_obj_is_valid(bg)) {
+        return false;
+    }
+
+    _stop_demo_player_only(screen_index);
+
+    if (access(DEMO_VIDEO_MARKER, F_OK) == 0) {
+        if (_show_demo_video(bg, screen_index)) {
+            return true;
+        }
+    }
+
+    if (access(DEMO_IMAGE_MARKER, F_OK) == 0) {
+        if (_show_demo_image(bg, screen_index)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int height,int index)
 {
     if(model == NULL){
@@ -211,7 +397,6 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
             show_empty_ui_2(top);
         }
         set_show_green_led(index,0);
-        page_overlay_show_demo_video_on_screen(index);
         return;
     }
 
@@ -227,13 +412,18 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
     #endif
     free_esl_base_model(model);
     set_show_green_led(index,0);
-    page_overlay_show_demo_video_on_screen(index);
+    lv_obj_t *bg = get_bg(index);
+    if (bg == NULL || !lv_obj_is_valid(bg)) {
+        bg = top;
+    }
+    _maybe_show_demo_override(bg, index);
     QM_ESL2_LOG("show_ui EXIT!!");
 }
 
 void async_show_ui(esl_base_model_t * model,lv_obj_t * top,int index){
     QM_ESL2_LOG("async_show_ui ENTRY!!");
     int display_id = index - 1;
+    _stop_demo_player_only(index);
     los_videoplayer_quit(display_id);
     set_top_hidden(index);
     QM_ESL2_LOG("--[recylemem]---qme_save_time_callback %d", display_id);
@@ -367,6 +557,7 @@ static void _async_show_ui_after_download(void * arg){
     int index = args->index;
 
     int display_id = index - 1;
+    _stop_demo_player_only(index);
     los_videoplayer_quit(display_id);
     set_top_hidden(index);
     _quit_empty_ui(index);
@@ -535,7 +726,7 @@ static void _show_empty_ui(lv_obj_t * bg,int bg_index){
 
     free(data);
     cJSON_Delete(json);
-    page_overlay_show_demo_video_on_screen(bg_index);
+    _maybe_show_demo_override(bg, bg_index);
     QM_ESL2_LOG("_show_empty_ui EXIT!! bg_index:%d",bg_index);
 }
 
@@ -562,6 +753,7 @@ static void _query_data_and_show_ui_local(lv_obj_t * act,int bg_index){
     int width = 0;
     int height = 0;
     int display_id = bg_index - 1;
+    _stop_demo_player_only(bg_index);
     los_videoplayer_quit(display_id);
 
     esl_base_model_t * model = query_esl_base_model_local(bg_index,device_sn);
@@ -572,7 +764,6 @@ static void _query_data_and_show_ui_local(lv_obj_t * act,int bg_index){
         } else if (bg_index == 2) {
             show_empty_ui_2(act);
         }
-        page_overlay_show_demo_video_on_screen(bg_index);
         return;
     }
 
@@ -1253,8 +1444,6 @@ void xos_esl_ui_init(void){
     QM_ESL2_LOG("_disp->act_scr111111111111=%p\n",_disp->act_scr);
     _init_ui(_disp->act_scr,1,1);
     init_show_page_footer_ui(_disp->sys_layer,1);
-    page_overlay_raise(1);
-    page_overlay_raise(2);
 }
 
 void xos_esl_ui_init_2(void){
@@ -1268,7 +1457,7 @@ void xos_esl_ui_init_2(void){
     QM_ESL2_LOG("_disp->act_scr2222222222222222=%p\n",_disp->act_scr);
     _init_ui(_disp->act_scr,2,1); 
     init_show_page_footer_ui(_disp->sys_layer,2);
-    page_overlay_raise(2);
+    /* page_overlay_raise removed: demo override is attached during UI rendering. */
     //开启线程
     _start_thread();
 }

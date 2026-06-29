@@ -45,6 +45,8 @@ qua_mm_system_ops_t *g_sys_ops = NULL;
 int g_screen_rotation = 0;
 unsigned long g_lvgl_phy = 0;
 void * g_lvgl_virt = NULL;
+unsigned long g_lvgl_phy2 = 0;
+void * g_lvgl_virt2 = NULL;
 lv_group_t * g_indev_group = NULL;
 static bool g_stop = false;
 
@@ -129,7 +131,7 @@ static QUA_S32 init_common_sys()
     vb_cfg.common_pools[0].block_cnt = 2;
 #ifdef CONFIG_XOS_FB_USE_ARGB1555
     vb_cfg.common_pools[1].block_size = DISP_BUF_SIZE;
-    vb_cfg.common_pools[1].block_cnt = 1;
+    vb_cfg.common_pools[1].block_cnt = 2;
 #endif
 #ifdef CONFIG_XOS_USE_HW_JPEG
     vb_cfg.common_pools[2].block_size = LV_USE_HOR_SIZE * LV_USE_VER_SIZE * 4;
@@ -145,22 +147,28 @@ static QUA_S32 init_common_sys()
 #ifdef CONFIG_XOS_FB_USE_ARGB1555
     QUA_U32 blk_handle;
 
+    /* When QUA_FALSE, VB pools may not exist; skip and let hal_init_v9 use fbdev_req_mem */
     blk_handle = sys_ops->vb_get_block(QUA_VB_INVALID_POOLID, DISP_BUF_SIZE, NULL);
-    if (blk_handle == QUA_VB_INVALID_HANDLE) {
-        LV_LOG_USER("Error: get lvgl vb failed");
-        return QUA_FAILURE;
+    if (blk_handle != QUA_VB_INVALID_HANDLE) {
+        g_lvgl_phy = sys_ops->vb_handle_to_phyaddr(blk_handle);
+        if (g_lvgl_phy != 0) {
+            g_lvgl_virt = sys_ops->sys_mmap(g_lvgl_phy, DISP_BUF_SIZE);
+        }
     }
-
-    g_lvgl_phy = sys_ops->vb_handle_to_phyaddr(blk_handle);
-    if (g_lvgl_phy == 0) {
-        LV_LOG_USER("Error: get lvgl phy addr failed");
-        return QUA_FAILURE;
-    }
-
-    g_lvgl_virt = sys_ops->sys_mmap(g_lvgl_phy, DISP_BUF_SIZE);
     if (g_lvgl_virt == NULL) {
-        LV_LOG_USER("Error: get lvgl virt addr failed");
-        return QUA_FAILURE;
+        LV_LOG_USER("init_common_sys: g_lvgl_virt is NULL, will use fbdev_req_mem\n");
+    }
+
+    /* second buffer for display 2 */
+    blk_handle = sys_ops->vb_get_block(QUA_VB_INVALID_POOLID, DISP_BUF_SIZE, NULL);
+    if (blk_handle != QUA_VB_INVALID_HANDLE) {
+        g_lvgl_phy2 = sys_ops->vb_handle_to_phyaddr(blk_handle);
+        if (g_lvgl_phy2 != 0) {
+            g_lvgl_virt2 = sys_ops->sys_mmap(g_lvgl_phy2, DISP_BUF_SIZE);
+        }
+    }
+    if (g_lvgl_virt2 == NULL) {
+        LV_LOG_USER("init_common_sys: g_lvgl_virt2 is NULL, will use fbdev2_req_mem\n");
     }
 #endif
 
@@ -209,6 +217,7 @@ if (qm_screen_global_enabled > 1 && xos_lcm_2nd_is_existed()){
     //memset(buf2_1, 0, DISP_BUF_SIZE);
     uint8_t *buf2_1 = fbdev2_req_mem(DISP_BUF_SIZE);
     LV_LOG_USER("fbdev2 FB pointer: %p\n", buf2_1);
+    LV_LOG_USER("fbdev2 LVGL buffer: %p (separate from fbdev1)\n", g_lvgl_virt2);
     lv_display_t *disp2 = lv_display_create(LV_LOGIC_HOR_SIZE, LV_LOGIC_VER_SIZE);
     lv_display_set_physical_resolution(disp2, LV_USE_HOR_SIZE, LV_USE_VER_SIZE);
     lv_display_set_screen_index(disp2, 1);
@@ -298,9 +307,11 @@ int main(void)
 {
     int retry_count;
     LV_LOG_USER("main %d\n", __LINE__);
+    printf("=== RAW FBDEV main start ===\n"); fflush(stdout);
     signal(SIGINT,  signal_handler);
     signal(SIGTERM, signal_handler);
     signal(SIGABRT, signal_handler);
+    printf("=== signals set ===\n"); fflush(stdout);
 
     #if LV_USE_PROFILER
     time_t rawtime;
@@ -318,8 +329,14 @@ int main(void)
     #endif
 
     #ifdef CONFIG_XOS_FWK_PARAM
+#ifdef CONFIG_XOS_USE_FB_RAW
+    printf("=== skipping param_init (raw fbdev mode) ===\n"); fflush(stdout);
+    g_screen_rotation = 0;
+#else
+    printf("=== param_init start ===\n"); fflush(stdout);
 	/* system param.ini */
 	param_init(QUA_PARAM_FILE_PATH);
+    printf("=== param_init done ===\n"); fflush(stdout);
 	/* product info */
 	LV_LOG_USER("product_name:%s, vendor:%s, b_num=%d\n",
 	param_get_string("sys.devinfo:product_name", NULL),
@@ -327,12 +344,20 @@ int main(void)
 	param_get_int("sys.devinfo:b_num", 0)
 	);
     g_screen_rotation = param_get_int("setting.photo:show_hor", 0);
+#endif
 	#endif
     lv_init();
+    printf("=== lv_init done ===\n"); fflush(stdout);
     init_screen_setting();
+    printf("=== init_screen_setting done ===\n"); fflush(stdout);
     xos_lcm_chk_screens();
+    printf("=== xos_lcm_chk_screens done ===\n"); fflush(stdout);
 
 #ifndef CONFIG_XOS_USE_DLMPI
+#ifdef CONFIG_XOS_USE_FB_RAW
+    LV_LOG_USER("Skipping init_common_sys/qua_gl_init (raw fbdev mode)\n");
+    printf("=== skipping MM init (raw mode) ===\n"); fflush(stdout);
+#else
     if (init_common_sys() != QUA_SUCCESS) {
         LV_LOG_USER("init_common_sys failed\n");
         return -1;
@@ -344,14 +369,17 @@ int main(void)
         return -1;
     }
 #endif
+#endif
 
     if(qm_screen_global_enabled > 0 && xos_lcm_1st_is_existed())
     {
+        printf("=== fbdev_init start ===\n"); fflush(stdout);
         retry_count = 0;
         while (retry_count < 5) {
             if (0 == access("/dev/fb0", F_OK)) {
                 sleep(1);
                 fbdev_init();
+                printf("=== fbdev_init done ===\n"); fflush(stdout);
                 break;
             } else {
                 retry_count++;
@@ -379,8 +407,9 @@ int main(void)
     }/*if(qm_screen_global_enabled > 1)*/
 
     LV_LOG_USER("%s 1\n", __func__);
-
+    printf("=== hal_init_v9 start ===\n"); fflush(stdout);
     hal_init_v9();
+    printf("=== hal_init_v9 done ===\n"); fflush(stdout);
     lv_tick_set_cb(__tick_get);
 
 #if (XOS_USE_APP_MANAGER != 0) && !defined(CONFIG_XOS_USE_DTEST)
@@ -417,7 +446,11 @@ int main(void)
     }/*if(qm_screen_global_enabled > 1)*/
 
 #ifndef CONFIG_XOS_USE_DLMPI
+#ifdef CONFIG_XOS_USE_FB_RAW
+    /* raw fbdev mode: no qua_gl to deinit */
+#else
     qua_gl_deinit();
+#endif
 #endif
 
 #if (XOS_USE_APP_MANAGER != 0) && !defined(CONFIG_XOS_USE_DTEST)

@@ -1,14 +1,11 @@
 list(APPEND BOARD_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/main.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/fbchk.c
 )
 
+message("===> Using RAW fbdev (no MM dependency)")
 list(APPEND BOARD_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/mouse_cursor_icon.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/fbdev_10xd.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/fbdev2_10xd.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/fbdev.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/fbdev2.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/fbchk.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/fbdev_raw.c
 )
 
 if (DEFINED CONFIG_XOS_USE_DLMPI)
@@ -199,6 +196,7 @@ endif()
 target_sources(${XOS_TARGET} PRIVATE ${BOARD_SRC})
 target_include_directories(${XOS_TARGET} PRIVATE ${BOARD_INC} ${XOS_INTERFACE_INC})
 target_compile_definitions(${XOS_TARGET} PUBLIC ${XOS_INTERFACE_DEF})
+target_compile_definitions(${XOS_TARGET} PRIVATE CONFIG_XOS_USE_FB_RAW CONFIG_XOS_USE_FB_DIRECT)
 
 target_link_libraries(${XOS_TARGET} ${XOS_INTERFACE_NAME} 
   xos_app
