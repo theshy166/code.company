@@ -59,47 +59,56 @@ extern esl_ui_struct_t g_ui_struct_2;
 extern void draw_border_for_debug(lv_obj_t *obj);
 extern void qme_set_render_status(int index, bool status);
 
-/* -- demo override: reuse the MQTT-template image/video component path when enabled -- */
-#define DEMO_VIDEO_SOURCE "13ad34351bdf701e9db0a1c53f2838ef_h264_800x640.mp4"
-#define DEMO_VIDEO_RAW_PATH "/data/res/img/" DEMO_VIDEO_SOURCE
-#define DEMO_VIDEO_MARKER "/data/.enable_video_overlay"
-#define DEMO_IMAGE_MARKER "/data/.enable_image_overlay"
+/* ================================================================
+ * Demo Override 配置：复用 MQTT 模板的图片/视频组件路径
+ * 通过标记文件控制是否启用演示覆盖显示
+ * ================================================================ */
 
+#define DEMO_VIDEO_SOURCE "d425b305eccd909c6072b25232130e2d_h264_800x640.mp4"  // 演示视频文件名
+#define DEMO_VIDEO_RAW_PATH "/data/res/img/" DEMO_VIDEO_SOURCE  // 演示视频完整路径
+#define DEMO_VIDEO_MARKER "/data/.enable_video_overlay"         // 视频覆盖开关标记
+#define DEMO_VIDEO_SCREEN_FILE "/data/.video_overlay_screen"    // 视频显示屏幕：0/3=双屏，1/2=单屏
+#define DEMO_IMAGE_MARKER "/data/.enable_image_overlay"         // 图片覆盖开关标记
+
+// 外部视频播放器函数声明（los = local os player）
 extern void *los_player_create2(lv_obj_t *parent, const char *path, lv_area_t area,
                                 bool auto_restart, bool auto_center, int display_idx, int rotation);
 extern void los_player_stop(void *player);
 extern void los_player_destroy2(void *player, int display_idx);
 extern void los_videoplayer_quit(int display_id);
 
-static lv_obj_t * tip_bg_1;
-static lv_obj_t * tip_bg_2;
-static lv_obj_t * master_tip_bg;
+// UI 对象声明
+static lv_obj_t * tip_bg_1;           // 屏幕1的提示背景
+static lv_obj_t * tip_bg_2;           // 屏幕2的提示背景
+static lv_obj_t * master_tip_bg;      // 主设备提示背景
 
-static lv_obj_t * empty_bg_1;
-static lv_obj_t * empty_bg_2;
+static lv_obj_t * empty_bg_1;         // 屏幕1的空界面背景
+static lv_obj_t * empty_bg_2;         // 屏幕2的空界面背景
 
-static lv_obj_t * green_led_1;
-static lv_obj_t * green_led_2;
+static lv_obj_t * green_led_1;        // 屏幕1的绿色指示灯
+static lv_obj_t * green_led_2;        // 屏幕2的绿色指示灯
 
-static lv_anim_t *green_led_anim_1 = NULL;
-static lv_anim_t *green_led_anim_2 = NULL;
+static lv_anim_t *green_led_anim_1 = NULL;  // 屏幕1指示灯动画
+static lv_anim_t *green_led_anim_2 = NULL;  // 屏幕2指示灯动画
 
-static int _network_connected_status = -1;
-static int _init_mqtt_status = 0;
-static int thread_created = 0;
-static int thread_chech_life_created = 0;
+// 状态变量
+static int _network_connected_status = -1;  // 网络连接状态（-1=未知, 0=断开, 1=连接）
+static int _init_mqtt_status = 0;           // MQTT 初始化状态（0=未初始化, 1=已连接）
+static int thread_created = 0;              // 线程创建标志
+static int thread_chech_life_created = 0;   // 探活线程创建标志
 
-static int _is_master = 0;
-static char * _master_device_no;
-static int _master_group_id = -1;
-static int reconnect_count = 0;
-static int _group_id_1 = 0;
-static int _group_id_2 = 0;
+static int _is_master = 0;                 // 是否为主设备（0=从设备, 1=主设备）
+static char * _master_device_no;           // 主设备序列号
+static int _master_group_id = -1;          // 主设备分组ID
+static int reconnect_count = 0;            // MQTT 重连计数
+static int _group_id_1 = 0;                // 屏幕1分组ID
+static int _group_id_2 = 0;                // 屏幕2分组ID
 
 // 定义互斥锁
-pthread_mutex_t broadcast_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t download_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t broadcast_mutex = PTHREAD_MUTEX_INITIALIZER;  // 广播互斥锁
+pthread_mutex_t download_mutex = PTHREAD_MUTEX_INITIALIZER;   // 下载互斥锁
 
+// 函数声明
 static void _init_ui(lv_obj_t * bg,int bg_index,int type);
 static void _quit_empty_ui(int bg_index);
 static void _start_check_life_thread();
@@ -112,6 +121,7 @@ static void* _download_image_or_video_in_thread(void *arg);
 static void _download_image_or_video_and_create_thread(esl_base_model_t * model,int index);
 static void _remove_tip_ui(int index);
 
+// 字符串拼接辅助函数
 static char* _concat_strings(const char* str1, const char* str2) {
     size_t len1 = strlen(str1);
     size_t len2 = strlen(str2);
@@ -214,183 +224,218 @@ static int compare_product_info_asc(void *a, void *b) {
 }
 
 /* ================================================================
- * Demo override helpers.
+ * Demo Override 辅助函数
  *
- * The demo is intentionally attached to the same bg object that normal
- * MQTT templates use. If marker/resource is missing, these helpers do
- * nothing and the normal UI remains visible.
+ * 演示模式通过标记文件控制，复用 MQTT 模板的图片/视频组件路径。
+ * 如果标记文件或资源文件不存在，这些函数不做任何操作，保持原有 UI 显示。
  * ================================================================ */
 
+// 演示图片候选结构：文件系统路径 + LVGL 虚拟路径
 typedef struct {
-    const char *fs_path;
-    const char *lvgl_path;
+    const char *fs_path;    // 实际文件系统路径（用于检查文件是否存在）
+    const char *lvgl_path;  // LVGL 使用的虚拟路径（H:/ 开头，用于加载图片）
 } demo_image_candidate_t;
 
+// 演示图片候选列表：按优先级排列，找到第一个存在的文件
 static const demo_image_candidate_t s_demo_images[] = {
     {"/data/res/img/video_frames/frame_001.png", "H:/data/res/img/video_frames/frame_001.png"},
     {"/data/res/img/video_frames/frame_001.jpg", "H:/data/res/img/video_frames/frame_001.jpg"},
 };
 
+// 演示视频播放器实例数组（双屏设备，最多两个播放器）
 static void *s_demo_player[2] = {NULL, NULL};
 
+// 将屏幕索引转换为显示设备 ID
+// screen_index: 1/2 -> display_id: 0/1
 static int _demo_display_id(int screen_index)
 {
     if (screen_index <= 1) {
-        return 0;
+        return 0;  // 屏幕1对应显示设备0
     }
-    return 1;
+    return 1;      // 屏幕2对应显示设备1
 }
 
+// 检查文件是否可读（辅助函数）
 static bool _demo_file_readable(const char *path)
 {
     return path != NULL && access(path, R_OK) == 0;
 }
 
-static void _demo_native_video_path(int display_id, char *path, size_t size)
+static int _demo_video_target_screen(void)
 {
-    snprintf(path, size, "/data/res/img/13ad34351bdf701e9db0a1c53f2838ef_h264_800x640_%d.mp4", display_id);
+    int target = 0;  // 默认双屏显示
+    FILE *fp = fopen(DEMO_VIDEO_SCREEN_FILE, "r");
+    if (fp != NULL) {
+        int value = 0;
+        if (fscanf(fp, "%d", &value) == 1) {
+            if (value == 1) {
+                target = 1;
+            } else if (value == 2) {
+                target = 2;
+            } else {
+                target = 0;
+            }
+        }
+        fclose(fp);
+    }
+    return target;
 }
 
+// 生成指定显示设备的本地视频路径
+// 格式: /data/res/img/13ad34351bdf701e9db0a1c53f2838ef_h264_800x640_0.mp4 (屏幕1)
+//       /data/res/img/13ad34351bdf701e9db0a1c53f2838ef_h264_800x640_1.mp4 (屏幕2)
+static void _demo_native_video_path(int display_id, char *path, size_t size)
+{
+    snprintf(path, size, "/data/res/img/d425b305eccd909c6072b25232130e2d_h264_800x640_%d.mp4", display_id);
+}
+
+// 查找可用的演示图片路径（按优先级顺序）
 static const char *_find_demo_image_path(void)
 {
     size_t count = sizeof(s_demo_images) / sizeof(s_demo_images[0]);
     for (size_t i = 0; i < count; i++) {
         if (_demo_file_readable(s_demo_images[i].fs_path)) {
-            return s_demo_images[i].lvgl_path;
+            return s_demo_images[i].lvgl_path;  // 返回 LVGL 虚拟路径
         }
     }
-    return NULL;
+    return NULL;  // 没有找到可用的图片
 }
 
+// 只停止演示视频播放器（不退出视频播放器模块）
 static void _stop_demo_player_only(int screen_index)
 {
     int display_id = _demo_display_id(screen_index);
     void **player = &s_demo_player[display_id];
     if (*player != NULL) {
-        los_player_stop(*player);
-        los_player_destroy2(*player, display_id);
-        *player = NULL;
+        los_player_stop(*player);          // 停止播放
+        los_player_destroy2(*player, display_id);  // 销毁播放器实例
+        *player = NULL;                    // 清空播放器指针
         printf("[DEMO] stopped direct player: screen=%d\n", screen_index);
     }
 }
 
+// 完全退出演示覆盖模式：停止播放器 + 退出视频播放器模块
 static void _quit_demo_override(int screen_index)
 {
-    _stop_demo_player_only(screen_index);
-    los_videoplayer_quit(_demo_display_id(screen_index));
+    _stop_demo_player_only(screen_index);           // 停止演示播放器
+    los_videoplayer_quit(_demo_display_id(screen_index));  // 退出视频播放器模块
 }
 
+// 显示演示视频覆盖
+// 优先使用设备特定的视频文件（_0.mp4 / _1.mp4），其次使用通用视频文件
 static bool _show_demo_video(lv_obj_t *bg, int screen_index)
 {
     int display_id = _demo_display_id(screen_index);
     char native_path[256] = {0};
+    const char *video_path = DEMO_VIDEO_RAW_PATH;
     _demo_native_video_path(display_id, native_path, sizeof(native_path));
 
+    // 优先检查设备特定的视频文件
     if (_demo_file_readable(native_path)) {
-        esl_base_model_child_t item;
-        esl_base_model_t model;
-        char *video_urls[1] = {(char *)DEMO_VIDEO_SOURCE};
-
-        memset(&item, 0, sizeof(item));
-        memset(&model, 0, sizeof(model));
-        item.type = EslCompentTypeVIDEO;
-        item.content = (char *)DEMO_VIDEO_SOURCE;
-        item.x = 0;
-        item.y = 0;
-        item.w = 800;
-        item.h = 1280;
-
-        model.width = 800;
-        model.height = 1280;
-        model.video_urls = video_urls;
-        model.video_count = 1;
-
-        _quit_demo_override(screen_index);
-        handle_video_extension2(bg, &model, &item, display_id);
-        printf("[DEMO] native video override: screen=%d path=%s\n", screen_index, native_path);
-        return true;
-    }
-
-    if (!_demo_file_readable(DEMO_VIDEO_RAW_PATH)) {
+        video_path = native_path;
+    } else if (!_demo_file_readable(DEMO_VIDEO_RAW_PATH)) {
         printf("[DEMO] video marker set but file missing: %s or %s\n",
                native_path, DEMO_VIDEO_RAW_PATH);
         return false;
     }
 
-    lv_area_t area = {.x1 = 0, .y1 = 0, .x2 = 799, .y2 = 1279};
-    _quit_demo_override(screen_index);
-    s_demo_player[display_id] = los_player_create2(bg, DEMO_VIDEO_RAW_PATH, area,
+    lv_area_t area = {.x1 = 0, .y1 = 0, .x2 = 799, .y2 = 1279};  // 全屏区域
+    _stop_demo_player_only(screen_index);
+    s_demo_player[display_id] = los_player_create2(bg, video_path, area,
                                                     true, false, display_id, 0);
     if (s_demo_player[display_id] == NULL) {
         printf("[DEMO] direct video player create failed: screen=%d path=%s\n",
-               screen_index, DEMO_VIDEO_RAW_PATH);
+               screen_index, video_path);
         return false;
     }
 
+    lv_obj_invalidate(bg);
+    lv_refr_now(lv_obj_get_display(bg));
     printf("[DEMO] direct video override: screen=%d player=%p path=%s\n",
-           screen_index, s_demo_player[display_id], DEMO_VIDEO_RAW_PATH);
+           screen_index, s_demo_player[display_id], video_path);
     return true;
 }
 
+// 显示演示图片覆盖
 static bool _show_demo_image(lv_obj_t *bg, int screen_index)
 {
     int display_id = _demo_display_id(screen_index);
     const char *image_path = _find_demo_image_path();
 
+    // 检查图片文件是否存在
     if (image_path == NULL) {
         printf("[DEMO] image marker set but no demo image found\n");
         return false;
     }
 
+    // 构造图片组件参数
     esl_base_model_child_t item;
     memset(&item, 0, sizeof(item));
-    item.type = EslCompentTypeIMAGE;
-    item.content = (char *)image_path;
-    item.x = 0;
-    item.y = 0;
-    item.w = 800;
-    item.h = 1280;
+    item.type = EslCompentTypeIMAGE;   // 组件类型：图片
+    item.content = (char *)image_path; // 图片路径
+    item.x = 0;                        // 左上角 X 坐标
+    item.y = 0;                        // 左上角 Y 坐标
+    item.w = 800;                      // 宽度（屏幕分辨率）
+    item.h = 1280;                     // 高度（屏幕分辨率）
 
-    _quit_demo_override(screen_index);
-    handle_image_extension2(bg, &item, display_id);
+    _quit_demo_override(screen_index);                 // 先退出之前的覆盖模式
+    handle_image_extension2(bg, &item, display_id);    // 使用 MQTT 模板的图片组件显示
     printf("[DEMO] image override: screen=%d path=%s\n", screen_index, image_path);
     return true;
 }
 
 /**
- * Check demo marker files and show demo override if enabled.
- * Priority:
- *   1. video marker + readable video resource
- *   2. image marker + readable image resource
- *   3. no marker/resource: keep normal UI untouched
+ * 检查演示标记文件并根据优先级显示覆盖内容
+ * 
+ * 优先级顺序：
+ *   1. 视频标记 + 可读视频资源 → 显示视频覆盖
+ *   2. 图片标记 + 可读图片资源 → 显示图片覆盖
+ *   3. 无标记或资源缺失 → 保持原有 UI 不变
+ * 
+ * @param bg          LVGL 背景对象
+ * @param screen_index 屏幕索引（1=屏幕1, 2=屏幕2）
+ * @return true=成功显示覆盖, false=未显示覆盖
  */
 static bool _maybe_show_demo_override(lv_obj_t *bg, int screen_index)
 {
+    // 检查背景对象是否有效
     if (bg == NULL || !lv_obj_is_valid(bg)) {
         return false;
     }
 
+    // 先停止之前的演示播放器（防止资源泄漏）
     _stop_demo_player_only(screen_index);
 
+    // 优先级1：检查视频覆盖标记
     if (access(DEMO_VIDEO_MARKER, F_OK) == 0) {
-        if (_show_demo_video(bg, screen_index)) {
-            return true;
+        int target_screen = _demo_video_target_screen();
+        if (target_screen == 0 || screen_index == target_screen) {
+            if (_show_demo_video(bg, screen_index)) {
+                return true;
+            }
+        } else {
+            printf("[DEMO] video overlay skip screen=%d target=%d\n",
+                   screen_index, target_screen);
         }
     }
 
+    // 优先级2：检查图片覆盖标记
     if (access(DEMO_IMAGE_MARKER, F_OK) == 0) {
         if (_show_demo_image(bg, screen_index)) {
             return true;
         }
     }
 
+    // 没有启用任何覆盖，保持原有 UI
     return false;
 }
 
+// 显示 UI 主函数
 static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int height,int index)
 {
     if(model == NULL){
         QM_ESL2_LOG("model maybe null!, return!");
+        // 模型为空时显示空界面（二维码界面）
         if (index == 1) {
             show_empty_ui_1(top);
         } else if (index == 2) {
@@ -400,9 +445,10 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
         return;
     }
 
+    // 调用 esl_show_ui 显示 MQTT 模板界面
     esl_show_ui(model,top,width,height,index);
 
-    //开启线程 删除本地资源
+    // 开启线程删除本地资源（清理旧资源）
     #if 1
         pthread_t download_thread;
         compare_data_t *compare_data_t = malloc(sizeof(compare_data_t));
@@ -410,13 +456,18 @@ static void _show_ui(esl_base_model_t * model,lv_obj_t * top,int width,int heigh
         pthread_create(&download_thread, NULL, compare_local_resouce, compare_data_t);
         pthread_detach(download_thread);
     #endif
-    free_esl_base_model(model);
-    set_show_green_led(index,0);
+    free_esl_base_model(model);           // 释放模型内存
+    set_show_green_led(index,0);          // 关闭绿色指示灯
+    
+    // 获取背景对象（优先使用 get_bg，失败则使用 top）
     lv_obj_t *bg = get_bg(index);
     if (bg == NULL || !lv_obj_is_valid(bg)) {
         bg = top;
     }
+    
+    // ★ 检查演示覆盖标记，如启用则显示图片/视频覆盖原有 UI
     _maybe_show_demo_override(bg, index);
+    
     QM_ESL2_LOG("show_ui EXIT!!");
 }
 
@@ -658,40 +709,48 @@ static void* _download_image_or_video_in_thread(void *arg) {
     return NULL;
 }
 
+// 显示空界面（二维码界面）：包含设备SN、IP、蓝牙名称和二维码
 static void _show_empty_ui(lv_obj_t * bg,int bg_index){
     char * device_sn = get_device_sn(bg_index);
 
     QM_ESL2_LOG("_show_empty_ui ENTRY!! bg_index:%d",bg_index);
+    
+    // 设置背景样式（无边距、无圆角、无边框、无滚动条）
     lv_obj_set_style_pad_all(bg, 0, 0);
     lv_obj_set_style_radius(bg, 0, 0);
     lv_obj_set_style_border_width(bg, 0, 0);
     lv_obj_set_scrollbar_mode(bg, LV_SCROLLBAR_MODE_OFF);
 
+    // 设置背景尺寸为全屏（800x1280）
     lv_obj_set_size(bg, 800, 1280);
 
+    // 创建默认背景图片
     lv_obj_t *img = lv_img_create(bg);
     _set_image_src(img,k_path_default_bg_img,800,1280,bg_index - 1);
 
+    // 创建设备SN标签
     lv_obj_t *sn_label = lv_label_create(bg);
     lv_label_set_text(sn_label, device_sn);
     lv_font_t *sn_font = NULL;
     qua_xos_ft_init_with_size_path(&sn_font, 30, k_path_ttf, 0);
     lv_obj_set_style_text_font(sn_label, sn_font, 0);
 
+    // 生成二维码数据（包含设备SN）
     cJSON *json = cJSON_CreateObject();
     cJSON_AddStringToObject(json, "SN", device_sn);
     char *data = cJSON_Print(json);
     
-    
+    // 创建二维码组件
     lv_obj_t * qr = lv_qrcode_create(bg);
     lv_qrcode_set_size(qr, 300);
     lv_qrcode_update(qr, data, strlen(data));
-    //lv_obj_set_style_bg_opa(qr, LV_OPA_0,0);
     lv_obj_set_size(qr, 300, 300);
-    lv_obj_set_pos(qr, 250, 250);
+    lv_obj_set_pos(qr, 250, 250);  // 居中显示
 
+    // 将SN标签对齐到二维码上方
     lv_obj_align_to(sn_label, qr, LV_ALIGN_OUT_TOP_MID, 0, -15);
 
+    // 获取并显示本地IP地址
     char ip[NI_MAXHOST] = {0};
     get_local_ip(ip, NI_MAXHOST);
     QM_ESL2_LOG("Local IP address: %s\n", ip);
@@ -701,19 +760,22 @@ static void _show_empty_ui(lv_obj_t * bg,int bg_index){
         lv_font_t *ip_font = NULL;
         qua_xos_ft_init_with_size_path(&ip_font, 30, k_path_ttf, 0);
         lv_obj_set_style_text_font(ip_label, ip_font, 0);
-        lv_obj_align_to(ip_label, qr, LV_ALIGN_OUT_BOTTOM_MID, 0, 30);
+        lv_obj_align_to(ip_label, qr, LV_ALIGN_OUT_BOTTOM_MID, 0, 30);  // 对齐到二维码下方
     }else{
-	char *ipaddr = NULL;
+        // 如果无法获取IP，从参数系统获取
+        char *ipaddr = NULL;
         ipaddr = param_get_string("net:ipaddr", NULL);
         if (ipaddr != NULL) {
-	    lv_obj_t *ip_label = lv_label_create(bg);
+            lv_obj_t *ip_label = lv_label_create(bg);
             lv_label_set_text(ip_label,ipaddr);
-	    lv_font_t *ip_font = NULL;
+            lv_font_t *ip_font = NULL;
             qua_xos_ft_init_with_size_path(&ip_font, 30, k_path_ttf, 0);
             lv_obj_set_style_text_font(ip_label, ip_font, 0);
             lv_obj_align_to(ip_label, qr, LV_ALIGN_OUT_BOTTOM_MID, 0, 30);
         } 
     }
+    
+    // 创建蓝牙名称标签（格式：tag-设备序列号）
     char bluetooth_name[30];
     sprintf(bluetooth_name, "tag-%s", deviceSerialNumber); 
 
@@ -722,11 +784,15 @@ static void _show_empty_ui(lv_obj_t * bg,int bg_index){
     lv_font_t *bluetooth_font = NULL;
     qua_xos_ft_init_with_size_path(&bluetooth_font, 15, k_path_ttf, 0);
     lv_obj_set_style_text_font(bluetooth_label, bluetooth_font, 0);
-    lv_obj_align_to(bluetooth_label, qr, LV_ALIGN_OUT_BOTTOM_MID, 0, 80);
+    lv_obj_align_to(bluetooth_label, qr, LV_ALIGN_OUT_BOTTOM_MID, 0, 80);  // 在IP下方显示
 
+    // 释放临时内存
     free(data);
     cJSON_Delete(json);
+    
+    // ★ 检查演示覆盖标记，如启用则显示图片/视频覆盖空界面
     _maybe_show_demo_override(bg, bg_index);
+    
     QM_ESL2_LOG("_show_empty_ui EXIT!! bg_index:%d",bg_index);
 }
 
