@@ -1,3 +1,32 @@
+// ============================================================
+// hw_h264_vo_dual_overlay_quamm.c — 方案二（参考实现）：VDEC + VB pool拷贝 + 双屏 VO
+// ============================================================
+// 【方案概述】
+//   使用方式：底层解码器 API (qua_decoder_create) + VO 直接管线，
+//            帧拷贝到独立 VB pool 后分别发给两个 VO 通道。
+//   QUA MM 初始化模式：PRIMARY (QUA_TRUE)，独占系统。
+//   输入：Raw H.264 AnnexB 流文件（NAL units 带 start code）。
+//   管线：VDEC 解码 → VB pool 帧拷贝 → 双屏 VO send_frame
+//
+//   【设计思路】
+//     - VDEC 解码输出帧在解码器内部 VB pool 中
+//     - 通过 copy_decoded_frame() 拷贝到独立的 VB copy pool
+//     - VDEC release_frame 后 buffer 立即归还解码池（可继续解码）
+//     - VB copy pool 的帧发给 VO 显示，VO 占用的 buffer 不影响 VDEC
+//     - 这是正确解耦 VDEC 和 VO 缓冲区的方式
+//
+//   【在本设备上的可行性】
+//     完全参考此方案在目标设备上的问题：
+//     - 需要在 sys_init 时预分配 VB pool（block_size=1024,block_cnt=6）
+//     - 同时需要 VDEC vb_cnt 个内部帧缓冲 + VB copy pool 拷贝缓冲
+//     - 设备 MMZ 内存有限，800x1280 视频同时分配两套池 导致 NOMEM (0xa001800c)
+//     - 如果设备 MMZ 足够，此方案是正确解法
+//
+//   【与当前方案的关系】
+//     本项目的 hw_video_overlay_quamm.c 尝试基于此参考代码改造，
+//     但因 MMZ 限制无法创建 VB copy pool，最终改为直接 VDEC->VO 发帧，
+//     导致了缓冲区耗尽问题（详见 hw_video_overlay_quamm.c 的注释）。
+// ============================================================
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>

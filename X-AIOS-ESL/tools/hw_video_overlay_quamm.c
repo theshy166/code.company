@@ -1,10 +1,13 @@
 // ============================================================
-// hw_video_overlay_quamm.c — 直接管线硬件视频覆盖播放器
+// hw_video_overlay_quamm.c — 底层 VDEC + 双屏 VO 视频覆盖
 // ============================================================
-// 原理：使用 VDEC + VO 直接管线方案（参考 hw_h264_vo_dual_overlay_quamm.c），
-//       绕过 QUA MM Player 的 VPPO 通道分配问题。
-//       单解码器解码帧 → VB pool 拷贝 → 各屏 VO channel 独立发送。
-//       输入为 raw H.264 annexb 流（从 MP4 提取）。
+// 当前方案：
+//   1. MP4 在部署脚本中转成低内存 raw AnnexB H.264，默认 800x640。
+//   2. 板端只创建一个 VDEC 通道解码低分辨率帧。
+//   3. 将解码帧拷贝/填充到独立 VB pool 的显示尺寸帧，默认 800x1280。
+//   4. 同一显示尺寸帧发送到 display0/display1 的 VO channel。
+//
+// 这样避开 800x1280 VDEC NOMEM，也满足 VO 要求 src/dst 尺寸一致的限制。
 // ============================================================
 
 #include <signal.h>
@@ -25,10 +28,12 @@
 // 常量
 // ============================================================
 
-#define SCREEN_WIDTH  800
-#define SCREEN_HEIGHT 1280
-#define VO_BUF_NUM    3
-#define COPY_BUF_NUM  2
+#define DEFAULT_STREAM_WIDTH   800
+#define DEFAULT_STREAM_HEIGHT  640
+#define DEFAULT_DISPLAY_WIDTH  800
+#define DEFAULT_DISPLAY_HEIGHT 1280
+#define VO_BUF_NUM             3
+#define MAX_COPY_BUF_NUM       3
 
 // ============================================================
 // 数据结构
@@ -56,6 +61,9 @@ typedef struct {
     QUA_U8 *vir;
     size_t size;
 } frame_slot_t;
+
+static void free_frame_slots(qua_mm_system_ops_t *sys_ops, QUA_VB_POOL pool_id,
+                             frame_slot_t *slots, int count);
 
 // ============================================================
 // 全局变量
@@ -87,6 +95,19 @@ static long long now_us(void)
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return (long long)tv.tv_sec * 1000000LL + tv.tv_usec;
+}
+
+static QUA_U32 align_up_u32(QUA_U32 value, QUA_U32 align)
+{
+    return (value + align - 1) & ~(align - 1);
+}
+
+static int clamp_int(int value, int min_value, int max_value, int fallback)
+{
+    if (value < min_value || value > max_value) {
+        return fallback;
+    }
+    return value;
 }
 
 // 读取整个文件到内存
@@ -239,7 +260,9 @@ static void restore_fb(vo_output_t *out)
 // 初始化单个屏幕的视频层 + VO 通道 + FB 隐藏
 // hide_fb: 1=隐藏FB, 0=保持显示
 static int init_output(const qua_mm_module_t *display_module,
-                        vo_output_t *out, const char *display_id, int hide_fb)
+                        vo_output_t *out, const char *display_id, int hide_fb,
+                        int display_width, int display_height, int fps,
+                        int video_priority)
 {
     memset(out, 0, sizeof(*out));
     out->display_id = display_id;
@@ -283,11 +306,11 @@ static int init_output(const qua_mm_module_t *display_module,
     memset(&compress_attr, 0, sizeof(compress_attr));
     layer_attr.disp_rect.x      = 0;
     layer_attr.disp_rect.y      = 0;
-    layer_attr.disp_rect.width  = SCREEN_WIDTH;
-    layer_attr.disp_rect.height = SCREEN_HEIGHT;
-    layer_attr.image_size.width  = SCREEN_WIDTH;
-    layer_attr.image_size.height = SCREEN_HEIGHT;
-    layer_attr.disp_frmrt       = 30;
+    layer_attr.disp_rect.width  = display_width;
+    layer_attr.disp_rect.height = display_height;
+    layer_attr.image_size.width  = display_width;
+    layer_attr.image_size.height = display_height;
+    layer_attr.disp_frmrt       = fps;
     layer_attr.pix_format       = QUA_PIXEL_FMT_YUV_SEMIPLANAR_420;
     layer_attr.double_frame     = QUA_FALSE;
     layer_attr.cluster_mode     = QUA_TRUE;
@@ -296,7 +319,7 @@ static int init_output(const qua_mm_module_t *display_module,
     out->vo_dev->set_video_disp_buflen(out->layer, VO_BUF_NUM);
 
     if (out->vo_dev->set_video_layer_priority != NULL) {
-        out->vo_dev->set_video_layer_priority(out->layer, 3);
+        out->vo_dev->set_video_layer_priority(out->layer, video_priority);
     }
     out->vo_dev->enable_video_layer(out->layer);
 
@@ -317,11 +340,11 @@ static int init_output(const qua_mm_module_t *display_module,
     chn_attr.priority   = 0;
     chn_attr.rect.x     = 0;
     chn_attr.rect.y     = 0;
-    chn_attr.rect.width  = SCREEN_WIDTH;
-    chn_attr.rect.height = SCREEN_HEIGHT;
+    chn_attr.rect.width  = display_width;
+    chn_attr.rect.height = display_height;
     chn_attr.deflicker  = QUA_FALSE;
     out->vo_chn->set_chn_attr(out->layer, out->chn, &chn_attr);
-    out->vo_chn->set_chn_frame_rate(out->layer, out->chn, 30);
+    out->vo_chn->set_chn_frame_rate(out->layer, out->chn, fps);
     out->vo_chn->enable_chn(out->layer, out->chn);
     out->vo_chn->clear_chn_buffer(out->layer, out->chn, QUA_TRUE);
     out->vo_chn->show_chn(out->layer, out->chn);
@@ -339,7 +362,8 @@ static int init_output(const qua_mm_module_t *display_module,
     }
 
     out->ready = 1;
-    fprintf(stderr, "%s output ready layer=%d chn=%d\n", display_id, out->layer, out->chn);
+    fprintf(stderr, "%s output ready layer=%d chn=%d rect=%dx%d fps=%d\n",
+            display_id, out->layer, out->chn, display_width, display_height, fps);
     return 0;
 }
 
@@ -384,16 +408,19 @@ static int alloc_frame_slots(qua_mm_system_ops_t *sys_ops, QUA_VB_POOL *pool_id,
         slots[i].handle = sys_ops->vb_get_block(*pool_id, (QUA_U32)frame_size, NULL);
         if (slots[i].handle == QUA_VB_INVALID_HANDLE) {
             fprintf(stderr, "vb_get_block failed i=%d\n", i);
+            free_frame_slots(sys_ops, *pool_id, slots, count);
             return -1;
         }
         slots[i].phy = sys_ops->vb_handle_to_phyaddr(slots[i].handle);
         if (slots[i].phy == 0) {
             fprintf(stderr, "vb_handle_to_phyaddr failed i=%d\n", i);
+            free_frame_slots(sys_ops, *pool_id, slots, count);
             return -1;
         }
         slots[i].vir = (QUA_U8 *)sys_ops->sys_mmap(slots[i].phy, (QUA_U32)frame_size);
         if (slots[i].vir == NULL) {
             fprintf(stderr, "sys_mmap slot failed i=%d\n", i);
+            free_frame_slots(sys_ops, *pool_id, slots, count);
             return -1;
         }
         slots[i].size = frame_size;
@@ -419,20 +446,21 @@ static void free_frame_slots(qua_mm_system_ops_t *sys_ops, QUA_VB_POOL pool_id,
     }
 }
 
-// 将解码帧拷贝到 VB pool 槽位（800x1280 YUV NV12）
+// 将解码帧拷贝到 VB pool 槽位（YUV420/NV12），用于同一解码帧双屏复用。
 static int copy_decoded_frame(qua_mm_system_ops_t *sys_ops,
                               const qua_video_frame_info_t *src,
                               frame_slot_t *slot,
                               qua_video_frame_info_t *dst,
-                              QUA_VB_POOL pool_id)
+                              QUA_VB_POOL pool_id,
+                              QUA_U32 src_width,
+                              QUA_U32 src_height,
+                              QUA_U32 dst_width,
+                              QUA_U32 dst_height,
+                              QUA_U32 dst_stride)
 {
-    const QUA_U32 width      = SCREEN_WIDTH;
-    const QUA_U32 height     = SCREEN_HEIGHT;
-    const QUA_U32 dst_stride = SCREEN_WIDTH;
-
-    QUA_U32 src_stride_y  = src->video_frame.stride[0] ? src->video_frame.stride[0] : width;
+    QUA_U32 src_stride_y  = src->video_frame.stride[0] ? src->video_frame.stride[0] : src_width;
     QUA_U32 src_stride_uv = src->video_frame.stride[1] ? src->video_frame.stride[1] : src_stride_y;
-    size_t  src_map_size  = (size_t)src_stride_y * height + (size_t)src_stride_uv * height / 2;
+    size_t  src_map_size  = (size_t)src_stride_y * src_height + (size_t)src_stride_uv * src_height / 2;
 
     // 映射解码帧的虚拟地址
     QUA_U8 *src_map = NULL;
@@ -450,24 +478,38 @@ static int copy_decoded_frame(qua_mm_system_ops_t *sys_ops,
             src->video_frame.phy_addr[1] - src->video_frame.phy_addr[0] < src_map_size) {
             src_uv = src_map + (src->video_frame.phy_addr[1] - src->video_frame.phy_addr[0]);
         } else {
-            src_uv = src_map + (size_t)src_stride_y * height;
+            src_uv = src_map + (size_t)src_stride_y * src_height;
         }
     } else if (src_uv == NULL) {
-        src_uv = src_y + (size_t)src_stride_y * height;
+        src_uv = src_y + (size_t)src_stride_y * src_height;
     }
 
     QUA_U8 *dst_y  = slot->vir;
-    QUA_U8 *dst_uv = slot->vir + (size_t)dst_stride * height;
+    QUA_U8 *dst_uv = slot->vir + (size_t)dst_stride * dst_height;
+
+    for (QUA_U32 y = 0; y < dst_height; y++) {
+        memset(dst_y + (size_t)y * dst_stride, 16, dst_stride);
+    }
+    for (QUA_U32 y = 0; y < dst_height / 2; y++) {
+        memset(dst_uv + (size_t)y * dst_stride, 128, dst_stride);
+    }
+
+    QUA_U32 copy_width = src_width < dst_width ? src_width : dst_width;
+    QUA_U32 copy_height = src_height < dst_height ? src_height : dst_height;
+    copy_width &= ~1U;
+    copy_height &= ~1U;
+    QUA_U32 dst_x = ((dst_width - copy_width) / 2) & ~1U;
+    QUA_U32 dst_y_off = ((dst_height - copy_height) / 2) & ~1U;
 
     // Y plane copy (行拷贝处理 stride 差异)
-    for (QUA_U32 y = 0; y < height; y++) {
-        memcpy(dst_y  + (size_t)y * dst_stride,
-               src_y  + (size_t)y * src_stride_y, width);
+    for (QUA_U32 y = 0; y < copy_height; y++) {
+        memcpy(dst_y  + (size_t)(dst_y_off + y) * dst_stride + dst_x,
+               src_y  + (size_t)y * src_stride_y, copy_width);
     }
     // UV plane copy
-    for (QUA_U32 y = 0; y < height / 2; y++) {
-        memcpy(dst_uv + (size_t)y * dst_stride,
-               src_uv + (size_t)y * src_stride_uv, width);
+    for (QUA_U32 y = 0; y < copy_height / 2; y++) {
+        memcpy(dst_uv + (size_t)(dst_y_off / 2 + y) * dst_stride + dst_x,
+               src_uv + (size_t)y * src_stride_uv, copy_width);
     }
 
     if (src_map != NULL) {
@@ -477,8 +519,8 @@ static int copy_decoded_frame(qua_mm_system_ops_t *sys_ops,
     // 填充目标帧信息
     memset(dst, 0, sizeof(*dst));
     dst->pool_id                = pool_id;
-    dst->video_frame.width      = width;
-    dst->video_frame.height     = height;
+    dst->video_frame.width      = dst_width;
+    dst->video_frame.height     = dst_height;
     dst->video_frame.field      = QUA_VIDEO_FIELD_FRAME;
     dst->video_frame.pixel_fmt  = QUA_PIXEL_FMT_YUV_SEMIPLANAR_420;
     dst->video_frame.video_fmt  = QUA_VIDEO_FORMAT_LINEAR;
@@ -486,7 +528,7 @@ static int copy_decoded_frame(qua_mm_system_ops_t *sys_ops,
     dst->video_frame.stride[0]  = dst_stride;
     dst->video_frame.stride[1]  = dst_stride;
     dst->video_frame.phy_addr[0]= slot->phy;
-    dst->video_frame.phy_addr[1]= slot->phy + (size_t)dst_stride * height;
+    dst->video_frame.phy_addr[1]= slot->phy + (size_t)dst_stride * dst_height;
     dst->video_frame.vir_addr[0]= (QUA_U64)(uintptr_t) dst_y;
     dst->video_frame.vir_addr[1]= (QUA_U64)(uintptr_t) dst_uv;
     return 0;
@@ -496,7 +538,8 @@ static int copy_decoded_frame(qua_mm_system_ops_t *sys_ops,
 // 主函数
 // ============================================================
 
-// 用法: hw_video_overlay_quamm [raw_h264路径] [标记文件] [模式] [隐藏FB] [帧率]
+// 用法:
+//   hw_video_overlay_quamm h264 marker mode hide_fb fps stream_w stream_h display_w display_h vdec_vb copy_buf priority
 int main(int argc, char **argv)
 {
     setvbuf(stderr, NULL, _IONBF, 0);
@@ -507,8 +550,22 @@ int main(int argc, char **argv)
     const char *mode   = argc > 3 ? argv[3] : "both";
     int hide_fb        = argc > 4 ? atoi(argv[4]) : 1;
     int fps            = argc > 5 ? atoi(argv[5]) : 30;
+    int stream_width   = argc > 6 ? atoi(argv[6]) : DEFAULT_STREAM_WIDTH;
+    int stream_height  = argc > 7 ? atoi(argv[7]) : DEFAULT_STREAM_HEIGHT;
+    int display_width  = argc > 8 ? atoi(argv[8]) : DEFAULT_DISPLAY_WIDTH;
+    int display_height = argc > 9 ? atoi(argv[9]) : DEFAULT_DISPLAY_HEIGHT;
+    int vdec_vb_cnt    = argc > 10 ? atoi(argv[10]) : 2;
+    int copy_buf_cnt   = argc > 11 ? atoi(argv[11]) : 2;
+    int video_priority = argc > 12 ? atoi(argv[12]) : 3;
 
     if (fps <= 0 || fps > 60) fps = 30;
+    stream_width = clamp_int(stream_width, 64, DEFAULT_DISPLAY_WIDTH, DEFAULT_STREAM_WIDTH);
+    stream_height = clamp_int(stream_height, 64, DEFAULT_DISPLAY_HEIGHT, DEFAULT_STREAM_HEIGHT);
+    display_width = clamp_int(display_width, 64, DEFAULT_DISPLAY_WIDTH, DEFAULT_DISPLAY_WIDTH);
+    display_height = clamp_int(display_height, 64, DEFAULT_DISPLAY_HEIGHT, DEFAULT_DISPLAY_HEIGHT);
+    vdec_vb_cnt = clamp_int(vdec_vb_cnt, 1, 4, 2);
+    copy_buf_cnt = clamp_int(copy_buf_cnt, 0, MAX_COPY_BUF_NUM, 2);
+    video_priority = clamp_int(video_priority, 0, 3, 3);
 
     signal(SIGTERM, on_signal);
     signal(SIGINT,  on_signal);
@@ -544,7 +601,8 @@ int main(int argc, char **argv)
     for (int i = 0; i < 2; i++) {
         if (!want_display[i]) continue;
         if (init_output(display_module, &outputs[output_count],
-                        s_display_ids[i], hide_fb) == 0) {
+                        s_display_ids[i], hide_fb, display_width,
+                        display_height, fps, video_priority) == 0) {
             output_count++;
         }
     }
@@ -577,14 +635,14 @@ int main(int argc, char **argv)
     fprintf(stderr, "VDEC device opened: %s\n", vdec_device->parent.id);
 
     // 配置 VDEC 通道属性
-    QUA_U32 stream_buf_size = SCREEN_WIDTH * SCREEN_HEIGHT;
+    QUA_U32 stream_buf_size = (QUA_U32)stream_width * (QUA_U32)stream_height;
     qua_vdec_chn_attr_t chn_attr;
     memset(&chn_attr, 0, sizeof(chn_attr));
     chn_attr.coding_type       = QUA_VIDEO_CodingAVC;
     chn_attr.in_stream_buf_size = stream_buf_size;
     chn_attr.priority          = 5;
-    chn_attr.pic_width         = SCREEN_WIDTH;
-    chn_attr.pic_height        = SCREEN_HEIGHT;
+    chn_attr.pic_width         = (QUA_U32)stream_width;
+    chn_attr.pic_height        = (QUA_U32)stream_height;
     chn_attr.vdec_video_attr.mode               = QUA_VIDEO_MODE_FRAME;
     chn_attr.vdec_video_attr.ref_frame_num      = 1;
     chn_attr.vdec_video_attr.temporal_mvp_enable = 0;
@@ -592,9 +650,9 @@ int main(int argc, char **argv)
     qua_mm_vdec_chn_attr_t vdec_chn_attr;
     memset(&vdec_chn_attr, 0, sizeof(vdec_chn_attr));
     vdec_chn_attr.chn_attr = chn_attr;
-    vdec_chn_attr.vb_cnt   = 4;
+    vdec_chn_attr.vb_cnt   = vdec_vb_cnt;
 
-    QUA_S32 vdec_chn_id = -1;
+    QUA_S32 vdec_chn_id = 0;
     qua_mm_channel_t *mm_channel = NULL;
     load_ret = vdec_device->parent.create_channel(
         mm_device, &vdec_chn_id, (QUA_VOID_PTR)&vdec_chn_attr, &mm_channel);
@@ -607,11 +665,41 @@ int main(int argc, char **argv)
     }
     qua_mm_vdec_channel_t *vdec_chn = (qua_mm_vdec_channel_t *)mm_channel;
 
+    qua_vdec_chn_param_t chn_param;
+    memset(&chn_param, 0, sizeof(chn_param));
+    if (vdec_chn->get_chn_param != NULL &&
+        vdec_chn->set_chn_param != NULL &&
+        vdec_chn->get_chn_param(vdec_chn_id, &chn_param) == QUA_SUCCESS) {
+        chn_param.dec_order_output = 0;
+        chn_param.chan_err_thr = 1;
+        QUA_S32 pret = vdec_chn->set_chn_param(vdec_chn_id, &chn_param);
+        fprintf(stderr, "set vdec param ret=%d\n", pret);
+    }
+
     load_ret = vdec_chn->start_chn(vdec_chn_id);
     fprintf(stderr, "VDEC chn=%d start ret=%d (direct VDEC->VO mode)\n", vdec_chn_id, load_ret);
 
-    fprintf(stderr, "direct vo overlay start: outputs=%d fps=%d mode=%s hide_fb=%d\n",
-            output_count, fps, mode, hide_fb);
+    frame_slot_t slots[MAX_COPY_BUF_NUM];
+    memset(slots, 0, sizeof(slots));
+    for (int i = 0; i < MAX_COPY_BUF_NUM; i++) {
+        slots[i].handle = QUA_VB_INVALID_HANDLE;
+    }
+    QUA_VB_POOL copy_pool = QUA_VB_INVALID_POOLID;
+    QUA_U32 copy_stride = align_up_u32((QUA_U32)display_width, 64);
+    size_t copy_frame_size = (size_t)copy_stride * (size_t)display_height * 3 / 2;
+    int use_copy_slots = 0;
+    if (copy_buf_cnt > 0 &&
+        alloc_frame_slots(sys_ops, &copy_pool, slots, copy_buf_cnt, copy_frame_size) == 0) {
+        use_copy_slots = 1;
+    } else if (copy_buf_cnt > 0) {
+        fprintf(stderr, "copy VB unavailable; fallback to direct decoded frames\n");
+    }
+
+    fprintf(stderr,
+            "direct vo overlay start: outputs=%d mode=%s hide_fb=%d fps=%d stream=%dx%d display=%dx%d vdec_vb=%d copy=%d stride=%u\n",
+            output_count, mode, hide_fb, fps, stream_width, stream_height,
+            display_width, display_height, vdec_vb_cnt,
+            use_copy_slots ? copy_buf_cnt : 0, copy_stride);
 
     // ---- 主播放循环 ----
     long long     frame_interval = 1000000LL / fps;
@@ -631,32 +719,52 @@ int main(int argc, char **argv)
 
             int nal_type = h264_nal_type(stream, nal_start, nal_size);
 
-            // 发送 NAL 到 VDEC
+            // 按官方 sample 的方式，每个 AnnexB 包都标记为一帧输入。
             qua_vdec_stream_t vdec_stream;
             vdec_stream_defaults(&vdec_stream);
-            vdec_stream.in_data = (QUA_U64)(uintptr_t)(stream + nal_start);
-            vdec_stream.in_size = (QUA_U32)nal_size;
-            vdec_stream.pts     = pts;
+            vdec_stream.in_data  = (QUA_U64)(uintptr_t)(stream + nal_start);
+            vdec_stream.in_size  = (QUA_U32)nal_size;
+            vdec_stream.pts      = pts;
 
             QUA_S32 sret = vdec_chn->send_stream(vdec_chn_id, &vdec_stream, -1);
             if (sret != 0) {
-                fprintf(stderr, "send_stream fail ret=%d\n", sret);
+                fprintf(stderr, "send_stream fail ret=%d type=%d size=%u\n",
+                        sret, nal_type, (unsigned)nal_size);
             }
 
             if (!h264_is_vcl(nal_type)) continue;
             pts += (QUA_U64)frame_interval;
 
-            // 从 VDEC 取出解码帧，直接发送到 VO
+            // 从 VDEC 取出解码帧
             qua_video_frame_info_t frame;
             memset(&frame, 0, sizeof(frame));
             QUA_S32 ret = vdec_chn->get_frame(vdec_chn_id, &frame, 500);
-            if (ret != 0) continue;
+            if (ret != 0) {
+                if (frame_count < 5)
+                    fprintf(stderr, "get_frame ret=%d (warmup?)\n", ret);
+                continue;
+            }
 
+            qua_video_frame_info_t display_frame;
+            qua_video_frame_info_t *frame_to_send = &frame;
+            if (use_copy_slots) {
+                frame_slot_t *slot = &slots[frame_count % (unsigned int)copy_buf_cnt];
+                if (copy_decoded_frame(sys_ops, &frame, slot, &display_frame, copy_pool,
+                                       (QUA_U32)stream_width, (QUA_U32)stream_height,
+                                       (QUA_U32)display_width, (QUA_U32)display_height,
+                                       copy_stride) == 0) {
+                    frame_to_send = &display_frame;
+                } else {
+                    fprintf(stderr, "copy decoded frame failed, use direct frame\n");
+                }
+            }
+
+            // 发到所有 VO 通道
             for (int i = 0; i < output_count; i++) {
                 QUA_S32 vsret = outputs[i].vo_chn->send_frame(
-                    outputs[i].layer, outputs[i].chn, &frame, 0);
+                    outputs[i].layer, outputs[i].chn, frame_to_send, 100);
                 if (vsret != 0) {
-                    fprintf(stderr, "%s send fail layer=%d chn=%d ret=%d\n",
+                    fprintf(stderr, "%s send_frame fail layer=%d chn=%d ret=%d\n",
                             outputs[i].display_id, outputs[i].layer,
                             outputs[i].chn, vsret);
                 }
@@ -665,8 +773,10 @@ int main(int argc, char **argv)
 
             frame_count++;
             loop_frame_count++;
-            if (frame_count % (unsigned int)fps == 0) {
-                fprintf(stderr, "frames=%u loops=%u\n", frame_count, loop_count);
+            if (frame_count < 5 || frame_count % (unsigned int)fps == 0) {
+                fprintf(stderr, "frame=%u w=%u h=%u stride=%u,%u loops=%u\n",
+                        frame_count, frame.video_frame.width, frame.video_frame.height,
+                        frame.video_frame.stride[0], frame.video_frame.stride[1], loop_count);
             }
 
             // 帧率控制
@@ -689,6 +799,9 @@ int main(int argc, char **argv)
     vdec_chn->stop_chn(vdec_chn_id);
     mm_channel->release(mm_channel);
     vdec_device->parent.close(mm_device);
+    if (use_copy_slots) {
+        free_frame_slots(sys_ops, copy_pool, slots, copy_buf_cnt);
+    }
     for (int i = 0; i < output_count; i++) deinit_output(&outputs[i]);
     free(stream);
 
